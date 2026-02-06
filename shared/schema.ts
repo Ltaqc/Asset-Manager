@@ -1,13 +1,13 @@
 
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, timestamp, date } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const bookings = pgTable("bookings", {
   id: serial("id").primaryKey(),
   roomCategory: text("room_category").notNull(),
-  month: text("month").notNull(),
-  nights: integer("nights").notNull(),
+  checkIn: date("check_in").notNull(),
+  checkOut: date("check_out").notNull(),
   adults: integer("adults").notNull(),
   teens: integer("teens").notNull(),
   children: integer("children").notNull(),
@@ -18,7 +18,10 @@ export const bookings = pgTable("bookings", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const insertBookingSchema = createInsertSchema(bookings).omit({ 
+export const insertBookingSchema = createInsertSchema(bookings, {
+  checkIn: z.string(),
+  checkOut: z.string(),
+}).omit({ 
   id: true, 
   createdAt: true 
 });
@@ -27,14 +30,14 @@ export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type Booking = typeof bookings.$inferSelect;
 
 export const roomCategories = [
-  "Standard (Double, Balcony)",
-  "Standard (Sliding Double, Balcony)",
-  "Standard Family (Balcony)",
-  "Junior Suite (Balcony)",
-  "Suite 2-room (No Balcony)",
-  "Suite Family 2-room",
-  "Apartments 1st floor (Pool access)",
-  "Apartments 2nd floor (Pool view)"
+  "Стандарт с двуспальной кроватью и балконом",
+  "Стандарт с раздвижной двуспальной кроватью и балконом",
+  "Стандарт семейный с балконом",
+  "Джуниор Сьют с балконом",
+  "Люкс двухкомнатный без балкона",
+  "Люкс семейный, двухкомнатный",
+  "Апартаменты, 1 этаж, с выходом на бассейн",
+  "Апартаменты, 2 этаж, с видом на бассейн"
 ] as const;
 
-export const months = ["June", "July", "August", "September"] as const;
+export const months = ["Июнь", "Июль", "Август", "Сентябрь"] as const;
