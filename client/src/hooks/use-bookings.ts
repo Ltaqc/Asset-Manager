@@ -8,7 +8,6 @@ export function useCreateBooking() {
 
   return useMutation({
     mutationFn: async (data: InsertBooking) => {
-      // For runtime validation on client before sending
       const validated = api.bookings.create.input.parse(data);
       
       const res = await fetch(api.bookings.create.path, {
@@ -20,24 +19,22 @@ export function useCreateBooking() {
       if (!res.ok) {
         if (res.status === 400) {
           const error = await res.json();
-          throw new Error(error.message || "Validation failed");
+          throw new Error(error.message || "Ошибка валидации");
         }
-        throw new Error('Failed to create booking request');
+        throw new Error('Не удалось отправить заявку');
       }
 
       return api.bookings.create.responses[201].parse(await res.json());
     },
     onSuccess: () => {
       toast({
-        title: "Request Sent",
-        description: "We have received your calculation. We will contact you shortly.",
+        title: "Заявка отправлена",
+        description: "Мы получили ваш расчёт и свяжемся с вами в ближайшее время.",
       });
-      // In a real app, we might invalidate a list of bookings here
-      // queryClient.invalidateQueries({ queryKey: [api.bookings.list.path] });
     },
     onError: (error) => {
       toast({
-        title: "Error",
+        title: "Ошибка",
         description: error.message,
         variant: "destructive",
       });

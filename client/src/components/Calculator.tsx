@@ -1,35 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { roomCategories, months } from "@shared/schema";
+import { roomCategories } from "@shared/schema";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import { Loader2, Calculator as CalcIcon } from "lucide-react";
 
-// Types derived from implementation notes
-type Month = typeof months[number];
 type RoomCategory = typeof roomCategories[number];
 
-interface PricingData {
+interface RoomInfo {
   cap: number;
-  prices: Record<Lowercase<Month>, number>;
+  count: number;
+  prices: Record<number, number>;
 }
 
-const ROOM_DATA: Record<RoomCategory, PricingData> = {
-  "Standard (Double, Balcony)": { cap: 2, prices: { june: 4600, july: 5700, august: 5700, september: 4600 } },
-  "Standard (Sliding Double, Balcony)": { cap: 2, prices: { june: 4600, july: 5700, august: 5700, september: 4600 } },
-  "Standard Family (Balcony)": { cap: 3, prices: { june: 7000, july: 8700, august: 8700, september: 7000 } },
-  "Junior Suite (Balcony)": { cap: 4, prices: { june: 9200, july: 11500, august: 11500, september: 9200 } },
-  "Suite 2-room (No Balcony)": { cap: 4, prices: { june: 9200, july: 11500, august: 11500, september: 9200 } },
-  "Suite Family 2-room": { cap: 5, prices: { june: 11500, july: 14500, august: 14500, september: 11500 } },
-  "Apartments 1st floor (Pool access)": { cap: 6, prices: { june: 14000, july: 17500, august: 17500, september: 14000 } },
-  "Apartments 2nd floor (Pool view)": { cap: 6, prices: { june: 14000, july: 17500, august: 17500, september: 14000 } },
+const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
+  "Стандарт с двуспальной кроватью и балконом": { cap: 2, count: 9, prices: { 6: 4600, 7: 5700, 8: 5700, 9: 4600 } },
+  "Стандарт с раздвижной двуспальной кроватью и балконом": { cap: 2, count: 3, prices: { 6: 4600, 7: 5700, 8: 5700, 9: 4600 } },
+  "Стандарт семейный с балконом": { cap: 3, count: 6, prices: { 6: 7000, 7: 8700, 8: 8700, 9: 7000 } },
+  "Джуниор Сьют с балконом": { cap: 4, count: 3, prices: { 6: 9200, 7: 11500, 8: 11500, 9: 9200 } },
+  "Люкс двухкомнатный без балкона": { cap: 4, count: 3, prices: { 6: 9200, 7: 11500, 8: 11500, 9: 9200 } },
+  "Люкс семейный, двухкомнатный": { cap: 5, count: 1, prices: { 6: 11500, 7: 14500, 8: 14500, 9: 11500 } },
+  "Апартаменты, 1 этаж, с выходом на бассейн": { cap: 6, count: 1, prices: { 6: 14000, 7: 17500, 8: 17500, 9: 14000 } },
+  "Апартаменты, 2 этаж, с видом на бассейн": { cap: 6, count: 1, prices: { 6: 14000, 7: 17500, 8: 17500, 9: 14000 } },
 };
 
 const FOOD_RATES = {
@@ -39,102 +34,120 @@ const FOOD_RATES = {
   toddler: 0,
 };
 
-// Form Schema
-const calcSchema = z.object({
-  roomCategory: z.enum(roomCategories),
-  month: z.enum(months),
-  nights: z.coerce.number().min(1).max(30),
-  adults: z.coerce.number().min(1),
-  teens: z.coerce.number().min(0),
-  children: z.coerce.number().min(0),
-  toddlers: z.coerce.number().min(0),
-  contactName: z.string().optional(),
-  contactPhone: z.string().optional(),
-});
+function formatPrice(value: number): string {
+  return value.toLocaleString("ru-RU") + " \u20BD";
+}
 
-type FormValues = z.infer<typeof calcSchema>;
+function getDefaultCheckIn(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const june1 = new Date(year, 5, 1);
+  if (now < june1) return `${year}-06-15`;
+  if (now.getMonth() >= 5 && now.getMonth() <= 8) {
+    const d = new Date(now);
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split("T")[0];
+  }
+  return `${year + 1}-06-15`;
+}
+
+function getDefaultCheckOut(checkIn: string): string {
+  const d = new Date(checkIn);
+  d.setDate(d.getDate() + 5);
+  return d.toISOString().split("T")[0];
+}
 
 export function Calculator() {
-  const [result, setResult] = useState<{
-    roomCost: number;
-    foodCost: number;
-    total: number;
-    perNight: number;
-  } | null>(null);
+  const defaultIn = getDefaultCheckIn();
+  const [roomCategory, setRoomCategory] = useState<RoomCategory>(roomCategories[0]);
+  const [checkIn, setCheckIn] = useState(defaultIn);
+  const [checkOut, setCheckOut] = useState(getDefaultCheckOut(defaultIn));
+  const [adults, setAdults] = useState(2);
+  const [teens, setTeens] = useState(0);
+  const [children, setChildren] = useState(0);
+  const [toddlers, setToddlers] = useState(0);
+  const [contactName, setContactName] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(calcSchema),
-    defaultValues: {
-      nights: 5,
-      adults: 2,
-      teens: 0,
-      children: 0,
-      toddlers: 0,
-      month: "July",
-      roomCategory: "Standard (Double, Balcony)"
-    },
-    mode: "onChange"
-  });
-
-  const { watch } = form;
-  const values = watch();
   const createBooking = useCreateBooking();
 
-  // Real-time calculation
-  useEffect(() => {
-    const { roomCategory, month, nights, adults, teens, children } = values;
-    
-    if (!roomCategory || !month || !nights || nights < 1) return;
+  const result = useMemo(() => {
+    if (!checkIn || !checkOut || !roomCategory) return null;
 
-    const monthKey = month.toLowerCase() as Lowercase<Month>;
-    const roomPrice = ROOM_DATA[roomCategory].prices[monthKey];
-    const roomCost = roomPrice * nights;
-    
+    const inDate = new Date(checkIn);
+    const outDate = new Date(checkOut);
+    const diffMs = outDate.getTime() - inDate.getTime();
+    const nights = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    if (nights < 1) return null;
+
+    const monthNum = inDate.getMonth() + 1;
+    if (monthNum < 6 || monthNum > 9) {
+      return { error: "Бронирование доступно только в летний сезон (июнь — сентябрь)" };
+    }
+
+    const roomInfo = ROOM_DATA[roomCategory];
+    const roomPricePerNight = roomInfo.prices[monthNum];
+    if (!roomPricePerNight) return { error: "Нет данных о ценах для выбранного месяца" };
+
+    const roomCost = roomPricePerNight * nights;
     const foodPerNight = (adults * FOOD_RATES.adult) + (teens * FOOD_RATES.teen) + (children * FOOD_RATES.child);
     const foodCost = foodPerNight * nights;
-    
     const total = roomCost + foodCost;
-    const perNight = total / nights;
+    const perNight = Math.round(total / nights);
 
-    setResult({ roomCost, foodCost, total, perNight });
-  }, [values]);
+    return { nights, roomCost, foodCost, total, perNight, roomPricePerNight };
+  }, [roomCategory, checkIn, checkOut, adults, teens, children]);
 
-  const onSubmit = (data: FormValues) => {
-    if (!result) return;
-    
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!result || "error" in result) return;
+
     createBooking.mutate({
-      ...data,
+      roomCategory,
+      checkIn,
+      checkOut,
+      adults,
+      teens,
+      children,
+      toddlers,
       totalPrice: result.total,
+      contactName: contactName || null,
+      contactPhone: contactPhone || null,
     });
   };
 
+  const validResult = result && !("error" in result) ? result : null;
+  const errorMsg = result && "error" in result ? result.error : null;
+
   return (
-    <div id="calculator" className="bg-white rounded-3xl shadow-xl overflow-hidden border border-border/50">
+    <div id="calculator" data-testid="calculator-section" className="bg-white rounded-3xl shadow-xl overflow-hidden border border-border/50">
       <div className="bg-primary/5 p-6 md:p-8 border-b border-primary/10">
         <h3 className="text-2xl md:text-3xl font-display font-semibold text-primary mb-2 flex items-center gap-3">
           <CalcIcon className="w-6 h-6 md:w-8 md:h-8" />
-          Vacation Calculator
+          Калькулятор стоимости
         </h3>
-        <p className="text-muted-foreground">Plan your perfect stay at Al Mare. Get an instant estimate.</p>
+        <p className="text-muted-foreground">Рассчитайте стоимость вашего отдыха в AL MARE</p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-0">
-        {/* Form Section */}
         <div className="p-6 md:p-8 space-y-6">
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Room Category</Label>
-                <Select 
-                  onValueChange={(val) => form.setValue("roomCategory", val as RoomCategory)}
-                  defaultValue={values.roomCategory}
+                <Label>Категория номера</Label>
+                <Select
+                  onValueChange={(val) => setRoomCategory(val as RoomCategory)}
+                  value={roomCategory}
                 >
-                  <SelectTrigger className="h-12 bg-secondary/30 border-primary/20 focus:ring-primary/20">
-                    <SelectValue placeholder="Select a room" />
+                  <SelectTrigger data-testid="select-room" className="h-12 bg-secondary/30 border-primary/20 focus:ring-primary/20">
+                    <SelectValue placeholder="Выберите номер" />
                   </SelectTrigger>
                   <SelectContent>
                     {roomCategories.map((room) => (
-                      <SelectItem key={room} value={room}>{room}</SelectItem>
+                      <SelectItem key={room} value={room} data-testid={`room-option-${room}`}>
+                        {room} (до {ROOM_DATA[room].cap} чел.)
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -142,133 +155,180 @@ export function Calculator() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Month</Label>
-                  <Select 
-                    onValueChange={(val) => form.setValue("month", val as Month)}
-                    defaultValue={values.month}
-                  >
-                    <SelectTrigger className="h-12 bg-secondary/30 border-primary/20 focus:ring-primary/20">
-                      <SelectValue placeholder="Month" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {months.map((m) => (
-                        <SelectItem key={m} value={m}>{m}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Label>Дата заезда</Label>
+                  <Input
+                    data-testid="input-checkin"
+                    type="date"
+                    value={checkIn}
+                    onChange={(e) => {
+                      setCheckIn(e.target.value);
+                      if (e.target.value && checkOut <= e.target.value) {
+                        const d = new Date(e.target.value);
+                        d.setDate(d.getDate() + 1);
+                        setCheckOut(d.toISOString().split("T")[0]);
+                      }
+                    }}
+                    className="h-12 bg-secondary/30 border-primary/20 focus:ring-primary/20"
+                  />
                 </div>
                 <div className="space-y-2">
-                  <Label>Nights</Label>
-                  <Input 
-                    type="number" 
-                    min={1} 
+                  <Label>Дата выезда</Label>
+                  <Input
+                    data-testid="input-checkout"
+                    type="date"
+                    value={checkOut}
+                    min={checkIn}
+                    onChange={(e) => setCheckOut(e.target.value)}
                     className="h-12 bg-secondary/30 border-primary/20 focus:ring-primary/20"
-                    {...form.register("nights")} 
                   />
                 </div>
               </div>
 
               <div className="space-y-3 pt-2">
-                <Label className="text-primary font-semibold">Guests</Label>
+                <Label className="text-primary font-semibold">Состав гостей</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground">Adults (18+)</Label>
-                    <Input type="number" min={1} className="bg-secondary/30" {...form.register("adults")} />
+                    <Label className="text-xs text-muted-foreground">Взрослые (18+)</Label>
+                    <Input
+                      data-testid="input-adults"
+                      type="number"
+                      min={1}
+                      value={adults}
+                      onChange={(e) => setAdults(Math.max(1, Number(e.target.value)))}
+                      className="bg-secondary/30"
+                    />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground">Teens (13-18)</Label>
-                    <Input type="number" min={0} className="bg-secondary/30" {...form.register("teens")} />
+                    <Label className="text-xs text-muted-foreground">Подростки (13-18)</Label>
+                    <Input
+                      data-testid="input-teens"
+                      type="number"
+                      min={0}
+                      value={teens}
+                      onChange={(e) => setTeens(Math.max(0, Number(e.target.value)))}
+                      className="bg-secondary/30"
+                    />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground">Children (2-13)</Label>
-                    <Input type="number" min={0} className="bg-secondary/30" {...form.register("children")} />
+                    <Label className="text-xs text-muted-foreground">Дети (2-13)</Label>
+                    <Input
+                      data-testid="input-children"
+                      type="number"
+                      min={0}
+                      value={children}
+                      onChange={(e) => setChildren(Math.max(0, Number(e.target.value)))}
+                      className="bg-secondary/30"
+                    />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground">Toddlers (0-2)</Label>
-                    <Input type="number" min={0} className="bg-secondary/30" {...form.register("toddlers")} />
+                    <Label className="text-xs text-muted-foreground">Малыши (0-2)</Label>
+                    <Input
+                      data-testid="input-toddlers"
+                      type="number"
+                      min={0}
+                      value={toddlers}
+                      onChange={(e) => setToddlers(Math.max(0, Number(e.target.value)))}
+                      className="bg-secondary/30"
+                    />
                   </div>
                 </div>
               </div>
 
-              {/* Optional Contact fields for submission */}
               <div className="pt-4 border-t border-dashed border-border/60">
-                <p className="text-sm text-muted-foreground mb-4">Want to book? Enter details below (optional).</p>
+                <p className="text-sm text-muted-foreground mb-4">Хотите забронировать? Укажите контактные данные (необязательно).</p>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Your Name</Label>
-                    <Input placeholder="John Doe" className="bg-secondary/30" {...form.register("contactName")} />
+                    <Label>Ваше имя</Label>
+                    <Input
+                      data-testid="input-name"
+                      placeholder="Иван Иванов"
+                      value={contactName}
+                      onChange={(e) => setContactName(e.target.value)}
+                      className="bg-secondary/30"
+                    />
                   </div>
                   <div className="space-y-2">
-                    <Label>Phone Number</Label>
-                    <Input placeholder="+1 234 567 890" className="bg-secondary/30" {...form.register("contactPhone")} />
+                    <Label>Телефон</Label>
+                    <Input
+                      data-testid="input-phone"
+                      placeholder="+7 900 123 45 67"
+                      value={contactPhone}
+                      onChange={(e) => setContactPhone(e.target.value)}
+                      className="bg-secondary/30"
+                    />
                   </div>
                 </div>
               </div>
             </div>
 
-            <Button 
-              type="submit" 
-              className="w-full h-14 text-lg font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 rounded-xl mt-4"
-              disabled={createBooking.isPending}
+            <Button
+              data-testid="button-submit-booking"
+              type="submit"
+              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl mt-4"
+              disabled={createBooking.isPending || !validResult}
             >
               {createBooking.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Sending Request...
+                  Отправляем...
                 </>
               ) : (
-                "Request Booking"
+                "Оставить заявку"
               )}
             </Button>
           </form>
         </div>
 
-        {/* Result Section */}
         <div className="bg-primary text-primary-foreground p-6 md:p-8 flex flex-col justify-center">
           <div className="space-y-8">
             <h4 className="text-2xl font-display text-primary-foreground/90 border-b border-primary-foreground/20 pb-4">
-              Estimated Breakdown
+              Расчёт стоимости
             </h4>
-            
-            {result ? (
-              <motion.div 
+
+            {errorMsg ? (
+              <div className="flex flex-col items-center justify-center text-primary-foreground/70 py-12">
+                <CalcIcon className="w-16 h-16 mb-4 opacity-50" />
+                <p className="text-lg text-center">{errorMsg}</p>
+              </div>
+            ) : validResult ? (
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="space-y-6"
               >
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center text-primary-foreground/80 text-lg">
-                    <span>Room Cost ({values.nights} nights)</span>
-                    <span className="font-mono font-bold">{result.roomCost.toLocaleString()} USD</span>
+                  <div className="flex flex-wrap justify-between items-center gap-2 text-primary-foreground/80 text-lg">
+                    <span>Номер ({validResult.nights} {validResult.nights === 1 ? "ночь" : validResult.nights < 5 ? "ночи" : "ночей"})</span>
+                    <span className="font-mono font-bold" data-testid="text-room-cost">{formatPrice(validResult.roomCost)}</span>
                   </div>
-                  <div className="flex justify-between items-center text-primary-foreground/80 text-lg">
-                    <span>Food & Service (Ultra All Inc.)</span>
-                    <span className="font-mono font-bold">{result.foodCost.toLocaleString()} USD</span>
+                  <div className="flex flex-wrap justify-between items-center gap-2 text-primary-foreground/80 text-lg">
+                    <span>Питание Ultra All Inclusive</span>
+                    <span className="font-mono font-bold" data-testid="text-food-cost">{formatPrice(validResult.foodCost)}</span>
                   </div>
                 </div>
 
                 <div className="h-px bg-primary-foreground/20 my-6" />
 
-                <div className="flex justify-between items-end">
-                  <span className="text-xl font-medium text-primary-foreground/90">Total Estimate</span>
+                <div className="flex flex-wrap justify-between items-end gap-2">
+                  <span className="text-xl font-medium text-primary-foreground/90">Итого</span>
                   <div className="text-right">
-                    <div className="text-4xl md:text-5xl font-bold font-display tracking-tight">
-                      {result.total.toLocaleString()} <span className="text-2xl">USD</span>
+                    <div className="text-4xl md:text-5xl font-bold font-display tracking-tight" data-testid="text-total">
+                      {formatPrice(validResult.total)}
                     </div>
-                    <div className="text-sm text-primary-foreground/60 mt-1">
-                      approx. {Math.round(result.perNight).toLocaleString()} USD per night
+                    <div className="text-sm text-primary-foreground/60 mt-1" data-testid="text-per-night">
+                      {formatPrice(validResult.perNight)} за ночь
                     </div>
                   </div>
                 </div>
-                
+
                 <p className="text-xs text-primary-foreground/50 mt-8 leading-relaxed">
-                  * This calculation is an estimate based on current rates. Final price may vary depending on availability and special offers. Submit your request to lock in this price.
+                  * Расчёт является предварительным. Итоговая стоимость может отличаться в зависимости от наличия номеров и специальных предложений.
                 </p>
               </motion.div>
             ) : (
               <div className="flex flex-col items-center justify-center h-full text-primary-foreground/50 py-12">
                 <CalcIcon className="w-16 h-16 mb-4 opacity-50" />
-                <p className="text-lg">Enter your trip details to see pricing</p>
+                <p className="text-lg">Укажите даты для расчёта</p>
               </div>
             )}
           </div>

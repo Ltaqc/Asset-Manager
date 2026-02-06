@@ -1,4 +1,3 @@
-
 import { z } from 'zod';
 import { insertBookingSchema, bookings } from './schema';
 
@@ -40,3 +39,5 @@ export function buildUrl(path: string, params?: Record<string, string | number>)
   }
   return url;
 }
+
+export type InsertBooking = z.infer<typeof api.bookings.create.input>;
