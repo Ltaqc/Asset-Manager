@@ -3,7 +3,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { RoomCard } from "@/components/RoomCard";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Waves, Utensils, Sun, Umbrella, Users, Dumbbell, TreePine } from "lucide-react";
+import { MapPin, Phone, Waves, Utensils, Sun, Umbrella, Users, Car, TreePine, ShowerHead, MessageCircle, Footprints } from "lucide-react";
 
 export default function Home() {
   const scrollToCalculator = () => {
@@ -70,7 +70,27 @@ export default function Home() {
           <Calculator />
         </section>
 
-        <section className="py-24 bg-secondary/30">
+        <section className="py-24 bg-secondary/20" data-testid="section-about">
+          <div className="container mx-auto px-4">
+            <SectionHeading
+              title="Об отеле"
+              subtitle="Ваш идеальный отдых у моря в формате Ultra All Inclusive"
+            />
+            <div className="max-w-4xl mx-auto space-y-6 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                AL MARE — курортный отель на побережье, созданный для тех, кто ценит комфорт и спокойный отдых у моря. Современные номера, ухоженная территория и продуманный сервис делают пребывание по-настоящему приятным.
+              </p>
+              <p>
+                Формат Ultra All Inclusive означает, что всё включено с момента заезда: питание в ресторанах, напитки, пользование инфраструктурой, пляжные удобства и развлечения на территории. Никаких скрытых доплат — вы просто отдыхаете.
+              </p>
+              <p>
+                Отель подходит для семей с детьми, пар и небольших компаний. Мы стремимся к тому, чтобы каждый гость чувствовал себя как дома, но лучше — потому что дома нет моря за окном.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 bg-secondary/30" data-testid="section-rooms">
           <div className="container mx-auto px-4">
             <SectionHeading
               title="Наши номера"
@@ -127,7 +147,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-24 relative overflow-hidden text-white">
+        <section className="py-24 relative overflow-hidden text-white" data-testid="section-food">
           <div className="absolute inset-0 bg-primary -z-20" />
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1600&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay -z-10" />
 
@@ -141,25 +161,25 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
                 <Utensils className="w-12 h-12 mb-6 text-secondary" />
-                <h3 className="text-2xl font-display font-bold mb-4">Гастрономия</h3>
+                <h3 className="text-2xl font-display font-bold mb-4">Завтрак, обед, ужин</h3>
                 <p className="text-white/80 leading-relaxed">
-                  Безлимитный доступ к основному шведскому столу и 3 ресторанам a la carte. Свежие морепродукты, местные деликатесы и блюда мировой кухни.
+                  Полноценное трёхразовое питание по меню: шведский стол с широким выбором блюд, свежая выпечка, горячие блюда и десерты.
                 </p>
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
-                <div className="w-12 h-12 mb-6 text-secondary flex items-center justify-center font-bold text-2xl border-2 border-secondary rounded-full">24</div>
-                <h3 className="text-2xl font-display font-bold mb-4">Круглосуточный сервис</h3>
+                <Sun className="w-12 h-12 mb-6 text-secondary" />
+                <h3 className="text-2xl font-display font-bold mb-4">Перекусы и напитки</h3>
                 <p className="text-white/80 leading-relaxed">
-                  Обслуживание номеров и лобби-бар работают 24/7. Закуски, напитки премиум-класса и авторские коктейли доступны в любое время.
+                  В течение дня доступны лёгкие закуски, безалкогольные и алкогольные напитки, мороженое, свежие фрукты и выпечка.
                 </p>
               </div>
 
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl border border-white/20">
                 <Waves className="w-12 h-12 mb-6 text-secondary" />
-                <h3 className="text-2xl font-display font-bold mb-4">Бары у воды</h3>
+                <h3 className="text-2xl font-display font-bold mb-4">Барбекю-зоны</h3>
                 <p className="text-white/80 leading-relaxed">
-                  Освежайтесь, не покидая бассейн. Swim-up бар и пляжное обслуживание — всё для вашего комфорта и удовольствия.
+                  Специально оборудованные зоны для барбекю на территории отеля. Приготовление на углях в уютной атмосфере на свежем воздухе.
                 </p>
               </div>
             </div>
@@ -190,7 +210,57 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-24 container mx-auto px-4">
+        <section className="py-24 bg-blue-50/50" data-testid="section-beach">
+          <div className="container mx-auto px-4">
+            <SectionHeading
+              title="Пляж AL MARE"
+              subtitle="Спокойный отдых у самого моря"
+            />
+            <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+              <div className="space-y-6">
+                <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
+                  <p>
+                    Отель AL MARE расположен рядом с морем — до пляжа можно дойти пешком.
+                    Гостей ждёт спокойный пляжный отдых: просторная береговая линия, комфортный вход в море и возможность провести весь день у воды.
+                  </p>
+                  <p>
+                    Для гостей предусмотрены лежаки и базовая пляжная инфраструктура.
+                    После моря можно вернуться в отель, принять душ и продолжить отдых в формате Ultra All Inclusive.
+                  </p>
+                  <p>
+                    Пляж подходит для семей с детьми и для гостей, ценящих размеренный отдых.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 pt-4">
+                  {[
+                    { icon: Footprints, label: "Пешком до моря" },
+                    { icon: Umbrella, label: "Спокойная пляжная зона" },
+                    { icon: ShowerHead, label: "Душ и удобства на территории" },
+                    { icon: Users, label: "Комфортно для детей и взрослых" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 text-foreground/80">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+                        <item.icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-2xl overflow-hidden shadow-lg">
+                <img
+                  src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop"
+                  alt="Пляж AL MARE"
+                  className="w-full h-[400px] object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 container mx-auto px-4" data-testid="section-infrastructure">
           <SectionHeading
             title="Инфраструктура"
             subtitle="Всё необходимое для незабываемого отдыха на территории отеля"
@@ -198,14 +268,14 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
             {[
-              { icon: Waves, label: "5 бассейнов" },
-              { icon: Umbrella, label: "Собственный пляж" },
-              { icon: Sun, label: "СПА и велнес" },
+              { icon: Car, label: "Парковка включена" },
+              { icon: Waves, label: "Бассейн" },
+              { icon: TreePine, label: "Зоны отдыха" },
               { icon: Users, label: "Детский клуб" },
-              { icon: Dumbbell, label: "Фитнес-центр" },
-              { icon: TreePine, label: "Зелёная территория" },
+              { icon: ShowerHead, label: "Душ и туалет" },
+              { icon: Umbrella, label: "Лежаки" },
+              { icon: Sun, label: "Мини-гольф" },
               { icon: Utensils, label: "3 ресторана" },
-              { icon: Waves, label: "Водные развлечения" },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center text-center space-y-4 p-6 rounded-2xl">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
@@ -217,7 +287,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-2 bg-black">
+        <section className="py-2 bg-black" data-testid="section-gallery">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
             {[
               "https://images.unsplash.com/photo-1571896349842-68c2531b26f5?w=600&h=600&fit=crop",
@@ -236,7 +306,39 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="bg-slate-900 text-white py-16">
+        <section className="py-24 bg-secondary/20" data-testid="section-contacts">
+          <div className="container mx-auto px-4">
+            <SectionHeading
+              title="Контакты"
+              subtitle="Свяжитесь с нами любым удобным способом"
+            />
+            <div className="max-w-3xl mx-auto grid md:grid-cols-3 gap-8">
+              <div className="flex flex-col items-center text-center space-y-3 p-6">
+                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                  <Phone className="w-7 h-7" />
+                </div>
+                <h3 className="font-bold text-lg">Телефон</h3>
+                <p className="text-muted-foreground">+7 (800) 123-45-67</p>
+              </div>
+              <div className="flex flex-col items-center text-center space-y-3 p-6">
+                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                  <MessageCircle className="w-7 h-7" />
+                </div>
+                <h3 className="font-bold text-lg">WhatsApp / Telegram</h3>
+                <p className="text-muted-foreground">+7 (800) 123-45-67</p>
+              </div>
+              <div className="flex flex-col items-center text-center space-y-3 p-6">
+                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                  <MapPin className="w-7 h-7" />
+                </div>
+                <h3 className="font-bold text-lg">Адрес</h3>
+                <p className="text-muted-foreground">Приморский бульвар, 1, Побережье</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer className="bg-slate-900 text-white py-16" data-testid="section-footer">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
@@ -264,8 +366,8 @@ export default function Home() {
                   <a href="#" className="hover:text-primary transition-colors">Главная</a>
                   <a href="#" className="hover:text-primary transition-colors">Номера</a>
                   <a href="#" className="hover:text-primary transition-colors">Питание</a>
-                  <a href="#" className="hover:text-primary transition-colors">СПА</a>
-                  <a href="#" className="hover:text-primary transition-colors">Мероприятия</a>
+                  <a href="#" className="hover:text-primary transition-colors">Пляж</a>
+                  <a href="#" className="hover:text-primary transition-colors">Инфраструктура</a>
                   <a href="#" className="hover:text-primary transition-colors">Контакты</a>
                 </div>
               </div>

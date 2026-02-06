@@ -81,22 +81,27 @@ export function Calculator() {
 
     if (nights < 1) return null;
 
-    const monthNum = inDate.getMonth() + 1;
-    if (monthNum < 6 || monthNum > 9) {
-      return { error: "Бронирование доступно только в летний сезон (июнь — сентябрь)" };
+    const roomInfo = ROOM_DATA[roomCategory];
+    let roomCost = 0;
+
+    for (let i = 0; i < nights; i++) {
+      const d = new Date(inDate);
+      d.setDate(d.getDate() + i);
+      const monthNum = d.getMonth() + 1;
+      if (monthNum < 6 || monthNum > 9) {
+        return { error: "Бронирование доступно только в летний сезон (июнь — сентябрь)" };
+      }
+      const rate = roomInfo.prices[monthNum];
+      if (!rate) return { error: "Нет данных о ценах для выбранного месяца" };
+      roomCost += rate;
     }
 
-    const roomInfo = ROOM_DATA[roomCategory];
-    const roomPricePerNight = roomInfo.prices[monthNum];
-    if (!roomPricePerNight) return { error: "Нет данных о ценах для выбранного месяца" };
-
-    const roomCost = roomPricePerNight * nights;
     const foodPerNight = (adults * FOOD_RATES.adult) + (teens * FOOD_RATES.teen) + (children * FOOD_RATES.child);
     const foodCost = foodPerNight * nights;
     const total = roomCost + foodCost;
     const perNight = Math.round(total / nights);
 
-    return { nights, roomCost, foodCost, total, perNight, roomPricePerNight };
+    return { nights, total, perNight };
   }, [roomCategory, checkIn, checkOut, adults, teens, children]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -146,7 +151,7 @@ export function Calculator() {
                   <SelectContent>
                     {roomCategories.map((room) => (
                       <SelectItem key={room} value={room} data-testid={`room-option-${room}`}>
-                        {room} (до {ROOM_DATA[room].cap} чел.)
+                        {room}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -296,28 +301,16 @@ export function Calculator() {
                 animate={{ opacity: 1 }}
                 className="space-y-6"
               >
-                <div className="space-y-4">
-                  <div className="flex flex-wrap justify-between items-center gap-2 text-primary-foreground/80 text-lg">
-                    <span>Номер ({validResult.nights} {validResult.nights === 1 ? "ночь" : validResult.nights < 5 ? "ночи" : "ночей"})</span>
-                    <span className="font-mono font-bold" data-testid="text-room-cost">{formatPrice(validResult.roomCost)}</span>
-                  </div>
-                  <div className="flex flex-wrap justify-between items-center gap-2 text-primary-foreground/80 text-lg">
-                    <span>Питание Ultra All Inclusive</span>
-                    <span className="font-mono font-bold" data-testid="text-food-cost">{formatPrice(validResult.foodCost)}</span>
-                  </div>
+                <div className="text-center text-primary-foreground/80 text-lg" data-testid="text-nights">
+                  {validResult.nights} {validResult.nights === 1 ? "ночь" : validResult.nights < 5 ? "ночи" : "ночей"}
                 </div>
 
-                <div className="h-px bg-primary-foreground/20 my-6" />
-
-                <div className="flex flex-wrap justify-between items-end gap-2">
-                  <span className="text-xl font-medium text-primary-foreground/90">Итого</span>
-                  <div className="text-right">
-                    <div className="text-4xl md:text-5xl font-bold font-display tracking-tight" data-testid="text-total">
-                      {formatPrice(validResult.total)}
-                    </div>
-                    <div className="text-sm text-primary-foreground/60 mt-1" data-testid="text-per-night">
-                      {formatPrice(validResult.perNight)} за ночь
-                    </div>
+                <div className="text-center">
+                  <div className="text-4xl md:text-5xl font-bold font-display tracking-tight" data-testid="text-total">
+                    {formatPrice(validResult.total)}
+                  </div>
+                  <div className="text-sm text-primary-foreground/60 mt-2" data-testid="text-per-night">
+                    {formatPrice(validResult.perNight)} за ночь
                   </div>
                 </div>
 
