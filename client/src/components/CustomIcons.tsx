@@ -2,17 +2,12 @@ interface IconProps {
   className?: string;
 }
 
-export function TwoGlassesIcon({ className }: IconProps) {
+export function GlassIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M8 2l-1 9a4 4 0 0 0 4 4 4 4 0 0 0 4-4l-1-9" />
-      <line x1="10" y1="15" x2="10" y2="22" />
-      <line x1="7" y1="22" x2="13" y2="22" />
-      <path d="M17 2l-0.5 4.5" />
-      <path d="M14.5 2l0.5 4.5" />
-      <path d="M15 6.5a2.5 2.5 0 0 0 2.5 2.5 2.5 2.5 0 0 0 2.5-2.5l-1-4.5h-4" />
-      <line x1="17.5" y1="9" x2="17.5" y2="14" />
-      <line x1="15.5" y1="14" x2="19.5" y2="14" />
+      <path d="M8 2h8l-1.5 10a3.5 3.5 0 0 1-2.5 1 3.5 3.5 0 0 1-2.5-1L8 2z" />
+      <line x1="12" y1="13" x2="12" y2="20" />
+      <line x1="8" y1="20" x2="16" y2="20" />
     </svg>
   );
 }
@@ -56,13 +51,12 @@ export function SunloungerIcon({ className }: IconProps) {
 export function RopeParkIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="4" y1="22" x2="4" y2="4" />
-      <line x1="20" y1="22" x2="20" y2="4" />
-      <path d="M4 6h16" />
-      <path d="M4 6c2 3 4 4 8 4s6-1 8-4" />
-      <path d="M4 12h16" />
-      <circle cx="4" cy="4" r="1.5" />
-      <circle cx="20" cy="4" r="1.5" />
+      <line x1="3" y1="22" x2="3" y2="3" />
+      <line x1="21" y1="22" x2="21" y2="3" />
+      <line x1="3" y1="5" x2="21" y2="5" />
+      <path d="M3 5c3 4 6 5 9 5s6-1 9-5" />
+      <line x1="3" y1="13" x2="21" y2="13" />
+      <path d="M3 13c3 3 6 4 9 4s6-1 9-4" />
     </svg>
   );
 }
@@ -70,10 +64,8 @@ export function RopeParkIcon({ className }: IconProps) {
 export function BilliardIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="9" cy="15" r="4" />
-      <circle cx="9" cy="15" r="1.2" />
-      <line x1="12" y1="12" x2="22" y2="2" />
-      <circle cx="16" cy="9" r="2.5" />
+      <circle cx="10" cy="16" r="5" />
+      <line x1="14" y1="12" x2="22" y2="2" />
     </svg>
   );
 }
@@ -81,10 +73,33 @@ export function BilliardIcon({ className }: IconProps) {
 export function MiniGolfIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="6" y1="2" x2="6" y2="16" />
-      <path d="M6 2l8 4-8 4" />
-      <circle cx="14" cy="19" r="2.5" />
-      <path d="M6 16c0 3.3 2 6 5 6" />
+      <path d="M6 22V4" />
+      <path d="M6 4l-3 14" />
+      <path d="M3 18c0 0 1.5 2 3 2" />
+      <circle cx="16" cy="19" r="3" />
+    </svg>
+  );
+}
+
+export function LoungeChairIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 14c0-3 2-5 5-5h6c3 0 5 2 5 5" />
+      <path d="M2 14h20" />
+      <path d="M4 14l-1 4" />
+      <path d="M20 14l1 4" />
+      <path d="M9 9V6c0-1 1-2 3-2s3 1 3 2v3" />
+    </svg>
+  );
+}
+
+export function TreeLeafIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22V10" />
+      <path d="M12 10c-3-5-8-5-8-1s3 6 8 6" />
+      <path d="M12 10c3-5 8-5 8-1s-3 6-8 6" />
+      <line x1="9" y1="22" x2="15" y2="22" />
     </svg>
   );
 }

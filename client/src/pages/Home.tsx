@@ -10,14 +10,14 @@ import { getDefaultCheckIn, getDefaultCheckOut, ROOM_DATA } from "@/lib/roomData
 import { roomCategories } from "@shared/schema";
 import {
   Users, Utensils,
-  Footprints,
-  Waves, TreePine, RectangleVertical,
+  RectangleVertical,
   Phone, Mail, MapPin, Navigation,
-  CheckCircle2, CircleDot, Armchair,
+  CheckCircle2, CircleDot,
 } from "lucide-react";
 import {
-  TwoGlassesIcon, ChickenWingIcon, PopsicleIcon,
+  GlassIcon, ChickenWingIcon, PopsicleIcon,
   SunloungerIcon, RopeParkIcon, BilliardIcon, MiniGolfIcon,
+  LoungeChairIcon, TreeLeafIcon,
 } from "@/components/CustomIcons";
 import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
 
@@ -219,7 +219,7 @@ export default function Home() {
                 <div className="space-y-3">
                   {[
                     { icon: Utensils, label: "Завтрак, обед и ужин по меню" },
-                    { icon: TwoGlassesIcon, label: "Напитки без ограничений в течение дня" },
+                    { icon: GlassIcon, label: "Напитки без ограничений в течение дня" },
                     { icon: ChickenWingIcon, label: "Зона барбекю для уютных вечеров" },
                     { icon: PopsicleIcon, label: "Мороженое для взрослых и детей" },
                   ].map((item, i) => (
@@ -263,7 +263,7 @@ export default function Home() {
                 <p className="text-base font-semibold text-foreground">Включено:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: TwoGlassesIcon, label: "Напитки без ограничений в течение дня" },
+                    { icon: GlassIcon, label: "Напитки без ограничений в течение дня" },
                     { icon: PopsicleIcon, label: "Мороженое для взрослых и детей" },
                     { icon: ChickenWingIcon, label: "Зона барбекю для уютных вечеров" },
                     { icon: SunloungerIcon, label: "Шезлонги для гостей отеля на пляже" },
@@ -318,19 +318,19 @@ export default function Home() {
             <p className="text-lg text-muted-foreground leading-relaxed text-center">
               На территории отеля предусмотрена продуманная инфраструктура для комфортного отдыха всей семьи — от расслабляющих зон до активных развлечений на свежем воздухе.
             </p>
-            <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto pt-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto pt-4">
               {[
                 { icon: BilliardIcon, label: "Бильярд", desc: "Спокойный отдых в уютной атмосфере" },
                 { icon: MiniGolfIcon, label: "Мини-гольф", desc: "Лёгкое и увлекательное развлечение для всей семьи" },
-                { icon: RopeParkIcon, label: "Верёвочный парк", desc: "Активный отдых и эмоции" },
-                { icon: Armchair, label: "Зоны отдыха", desc: "Комфортные пространства для расслабления" },
-                { icon: TreePine, label: "Ухоженная территория", desc: "Зелёная и аккуратная территория отеля" },
+                { icon: RopeParkIcon, label: "Верёвочный парк", desc: "Активный отдых и яркие эмоции для детей и взрослых" },
+                { icon: LoungeChairIcon, label: "Зоны отдыха", desc: "Комфортные пространства для расслабления" },
+                { icon: TreeLeafIcon, label: "Ухоженная территория", desc: "Зелёная и аккуратная территория отеля" },
               ].map((item, i) => (
-                <div key={i} className="flex flex-col items-center text-center space-y-3 p-6 rounded-2xl w-40">
+                <div key={i} className="flex flex-col items-center text-center space-y-3 p-4 rounded-2xl">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
                     <item.icon className="w-8 h-8" />
                   </div>
-                  <span className="font-bold text-lg">{item.label}</span>
+                  <span className="font-bold text-base">{item.label}</span>
                   <span className="text-xs text-muted-foreground leading-snug">{item.desc}</span>
                 </div>
               ))}
