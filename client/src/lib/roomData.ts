@@ -1,6 +1,6 @@
 import { roomCategories } from "@shared/schema";
 import stdSlidingMain from "@assets/гостевой_дом_АЛЬМАРЕ-105_1770476132083.png";
-import stdSlidingTwin from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_57_32_1770476132080.png";
+import stdSlidingTwin from "@assets/ChatGPT_Image_7_февр._2026_г.,_18_26_02_1770478435931.png";
 import stdSlidingTv from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_26_30_1770476132078.png";
 import stdSlidingDesk from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_21_45_1770476132077.png";
 import stdSlidingBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770476132081.png";
