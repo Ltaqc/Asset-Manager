@@ -171,12 +171,12 @@ export default function SearchPage() {
                 {suitableRooms.map(({ category, result }) => {
                   const info = ROOM_DATA[category];
                   return (
-                    <Card key={category} className="overflow-hidden border-border/50 shadow-md" data-testid={`card-room-${category}`}>
+                    <Card key={category} className="room-card overflow-hidden border-border/50 shadow-md" data-testid={`card-room-${category}`}>
                       <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
                         <img
                           src={info.image}
                           alt={category}
-                          className="w-full h-full object-cover"
+                          className="room-card-img w-full h-full object-cover"
                         />
                         <div className="absolute top-4 right-4">
                           <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-primary font-bold shadow-sm">

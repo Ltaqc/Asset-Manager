@@ -58,6 +58,30 @@
   }
 }
 
+/* Room card hover — desktop only */
+.room-card {
+  transition: transform 350ms ease-out, box-shadow 350ms ease-out;
+}
+.room-card .room-card-img {
+  transition: transform 400ms ease-out;
+}
+.room-card button {
+  transition: filter 350ms ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .room-card:hover {
+    transform: translateY(-6px) scale(1.015);
+    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.10), 0 6px 16px -6px rgba(0, 0, 0, 0.06);
+  }
+  .room-card:hover .room-card-img {
+    transform: scale(1.04);
+  }
+  .room-card:hover button {
+    filter: brightness(1.06);
+  }
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;

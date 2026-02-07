@@ -160,9 +160,9 @@ export default function Home() {
             {roomCategories.map((category) => {
               const info = ROOM_DATA[category];
               return (
-                <Card key={category} className="overflow-hidden border-border/50 shadow-md flex flex-col group transition-all duration-[350ms] ease-out hover:-translate-y-1.5 hover:scale-[1.015] hover:shadow-xl hover:shadow-black/8" data-testid={`room-card-${category}`}>
+                <Card key={category} className="room-card overflow-hidden border-border/50 shadow-md flex flex-col" data-testid={`room-card-${category}`}>
                   <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-                    <img src={info.image} alt={category} className="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-[1.04]" />
+                    <img src={info.image} alt={category} className="room-card-img w-full h-full object-cover" />
                     <div className="absolute top-4 right-4">
                       <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-primary font-bold shadow-sm">
                         <Users className="w-3 h-3 mr-1" /> до {info.cap} чел.
