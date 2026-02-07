@@ -64,7 +64,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <div className="relative px-16 py-10">
-            <div className="absolute inset-0 rounded-full bg-black/25 blur-3xl scale-125 pointer-events-none" />
+            <div className="absolute inset-0 rounded-full bg-black/45 blur-3xl scale-125 pointer-events-none" />
             <h1 className="relative text-5xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
               AL MARE
             </h1>
