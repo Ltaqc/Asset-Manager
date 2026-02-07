@@ -51,30 +51,6 @@ export default function FoodPage() {
               />
             </div>
           </div>
-
-          <div className="mt-16 max-w-3xl mx-auto">
-            <div className="bg-white p-8 rounded-2xl border border-border/50 shadow-md">
-              <h3 className="text-xl font-display font-bold mb-6 text-center text-foreground">Стоимость питания в сутки</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-primary">4 500 &#8381;</div>
-                  <div className="text-muted-foreground text-sm mt-1">Взрослый (18+)</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-primary">4 500 &#8381;</div>
-                  <div className="text-muted-foreground text-sm mt-1">Подросток (13-18)</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-primary">3 000 &#8381;</div>
-                  <div className="text-muted-foreground text-sm mt-1">Ребёнок (2-13)</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-green-600">Бесплатно</div>
-                  <div className="text-muted-foreground text-sm mt-1">Малыш (0-2)</div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
