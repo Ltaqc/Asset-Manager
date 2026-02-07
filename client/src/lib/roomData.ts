@@ -35,8 +35,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Тёплое, уютное пространство для спокойного отдыха вдвоём. Раздвижная двуспальная кровать позволяет гибко настроить комфорт, а балкон наполняет номер светом и ощущением курортной свободы.",
     area: 16,
     shortTitle: "Стандарт (раздвижная кровать)",
-    image: stdSlidingMain,
-    images: [stdSlidingMain, stdSlidingTwin, stdSlidingTv, stdSlidingDesk, stdSlidingBath, stdSlidingShower],
+    image: stdSlidingTwin,
+    images: [stdSlidingTwin, stdSlidingMain, stdSlidingTv, stdSlidingDesk, stdSlidingBath, stdSlidingShower],
   },
   "Стандарт семейный с балконом": {
     cap: 3, count: 6, maxToddlers: 1,
