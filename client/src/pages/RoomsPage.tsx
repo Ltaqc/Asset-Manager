@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/SectionHeading";
-import { Users } from "lucide-react";
+import { Users, Maximize2 } from "lucide-react";
 import { roomCategories } from "@shared/schema";
 import { ROOM_DATA } from "@/lib/roomData";
 
@@ -50,10 +50,17 @@ export default function RoomsPage() {
                   </div>
                   <div className="p-6 flex flex-col flex-1 gap-3">
                     <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
-                    <p className="text-sm text-muted-foreground">{info.description}</p>
-                    <p className="text-sm text-muted-foreground">
-                      Вместимость: до {info.cap} {info.cap < 5 ? "гостей" : "гостей"}
-                    </p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{info.description}</p>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground pt-1">
+                      <span className="flex items-center gap-1.5">
+                        <Maximize2 className="w-3.5 h-3.5 text-primary/60" />
+                        {info.area} m{"\u00B2"}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Users className="w-3.5 h-3.5 text-primary/60" />
+                        до {info.cap} гостей
+                      </span>
+                    </div>
                     <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={goToCalculator}>
                       Рассчитать стоимость
                     </Button>

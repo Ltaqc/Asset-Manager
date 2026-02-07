@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "@/components/SectionHeading";
-import { Users, AlertCircle, Loader2 } from "lucide-react";
+import { Users, AlertCircle, Loader2, Maximize2 } from "lucide-react";
 import { roomCategories } from "@shared/schema";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import {
@@ -186,7 +186,17 @@ export default function SearchPage() {
                       </div>
                       <div className="p-6 flex flex-col flex-1 gap-4">
                         <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2">{info.description}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{info.description}</p>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1.5">
+                            <Maximize2 className="w-3.5 h-3.5 text-primary/60" />
+                            {info.area} m{"\u00B2"}
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <Users className="w-3.5 h-3.5 text-primary/60" />
+                            до {info.cap} гостей
+                          </span>
+                        </div>
 
                         <div className="bg-primary/5 rounded-xl p-4 space-y-2">
                           <div className="text-sm text-muted-foreground">
