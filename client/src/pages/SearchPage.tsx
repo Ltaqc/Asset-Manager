@@ -171,7 +171,7 @@ export default function SearchPage() {
                 {suitableRooms.map(({ category, result }) => {
                   const info = ROOM_DATA[category];
                   return (
-                    <Card key={category} className="room-card overflow-hidden border-border/50 shadow-md" data-testid={`card-room-${category}`}>
+                    <Card key={category} className="room-card overflow-hidden border-border/50 shadow-md flex flex-col" data-testid={`card-room-${category}`}>
                       <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
                         <img
                           src={info.image}
@@ -184,7 +184,7 @@ export default function SearchPage() {
                           </Badge>
                         </div>
                       </div>
-                      <div className="p-6 space-y-4">
+                      <div className="p-6 flex flex-col flex-1 gap-4">
                         <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
                         <p className="text-sm text-muted-foreground line-clamp-2">{info.description}</p>
 
@@ -225,7 +225,7 @@ export default function SearchPage() {
 
                         <Button
                           data-testid={`button-select-${category}`}
-                          className="w-full"
+                          className="w-full mt-auto"
                           onClick={() => handleBook(category)}
                         >
                           Выбрать номер
