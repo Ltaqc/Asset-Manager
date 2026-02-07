@@ -35,8 +35,12 @@ export default function Home() {
       <header className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" />
         <div
-          className="absolute inset-0 -z-[5]"
-          style={{ background: "radial-gradient(ellipse 60% 40% at 50% 45%, rgba(30,50,65,0.32) 0%, rgba(30,50,65,0) 70%)" }}
+          className="absolute inset-0 -z-[5] md:hidden"
+          style={{ background: "radial-gradient(ellipse 85% 45% at 50% 45%, rgba(30,50,65,0.42) 0%, rgba(30,50,65,0) 70%)" }}
+        />
+        <div
+          className="absolute inset-0 -z-[5] hidden md:block"
+          style={{ background: "radial-gradient(ellipse 55% 38% at 50% 45%, rgba(30,50,65,0.25) 0%, rgba(30,50,65,0) 70%)" }}
         />
 
         <div className="container px-4 text-center z-10 space-y-8">
