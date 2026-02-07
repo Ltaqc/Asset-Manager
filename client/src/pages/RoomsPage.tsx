@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Users } from "lucide-react";
 import { roomCategories } from "@shared/schema";
-import { ROOM_DATA, formatPrice, getMinPrice } from "@/lib/roomData";
+import { ROOM_DATA } from "@/lib/roomData";
 
 export default function RoomsPage() {
   return (
@@ -39,9 +39,6 @@ export default function RoomsPage() {
                     <p className="text-sm text-muted-foreground">{info.description}</p>
                     <p className="text-sm text-muted-foreground">
                       Вместимость: до {info.cap} {info.cap === 1 ? "гостя" : info.cap < 5 ? "гостей" : "гостей"} + 1 люлька (0-2 года)
-                    </p>
-                    <p className="text-primary font-semibold text-sm">
-                      от {formatPrice(getMinPrice(category))} / сутки
                     </p>
                     <Link href="/" className="block">
                       <Button className="w-full" data-testid={`button-calc-${category}`}>

@@ -13,6 +13,7 @@ import {
   ROOM_DATA, FOOD_RATES, RoomCategory,
   formatPrice, calculateStay, isRoomSuitable, nightsLabel,
   getDefaultCheckIn, getDefaultCheckOut, CalcResult,
+  isEarlyBooking, applyEarlyDiscount,
 } from "@/lib/roomData";
 
 export default function SearchPage() {
@@ -32,6 +33,8 @@ export default function SearchPage() {
   const [contactPhone, setContactPhone] = useState("");
 
   const createBooking = useCreateBooking();
+
+  const earlyBooking = useMemo(() => isEarlyBooking(checkIn), [checkIn]);
 
   const suitableRooms = useMemo(() => {
     const results: Array<{ category: RoomCategory; result: CalcResult }> = [];
@@ -66,6 +69,8 @@ export default function SearchPage() {
     const calc = calculateStay(selectedRoom, checkIn, checkOut, adults, teens, children);
     if (!calc || "error" in calc) return;
 
+    const finalPrice = earlyBooking ? applyEarlyDiscount(calc.total) : calc.total;
+
     createBooking.mutate({
       roomCategory: selectedRoom,
       checkIn,
@@ -74,7 +79,7 @@ export default function SearchPage() {
       teens,
       children,
       toddlers,
-      totalPrice: calc.total,
+      totalPrice: finalPrice,
       contactName: contactName || null,
       contactPhone: contactPhone || null,
     }, {
@@ -196,12 +201,31 @@ export default function SearchPage() {
                           <div className="text-sm text-muted-foreground">
                             {result.nights} {nightsLabel(result.nights)}
                           </div>
-                          <div className="text-2xl font-bold font-display text-primary" data-testid={`price-total-${category}`}>
-                            {formatPrice(result.total)}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {formatPrice(result.perNight)} за ночь
-                          </div>
+                          {earlyBooking ? (
+                            <>
+                              <div className="text-base text-muted-foreground line-through" data-testid={`price-old-${category}`}>
+                                {formatPrice(result.total)}
+                              </div>
+                              <div className="text-2xl font-bold font-display text-primary" data-testid={`price-total-${category}`}>
+                                {formatPrice(applyEarlyDiscount(result.total))}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {formatPrice(Math.round(applyEarlyDiscount(result.total) / result.nights))} за ночь
+                              </div>
+                              <div className="text-xs font-medium text-green-600" data-testid={`discount-label-${category}`}>
+                                Скидка раннего бронирования
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="text-2xl font-bold font-display text-primary" data-testid={`price-total-${category}`}>
+                                {formatPrice(result.total)}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {formatPrice(result.perNight)} за ночь
+                              </div>
+                            </>
+                          )}
                         </div>
 
                         <p className="text-xs text-muted-foreground italic">

@@ -70,6 +70,22 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
   },
 };
 
+export const EARLY_BOOKING_DAYS = 30;
+export const EARLY_BOOKING_DISCOUNT = 0.10;
+
+export function isEarlyBooking(checkIn: string): boolean {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const inDate = new Date(checkIn);
+  const diffMs = inDate.getTime() - now.getTime();
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  return diffDays > EARLY_BOOKING_DAYS;
+}
+
+export function applyEarlyDiscount(total: number): number {
+  return Math.round(total * (1 - EARLY_BOOKING_DISCOUNT));
+}
+
 export const FOOD_RATES = {
   adult: 4500,
   teen: 4500,
