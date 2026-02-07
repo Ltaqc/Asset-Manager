@@ -11,7 +11,7 @@ import { roomCategories } from "@shared/schema";
 import {
   Users, Utensils, Sun, Coffee,
   Footprints, Umbrella,
-  Waves, TreePine,
+  Waves, TreePine, RectangleVertical,
   Phone, Mail, MapPin, Navigation,
   CheckCircle2, CircleDot,
 } from "lucide-react";
@@ -244,7 +244,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Пляж и отдых у моря"
-            subtitle="Комфортный отдых у воды — без доплат и суеты"
+            subtitle="Комфортный отдых у воды"
           />
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             <div className="space-y-6">
@@ -259,7 +259,6 @@ export default function Home() {
                 <div className="space-y-3">
                   {[
                     { icon: Umbrella, label: "Шезлонги для гостей отеля" },
-                    { icon: Waves, label: "Пляжный отдых без доплат" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
@@ -275,7 +274,8 @@ export default function Home() {
                 <div className="space-y-3">
                   {[
                     { icon: CircleDot, label: "Петанк — игра с металлическими шарами" },
-                    { icon: Footprints, label: "Кубб — скандинавская игра с деревянными брусками" },
+                    { icon: RectangleVertical, label: "Кубб — скандинавская игра с деревянными брусками" },
+                    { icon: TreePine, label: "Верёвочный парк" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
