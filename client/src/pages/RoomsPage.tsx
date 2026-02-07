@@ -15,7 +15,7 @@ export default function RoomsPage() {
     setTimeout(() => {
       const el = document.getElementById("calculator");
       if (el) {
-        const navHeight = 80;
+        const navHeight = 64;
         const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
         window.scrollTo({ top, behavior: "smooth" });
       }

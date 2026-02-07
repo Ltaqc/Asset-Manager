@@ -47,7 +47,7 @@ export default function Home() {
   const scrollToCalculator = () => {
     const el = document.getElementById("calculator");
     if (el) {
-      const navHeight = 80;
+      const navHeight = 64;
       const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
       window.scrollTo({ top, behavior: "smooth" });
     }
@@ -76,7 +76,7 @@ export default function Home() {
       </header>
 
       {/* 2. Calculator */}
-      <section id="calculator" className="py-10 bg-white scroll-mt-20" data-testid="section-search-form">
+      <section id="calculator" className="pt-16 pb-10 bg-white scroll-mt-16" data-testid="section-search-form">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Рассчитайте стоимость проживания"
@@ -149,7 +149,7 @@ export default function Home() {
       </section>
 
       {/* 3. About */}
-      <section id="about" className="py-24 bg-secondary/20 scroll-mt-20">
+      <section id="about" className="py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Об отеле"
@@ -170,7 +170,7 @@ export default function Home() {
       </section>
 
       {/* 4. Ultra All Inclusive */}
-      <section id="uai" className="py-24 bg-white scroll-mt-20">
+      <section id="uai" className="py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Ultra All Inclusive в AL MARE"
@@ -207,7 +207,7 @@ export default function Home() {
       </section>
 
       {/* 5. Food */}
-      <section id="food" className="py-24 bg-blue-50/50 scroll-mt-20">
+      <section id="food" className="py-24 bg-blue-50/50 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Питание в AL MARE"
@@ -252,7 +252,7 @@ export default function Home() {
       </section>
 
       {/* 6. Beach */}
-      <section id="beach" className="py-24 bg-white scroll-mt-20">
+      <section id="beach" className="py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Пляж и отдых у моря"
@@ -314,7 +314,7 @@ export default function Home() {
       </section>
 
       {/* 7. Infrastructure */}
-      <section id="infrastructure" className="py-24 bg-secondary/10 scroll-mt-20">
+      <section id="infrastructure" className="py-24 bg-secondary/10 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Инфраструктура и развлечения"
@@ -347,7 +347,7 @@ export default function Home() {
       </section>
 
       {/* 8. Rooms */}
-      <section id="rooms" className="py-24 bg-white scroll-mt-20">
+      <section id="rooms" className="py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Наши номера"
@@ -391,7 +391,7 @@ export default function Home() {
       </section>
 
       {/* 9. Contacts */}
-      <section id="contacts" className="py-24 bg-blue-50/50 scroll-mt-20">
+      <section id="contacts" className="py-24 bg-blue-50/50 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Контакты"
