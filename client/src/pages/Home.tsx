@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { SectionHeading } from "@/components/SectionHeading";
 import { motion } from "framer-motion";
 import { getDefaultCheckIn, getDefaultCheckOut } from "@/lib/roomData";
-import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_40_53_1770460891772.png";
+import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -33,8 +33,7 @@ export default function Home() {
   return (
     <>
       <header className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 -z-[5]" />
+        <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" style={{ filter: "brightness(1.1) contrast(0.94) saturate(0.92)" }} />
 
         <div className="container px-4 text-center z-10 space-y-8">
           <motion.div
@@ -42,10 +41,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-white mb-4 drop-shadow-lg">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-primary mb-4" style={{ textShadow: "0 2px 16px rgba(255,255,255,0.7), 0 1px 3px rgba(255,255,255,0.5)" }}>
               AL MARE
             </h1>
-            <p className="text-xl md:text-2xl lg:text-3xl text-white/90 font-light tracking-widest uppercase drop-shadow-md">
+            <p className="text-lg md:text-xl lg:text-2xl text-primary/80 font-light tracking-widest uppercase" style={{ textShadow: "0 1px 8px rgba(255,255,255,0.6)" }}>
               Ultra All Inclusive Resort
             </p>
           </motion.div>
