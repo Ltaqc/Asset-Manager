@@ -13,9 +13,8 @@ const NAV_ITEMS = [
 function MaxIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
-      <rect x="3" y="3" width="18" height="18" rx="4" />
-      <circle cx="12" cy="12" r="4.5" />
-      <path d="M12 7.5c-1.5 0-3 .8-3.5 2" />
+      <path d="M12 3C7.03 3 3 6.58 3 11c0 2.55 1.4 4.83 3.6 6.32L5.5 21l4.1-2.15c.77.1 1.57.15 2.4.15 4.97 0 9-3.58 9-8s-4.03-8-9-8z" />
+      <circle cx="12" cy="11" r="2" fill="currentColor" stroke="none" />
     </svg>
   );
 }
