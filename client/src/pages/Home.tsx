@@ -19,6 +19,7 @@ import {
   SunloungerIcon, RopeParkIcon, BilliardIcon, MiniGolfIcon,
   LoungeChairIcon, TreeLeafIcon,
 } from "@/components/CustomIcons";
+import { YandexMap } from "@/components/YandexMap";
 import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
 
 export default function Home() {
@@ -400,8 +401,8 @@ export default function Home() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="font-bold text-lg text-foreground">Адрес</h3>
-                    <a href="https://yandex.ru/maps/org/al_mare/70147997197/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors leading-relaxed" data-testid="contact-address">
-                      ул. Набережная, д. 7
+                    <a href="https://yandex.ru/maps/?rtext=~45.3225,37.2685&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors leading-relaxed" data-testid="contact-address">
+                      ст. Голубицкая, ул. Набережная, д. 7
                     </a>
                   </div>
                 </div>
@@ -433,18 +434,10 @@ export default function Home() {
 
               <div className="space-y-4">
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-border/30">
-                  <iframe
-                    src="https://yandex.ru/map-widget/v1/?z=16&ol=biz&oid=70147997197"
-                    width="100%"
-                    height="400"
-                    style={{ border: 0, display: "block" }}
-                    allowFullScreen
-                    title="AL MARE на карте"
-                    data-testid="contacts-map"
-                  />
+                  <YandexMap className="w-full h-[400px]" />
                 </div>
                 <a
-                  href="https://yandex.ru/maps/org/al_mare/70147997197/"
+                  href="https://yandex.ru/maps/?rtext=~45.3225,37.2685&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block"
