@@ -33,8 +33,8 @@ export default function Home() {
   return (
     <>
       <header className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" style={{ filter: "brightness(1.22) contrast(0.93) saturate(0.88)" }} />
-        <div className="absolute inset-0 -z-[5]" style={{ background: "radial-gradient(ellipse 70% 50% at 50% 45%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 100%)" }} />
+        <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" style={{ filter: "brightness(1.12) contrast(0.95) saturate(0.9)" }} />
+        <div className="absolute inset-0 -z-[5]" style={{ background: "radial-gradient(ellipse 60% 45% at 50% 45%, rgba(80,70,60,0.12) 0%, rgba(80,70,60,0) 100%)" }} />
 
         <div className="container px-4 text-center z-10 space-y-8">
           <motion.div
@@ -42,10 +42,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-primary mb-4">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-primary mb-4" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.18)" }}>
               AL MARE
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-primary/80 font-light tracking-widest uppercase">
+            <p className="text-lg md:text-xl lg:text-2xl text-primary/80 font-light tracking-widest uppercase" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.18)" }}>
               Ultra All Inclusive Resort
             </p>
           </motion.div>
