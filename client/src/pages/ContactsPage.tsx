@@ -55,7 +55,7 @@ export default function ContactsPage() {
               <div className="space-y-4">
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-border/30">
                   <iframe
-                    src="https://yandex.ru/map-widget/v1/?um=constructor%3A70147997197&source=constructorLink&ll=37.2725,45.3365&z=16"
+                    src="https://yandex.ru/map-widget/v1/?z=16&ol=biz&oid=70147997197"
                     width="100%"
                     height="400"
                     style={{ border: 0, display: "block" }}
