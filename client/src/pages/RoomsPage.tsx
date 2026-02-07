@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,16 @@ import { roomCategories } from "@shared/schema";
 import { ROOM_DATA } from "@/lib/roomData";
 
 export default function RoomsPage() {
+  const [, setLocation] = useLocation();
+
+  const goToCalculator = () => {
+    setLocation("/");
+    setTimeout(() => {
+      const el = document.getElementById("calculator");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
   return (
     <div className="bg-secondary/10 min-h-screen">
       <section className="py-24">
@@ -40,11 +50,9 @@ export default function RoomsPage() {
                     <p className="text-sm text-muted-foreground">
                       Вместимость: до {info.cap} {info.cap === 1 ? "гостя" : info.cap < 5 ? "гостей" : "гостей"} + 1 люлька (0-2 года)
                     </p>
-                    <Link href="/" className="block">
-                      <Button className="w-full" data-testid={`button-calc-${category}`}>
-                        Рассчитать стоимость
-                      </Button>
-                    </Link>
+                    <Button className="w-full" data-testid={`button-calc-${category}`} onClick={goToCalculator}>
+                      Рассчитать стоимость
+                    </Button>
                   </div>
                 </Card>
               );

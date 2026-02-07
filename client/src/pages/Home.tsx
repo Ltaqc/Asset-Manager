@@ -78,7 +78,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24 bg-white" data-testid="section-search-form">
+      <section id="calculator" className="py-24 bg-white" data-testid="section-search-form">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Рассчитайте стоимость проживания"
