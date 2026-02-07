@@ -31,7 +31,7 @@ export default function RoomsPage() {
             {roomCategories.map((category) => {
               const info = ROOM_DATA[category];
               return (
-                <Card key={category} className="overflow-hidden border-border/50 shadow-md" data-testid={`room-card-${category}`}>
+                <Card key={category} className="overflow-hidden border-border/50 shadow-md flex flex-col" data-testid={`room-card-${category}`}>
                   <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
                     <img
                       src={info.image}
@@ -44,13 +44,13 @@ export default function RoomsPage() {
                       </Badge>
                     </div>
                   </div>
-                  <div className="p-6 space-y-3">
+                  <div className="p-6 flex flex-col flex-1 gap-3">
                     <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
                     <p className="text-sm text-muted-foreground">{info.description}</p>
                     <p className="text-sm text-muted-foreground">
                       Вместимость: до {info.cap} {info.cap === 1 ? "гостя" : info.cap < 5 ? "гостей" : "гостей"} + 1 люлька (0-2 года)
                     </p>
-                    <Button className="w-full" data-testid={`button-calc-${category}`} onClick={goToCalculator}>
+                    <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={goToCalculator}>
                       Рассчитать стоимость
                     </Button>
                   </div>
