@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <>
       <header className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" style={{ filter: "brightness(1.22) contrast(0.91) saturate(0.86)" }} />
+        <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" style={{ filter: "brightness(1.35) contrast(0.88) saturate(0.82)" }} />
 
         <div className="container px-4 text-center z-10 space-y-8">
           <motion.div
