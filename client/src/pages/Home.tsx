@@ -9,10 +9,11 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { getDefaultCheckIn, getDefaultCheckOut, ROOM_DATA } from "@/lib/roomData";
 import { roomCategories } from "@shared/schema";
 import {
-  Users, Utensils, Sun, Flame, Coffee,
-  Footprints, Umbrella, ShowerHead,
-  Waves, Car, TreePine,
+  Users, Utensils, Sun, Coffee,
+  Footprints, Umbrella,
+  Waves, TreePine,
   Phone, Mail, MapPin, Navigation,
+  CheckCircle2, CircleDot,
 } from "lucide-react";
 import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
 
@@ -52,6 +53,15 @@ export default function Home() {
           alt="AL MARE — отель с бассейном"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <h1 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
+            AL MARE
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 mt-2 font-light tracking-widest uppercase" data-testid="text-hero-subtitle">
+            Ultra All Inclusive Resort
+          </p>
+        </div>
       </header>
 
       {/* 2. Calculator */}
@@ -132,24 +142,194 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Об отеле"
-            subtitle="Ваш идеальный отдых у моря в формате Ultra All Inclusive"
+            subtitle="Современный курортный отель для комфортного отдыха у моря"
           />
           <div className="max-w-4xl mx-auto space-y-6 text-lg text-muted-foreground leading-relaxed">
             <p>
-              AL MARE — курортный отель на побережье, созданный для тех, кто ценит комфорт и спокойный отдых у моря. Современные номера, ухоженная территория и продуманный сервис делают пребывание по-настоящему приятным.
+              AL MARE — это современный курортный отель у моря, созданный для спокойного, комфортного и продуманного отдыха.
             </p>
             <p>
-              Формат Ultra All Inclusive означает, что всё включено с момента заезда: питание в ресторанах, напитки, пользование инфраструктурой, пляжные удобства и развлечения на территории. Никаких скрытых доплат — вы просто отдыхаете.
+              Мы делаем акцент на уютной атмосфере, внимательном сервисе и формате отдыха, где всё уже включено в стоимость проживания.
             </p>
             <p>
-              AL MARE — это уютный курортный отель для спокойного отдыха у моря с комфортными номерами и продуманной инфраструктурой.
+              Отель подойдёт для пар, семей и гостей, которые ценят комфорт, тишину и качественный сервис без суеты.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 4. Rooms */}
-      <section id="rooms" className="py-24 bg-secondary/10">
+      {/* 4. Ultra All Inclusive */}
+      <section id="uai" className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Ultra All Inclusive в AL MARE"
+            subtitle="Отдых без лишних доплат и постоянных расчётов"
+          />
+          <div className="max-w-4xl mx-auto space-y-8">
+            <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
+              <p>
+                Формат Ultra All Inclusive в AL MARE — это отдых без лишних доплат и постоянных расчётов.
+                Вы отдыхаете, а мы заранее позаботились обо всём необходимом.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <p className="text-base font-semibold text-foreground">В стоимость проживания включено:</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {[
+                  "Проживание в выбранной категории номера",
+                  "Трёхразовое питание по меню (завтрак, обед, ужин)",
+                  "Напитки в течение дня",
+                  "Пользование пляжем и шезлонгами",
+                  "Доступ к инфраструктуре отеля",
+                  "Развлечения и активности для гостей",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3 text-muted-foreground">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-base">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Food */}
+      <section id="food" className="py-24 bg-blue-50/50">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Питание в AL MARE"
+            subtitle="Индивидуальное обслуживание по меню — свежесть и качество в каждом блюде"
+          />
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <div className="space-y-6">
+              <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
+                <p>
+                  В AL MARE питание организовано в формате обслуживания по меню.
+                  Гости выбирают блюда, а мы готовим их индивидуально — это позволяет сохранить высокое качество, свежесть и красивую подачу.
+                </p>
+              </div>
+              <div className="space-y-3">
+                <p className="text-base font-semibold text-foreground">В течение дня для гостей доступны:</p>
+                <div className="space-y-3">
+                  {[
+                    { icon: Utensils, label: "Завтрак, обед и ужин по меню" },
+                    { icon: Coffee, label: "Напитки без ограничений" },
+                    { icon: Sun, label: "Спокойная атмосфера без очередей" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 text-foreground/80">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+                        <item.icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-lg">
+              <img
+                src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&auto=format&fit=crop"
+                alt="Питание AL MARE"
+                className="w-full h-[400px] object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Beach */}
+      <section id="beach" className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Пляж и отдых у моря"
+            subtitle="Комфортный отдых у воды — без доплат и суеты"
+          />
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <div className="space-y-6">
+              <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
+                <p>
+                  Для гостей AL MARE пляж — это часть комфортного отдыха.
+                  Мы позаботились о том, чтобы вы могли просто наслаждаться морем.
+                </p>
+              </div>
+              <div className="space-y-3">
+                <p className="text-base font-semibold text-foreground">Включено:</p>
+                <div className="space-y-3">
+                  {[
+                    { icon: Umbrella, label: "Шезлонги для гостей отеля" },
+                    { icon: Waves, label: "Пляжный отдых без доплат" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 text-foreground/80">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+                        <item.icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-3">
+                <p className="text-base font-semibold text-foreground">Игры на песке:</p>
+                <div className="space-y-3">
+                  {[
+                    { icon: CircleDot, label: "Петанк — игра с металлическими шарами" },
+                    { icon: Footprints, label: "Кубб — скандинавская игра с деревянными брусками" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 text-foreground/80">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+                        <item.icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-lg">
+              <img
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop"
+                alt="Пляж AL MARE"
+                className="w-full h-[400px] object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Infrastructure */}
+      <section id="infrastructure" className="py-24 bg-secondary/10">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Инфраструктура и развлечения"
+            subtitle="Развлечения для спокойного и активного отдыха"
+          />
+
+          <div className="max-w-4xl mx-auto space-y-6">
+            <p className="text-lg text-muted-foreground leading-relaxed text-center">
+              На территории отеля предусмотрены развлечения для спокойного и активного отдыха:
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto pt-4">
+              {[
+                { icon: CircleDot, label: "Бильярд" },
+                { icon: Sun, label: "Мини-гольф" },
+                { icon: TreePine, label: "Зоны отдыха" },
+                { icon: Footprints, label: "Ухоженная территория" },
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center text-center space-y-4 p-6 rounded-2xl">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                    <item.icon className="w-8 h-8" />
+                  </div>
+                  <span className="font-bold text-lg">{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. Rooms */}
+      <section id="rooms" className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Наши номера"
@@ -173,7 +353,7 @@ export default function Home() {
                     <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
                     <p className="text-sm text-muted-foreground">{info.description}</p>
                     <p className="text-sm text-muted-foreground">
-                      Вместимость: до {info.cap} {info.cap < 5 ? "гостей" : "гостей"}
+                      Вместимость: до {info.cap} гостей
                     </p>
                     <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={scrollToCalculator}>
                       Рассчитать стоимость
@@ -192,160 +372,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Food */}
-      <section id="food" className="py-24 bg-blue-50/50">
-        <div className="container mx-auto px-4">
-          <SectionHeading
-            title="Питание Ultra All Inclusive"
-            subtitle="Всё включено с момента заезда — без доплат и ограничений"
-          />
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="space-y-6">
-              <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
-                <p>
-                  Формат Ultra All Inclusive означает, что всё питание включено в стоимость проживания.
-                  Завтрак, обед и ужин — шведский стол с широким выбором горячих блюд, салатов, выпечки и десертов.
-                </p>
-                <p>
-                  В течение дня доступны лёгкие закуски, безалкогольные и алкогольные напитки, мороженое, свежие фрукты и выпечка.
-                  На территории отеля работают барбекю-зоны для приготовления на углях.
-                </p>
-                <p>
-                  Питание подходит для взрослых и детей — есть отдельное детское меню.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-4 pt-4">
-                {[
-                  { icon: Utensils, label: "Трёхразовое питание" },
-                  { icon: Coffee, label: "Напитки весь день" },
-                  { icon: Flame, label: "Барбекю на свежем воздухе" },
-                  { icon: Sun, label: "Перекусы и мороженое" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 text-foreground/80">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
-                      <item.icon className="w-5 h-5" />
-                    </div>
-                    <span className="text-sm font-medium">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden shadow-lg">
-              <img
-                src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&auto=format&fit=crop"
-                alt="Питание AL MARE"
-                className="w-full h-[400px] object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Beach */}
-      <section id="beach" className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <SectionHeading
-            title="Пляж AL MARE"
-            subtitle="Спокойный отдых у самого моря"
-          />
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="space-y-6">
-              <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
-                <p>
-                  Отель AL MARE расположен рядом с морем — до пляжа можно дойти пешком.
-                  Гостей ждёт спокойный пляжный отдых: просторная береговая линия, комфортный вход в море и возможность провести весь день у воды.
-                </p>
-                <p>
-                  Для гостей предусмотрены лежаки и базовая пляжная инфраструктура.
-                  После моря можно вернуться в отель, принять душ и продолжить отдых в формате Ultra All Inclusive.
-                </p>
-                <p>
-                  Пляж подходит для семей с детьми и для гостей, ценящих размеренный отдых.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-4 pt-4">
-                {[
-                  { icon: Footprints, label: "Пешком до моря" },
-                  { icon: Umbrella, label: "Спокойная пляжная зона" },
-                  { icon: ShowerHead, label: "Душ и удобства на территории" },
-                  { icon: Users, label: "Комфортно для детей и взрослых" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 text-foreground/80">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
-                      <item.icon className="w-5 h-5" />
-                    </div>
-                    <span className="text-sm font-medium">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden shadow-lg">
-              <img
-                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop"
-                alt="Пляж AL MARE"
-                className="w-full h-[400px] object-cover"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Infrastructure */}
-      <section id="infrastructure" className="py-24 bg-secondary/10">
-        <div className="container mx-auto px-4">
-          <SectionHeading
-            title="Инфраструктура"
-            subtitle="Всё необходимое для незабываемого отдыха на территории отеля"
-          />
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            {[
-              { icon: Car, label: "Парковка включена" },
-              { icon: Waves, label: "Бассейн" },
-              { icon: TreePine, label: "Зоны отдыха" },
-              { icon: Users, label: "Детский клуб" },
-              { icon: ShowerHead, label: "Душ и туалет" },
-              { icon: Umbrella, label: "Лежаки" },
-              { icon: Sun, label: "Мини-гольф" },
-              { icon: Utensils, label: "3 ресторана" },
-            ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center text-center space-y-4 p-6 rounded-2xl">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-                  <item.icon className="w-8 h-8" />
-                </div>
-                <span className="font-bold text-lg">{item.label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-24 max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-secondary/20 rounded-2xl p-8 space-y-4">
-                <h3 className="text-xl font-display font-bold text-primary">Для взрослых</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li>Бассейн с подогревом</li>
-                  <li>Зона барбекю</li>
-                  <li>Мини-гольф</li>
-                  <li>Бесплатная парковка</li>
-                  <li>Wi-Fi на территории</li>
-                </ul>
-              </div>
-              <div className="bg-secondary/20 rounded-2xl p-8 space-y-4">
-                <h3 className="text-xl font-display font-bold text-primary">Для детей</h3>
-                <ul className="space-y-2 text-muted-foreground">
-                  <li>Детский клуб с аниматорами</li>
-                  <li>Детский бассейн</li>
-                  <li>Игровая площадка</li>
-                  <li>Детское меню в ресторанах</li>
-                  <li>Безопасная территория</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Contacts */}
+      {/* 9. Contacts */}
       <section id="contacts" className="py-24 bg-blue-50/50">
         <div className="container mx-auto px-4">
           <SectionHeading
@@ -363,7 +390,7 @@ export default function Home() {
                   <div className="space-y-2">
                     <h3 className="font-bold text-lg text-foreground">Адрес</h3>
                     <a href="https://yandex.ru/maps/org/al_mare/70147997197/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors leading-relaxed" data-testid="contact-address">
-                      ст. Голубицкая, ул. Набережная, д. 7
+                      ул. Набережная, д. 7
                     </a>
                   </div>
                 </div>

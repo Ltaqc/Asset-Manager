@@ -24,14 +24,15 @@ Preferred communication style: Simple, everyday language.
 
 ### Page Structure
 - `/` (Home) — One-page layout with sections:
-  1. Hero (hotel photo, 42vh)
+  1. Hero (hotel photo, 42vh, with AL MARE title + subtitle overlay)
   2. Calculator (dates + guests form → navigates to /search)
   3. About hotel
-  4. Rooms (8 room categories with cards)
-  5. Food (Ultra All Inclusive)
-  6. Beach
-  7. Infrastructure
-  8. Contacts (with Yandex Map)
+  4. Ultra All Inclusive (#uai) — checklist of what's included
+  5. Food (по меню format, not buffet)
+  6. Beach (with petanque and kubb games)
+  7. Infrastructure (billiards, mini-golf, rest zones)
+  8. Rooms (8 room categories with cards)
+  9. Contacts (with Yandex Map)
 - `/search` — Filters rooms by capacity, shows pricing cards with cross-month calculation, booking modal
 ### Shared Room Data (`client/src/lib/roomData.ts`)
 Central module containing:
