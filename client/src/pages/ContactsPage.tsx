@@ -21,12 +21,9 @@ export default function ContactsPage() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="font-bold text-lg text-foreground">Адрес</h3>
-                    <p className="text-muted-foreground leading-relaxed" data-testid="contact-address">
+                    <a href="https://yandex.ru/maps/org/al_mare/70147997197/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors leading-relaxed" data-testid="contact-address">
                       ст. Голубицкая, ул. Набережная, д. 7
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed" data-testid="contact-address-2">
-                      ст. Голубицкая, пер. Радужный, д. 2/1
-                    </p>
+                    </a>
                   </div>
                 </div>
 
@@ -58,7 +55,7 @@ export default function ContactsPage() {
               <div className="space-y-4">
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-border/30">
                   <iframe
-                    src="https://yandex.ru/map-widget/v1/?ll=37.2725,45.3365&z=16&pt=37.2725,45.3365,pm2rdm"
+                    src="https://yandex.ru/map-widget/v1/?um=constructor%3A70147997197&source=constructorLink&ll=37.2725,45.3365&z=16"
                     width="100%"
                     height="400"
                     style={{ border: 0, display: "block" }}
@@ -68,7 +65,7 @@ export default function ContactsPage() {
                   />
                 </div>
                 <a
-                  href="https://yandex.ru/maps/?rtext=~ст.+Голубицкая,+ул.+Набережная,+д.+7"
+                  href="https://yandex.ru/maps/org/al_mare/70147997197/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block"

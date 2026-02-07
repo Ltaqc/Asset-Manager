@@ -65,10 +65,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <MaxIcon className="w-4 h-4" />
                 </a>
               </div>
-              <span className="flex items-center gap-1.5 text-xs">
+              <a href="https://yandex.ru/maps/org/al_mare/70147997197/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs hover:text-primary transition-colors" data-testid="link-address-header">
                 <MapPin className="w-3.5 h-3.5" />
                 ст. Голубицкая, ул. Набережная, д. 7
-              </span>
+              </a>
             </div>
 
             <div className="lg:hidden">
@@ -92,10 +92,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 Комфортные номера, продуманная инфраструктура и внимательное отношение к гостям.
               </p>
               <div className="space-y-5 pt-2">
-                <div className="flex items-center gap-4 text-slate-300">
+                <a href="https://yandex.ru/maps/org/al_mare/70147997197/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors" data-testid="link-address-footer">
                   <MapPin className="text-primary w-5 h-5 shrink-0" />
                   <span>ст. Голубицкая, ул. Набережная, д. 7</span>
-                </div>
+                </a>
                 <a href="tel:+78001234567" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
                   <Phone className="text-primary w-5 h-5 shrink-0" />
                   <span>+7 (800) 123-45-67</span>
