@@ -34,7 +34,7 @@ export default function Home() {
     <>
       <header className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
         <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 -z-[5]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/15 to-white/35 -z-[5]" />
 
         <div className="container px-4 text-center z-10 space-y-8">
           <motion.div
@@ -42,10 +42,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-white mb-4 drop-shadow-lg">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-primary mb-4" style={{ textShadow: "0 2px 12px rgba(255,255,255,0.5), 0 1px 3px rgba(0,0,0,0.15)" }}>
               AL MARE
             </h1>
-            <p className="text-sm md:text-base lg:text-lg text-white/90 font-light tracking-widest uppercase drop-shadow-md">
+            <p className="text-sm md:text-base lg:text-lg text-primary/90 font-light tracking-widest uppercase" style={{ textShadow: "0 1px 8px rgba(255,255,255,0.5), 0 1px 2px rgba(0,0,0,0.1)" }}>
               Ultra All Inclusive Resort
             </p>
           </motion.div>
