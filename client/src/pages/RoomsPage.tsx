@@ -48,7 +48,7 @@ export default function RoomsPage() {
                     <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
                     <p className="text-sm text-muted-foreground">{info.description}</p>
                     <p className="text-sm text-muted-foreground">
-                      Вместимость: до {info.cap} {info.cap === 1 ? "гостя" : info.cap < 5 ? "гостей" : "гостей"} + 1 люлька (0-2 года)
+                      Вместимость: до {info.cap} {info.cap < 5 ? "гостей" : "гостей"}
                     </p>
                     <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={goToCalculator}>
                       Рассчитать стоимость

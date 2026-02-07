@@ -5,6 +5,7 @@ export type RoomCategory = typeof roomCategories[number];
 export interface RoomInfo {
   cap: number;
   count: number;
+  maxToddlers: number;
   prices: Record<number, number>;
   description: string;
   shortTitle: string;
@@ -13,56 +14,56 @@ export interface RoomInfo {
 
 export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
   "Стандарт с двуспальной кроватью и балконом": {
-    cap: 2, count: 9,
+    cap: 2, count: 9, maxToddlers: 1,
     prices: { 6: 4600, 7: 5700, 8: 5700, 9: 4600 },
     description: "Уютный номер с двуспальной кроватью и балконом. Современный интерьер и вид на сад. Площадь 25 м².",
     shortTitle: "Стандарт",
     image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&auto=format&fit=crop",
   },
   "Стандарт с раздвижной двуспальной кроватью и балконом": {
-    cap: 2, count: 3,
+    cap: 2, count: 3, maxToddlers: 1,
     prices: { 6: 4600, 7: 5700, 8: 5700, 9: 4600 },
     description: "Номер с раздвижной двуспальной кроватью и балконом. Функциональный дизайн и комфорт. Площадь 25 м².",
     shortTitle: "Стандарт (раздвижная кровать)",
     image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&auto=format&fit=crop",
   },
   "Стандарт семейный с балконом": {
-    cap: 3, count: 6,
+    cap: 3, count: 6, maxToddlers: 1,
     prices: { 6: 7000, 7: 8700, 8: 8700, 9: 7000 },
     description: "Просторный номер с балконом для небольших семей. Удобные спальные места и зона отдыха. Площадь 35 м².",
     shortTitle: "Стандарт семейный",
     image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&auto=format&fit=crop",
   },
   "Джуниор Сьют с балконом": {
-    cap: 4, count: 3,
+    cap: 4, count: 3, maxToddlers: 1,
     prices: { 6: 9200, 7: 11500, 8: 11500, 9: 9200 },
     description: "Роскошный сьют с расширенной гостиной зоной и приватным балконом. Премиальная отделка. Площадь 45 м².",
     shortTitle: "Джуниор Сьют",
     image: "https://images.unsplash.com/photo-1590490360182-f33efe80a713?w=800&auto=format&fit=crop",
   },
   "Люкс двухкомнатный без балкона": {
-    cap: 4, count: 3,
+    cap: 4, count: 3, maxToddlers: 1,
     prices: { 6: 9200, 7: 11500, 8: 11500, 9: 9200 },
     description: "Двухкомнатный люкс с отдельной гостиной. Стильный интерьер и полная приватность. Площадь 50 м².",
     shortTitle: "Люкс двухкомнатный",
     image: "https://images.unsplash.com/photo-1590490360182-f33efe80a713?w=800&auto=format&fit=crop",
   },
   "Люкс семейный, двухкомнатный": {
-    cap: 5, count: 1,
+    cap: 5, count: 1, maxToddlers: 1,
     prices: { 6: 11500, 7: 14500, 8: 14500, 9: 11500 },
     description: "Семейный двухкомнатный люкс для большой семьи. Просторная планировка и максимальный комфорт. Площадь 60 м².",
     shortTitle: "Люкс семейный",
     image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&auto=format&fit=crop",
   },
   "Апартаменты, 1 этаж, с выходом на бассейн": {
-    cap: 6, count: 1,
+    cap: 6, count: 1, maxToddlers: 2,
     prices: { 6: 14000, 7: 17500, 8: 17500, 9: 14000 },
     description: "Просторные апартаменты на первом этаже с прямым выходом к бассейну. Идеальны для большой семьи. Площадь 70 м².",
     shortTitle: "Апартаменты (1 этаж)",
     image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&auto=format&fit=crop",
   },
   "Апартаменты, 2 этаж, с видом на бассейн": {
-    cap: 6, count: 1,
+    cap: 6, count: 1, maxToddlers: 2,
     prices: { 6: 14000, 7: 17500, 8: 17500, 9: 14000 },
     description: "Апартаменты на втором этаже с панорамным видом на бассейн и территорию отеля. Площадь 70 м².",
     shortTitle: "Апартаменты (2 этаж)",
@@ -177,8 +178,9 @@ export function calculateStay(
   return { nights, total, perNight };
 }
 
-export function isRoomSuitable(cap: number, adults: number, teens: number, childrenCount: number, toddlers: number): boolean {
-  if (toddlers > 1) return false;
+export function isRoomSuitable(category: RoomCategory, adults: number, teens: number, childrenCount: number, toddlers: number): boolean {
+  const info = ROOM_DATA[category];
+  if (toddlers > info.maxToddlers) return false;
   const mainGuests = adults + teens + childrenCount;
-  return mainGuests <= cap;
+  return mainGuests <= info.cap;
 }

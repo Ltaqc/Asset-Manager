@@ -41,7 +41,7 @@ export default function SearchPage() {
 
     for (const category of roomCategories) {
       const info = ROOM_DATA[category];
-      if (!isRoomSuitable(info.cap, adults, teens, children, toddlers)) continue;
+      if (!isRoomSuitable(category, adults, teens, children, toddlers)) continue;
 
       const calc = calculateStay(category, checkIn, checkOut, adults, teens, children);
       if (!calc || "error" in calc) continue;
@@ -148,16 +148,7 @@ export default function SearchPage() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
-          {toddlers > 1 ? (
-            <div className="max-w-2xl mx-auto text-center py-16">
-              <AlertCircle className="w-16 h-16 text-destructive mx-auto mb-4" />
-              <h2 className="text-2xl font-display font-bold text-foreground mb-2">Размещение невозможно</h2>
-              <p className="text-muted-foreground text-lg">
-                В номер можно добавить только одну люльку для малыша (0-2 года).
-                При размещении двух и более малышей подходящих номеров нет.
-              </p>
-            </div>
-          ) : seasonError ? (
+          {seasonError ? (
             <div className="max-w-2xl mx-auto text-center py-16">
               <AlertCircle className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
               <h2 className="text-2xl font-display font-bold text-foreground mb-2">Нет доступных номеров</h2>
