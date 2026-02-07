@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { SectionHeading } from "@/components/SectionHeading";
 import { motion } from "framer-motion";
 import { getDefaultCheckIn, getDefaultCheckOut } from "@/lib/roomData";
-import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_40_53_1770460891772.png";
+import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770461568780.png";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -45,7 +45,7 @@ export default function Home() {
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-white mb-4 drop-shadow-lg">
               AL MARE
             </h1>
-            <p className="text-xl md:text-2xl lg:text-3xl text-white/90 font-light tracking-widest uppercase drop-shadow-md">
+            <p className="text-sm md:text-base lg:text-lg text-white/90 font-light tracking-widest uppercase drop-shadow-md">
               Ultra All Inclusive Resort
             </p>
           </motion.div>
