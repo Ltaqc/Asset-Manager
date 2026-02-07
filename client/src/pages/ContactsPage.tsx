@@ -43,7 +43,7 @@ export default function ContactsPage() {
                 <MapPin className="w-7 h-7" />
               </div>
               <h3 className="font-bold text-lg">Адрес</h3>
-              <p className="text-muted-foreground" data-testid="contact-address">Приморский бульвар, 1, Побережье</p>
+              <p className="text-muted-foreground" data-testid="contact-address">ст. Голубицкая, ул. Набережная, д. 7</p>
             </div>
           </div>
         </div>

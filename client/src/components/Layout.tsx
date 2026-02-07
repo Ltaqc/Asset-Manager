@@ -12,8 +12,10 @@ const NAV_ITEMS = [
 
 function MaxIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 3h2l2 4 2-4h2v8h-2v-5l-2 4-2-4v5H7V8z"/>
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+      <rect x="3" y="3" width="18" height="18" rx="4" />
+      <circle cx="12" cy="12" r="4.5" />
+      <path d="M12 7.5c-1.5 0-3 .8-3.5 2" />
     </svg>
   );
 }
@@ -66,7 +68,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <span className="flex items-center gap-1.5 text-xs">
                 <MapPin className="w-3.5 h-3.5" />
-                Приморский бульвар, 1
+                ст. Голубицкая, ул. Набережная, д. 7
               </span>
             </div>
 
@@ -93,7 +95,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <div className="space-y-4 pt-4">
                 <div className="flex items-center gap-4 text-slate-300">
                   <MapPin className="text-primary w-5 h-5 shrink-0" />
-                  <span>Приморский бульвар, 1, Побережье</span>
+                  <span>ст. Голубицкая, ул. Набережная, д. 7</span>
                 </div>
                 <a href="tel:+78001234567" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
                   <Phone className="text-primary w-5 h-5 shrink-0" />
