@@ -18,6 +18,12 @@ import familyDesk from "@assets/ChatGPT_Image_7_февр._2026_г.,_19_50_10_177
 import familyBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770487477761.png";
 import familyShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770487477763.png";
 import familyBalcony from "@assets/ChatGPT_Image_7_февр._2026_г.,_20_11_45_1770487477770.png";
+import juniorMain from "@assets/ChatGPT_Image_7_февр._2026_г.,_21_39_25_1770493453671.png";
+import juniorBed from "@assets/ChatGPT_Image_7_февр._2026_г.,_21_43_43_1770493453672.png";
+import juniorSofa from "@assets/ChatGPT_Image_7_февр._2026_г.,_22_12_52_1770493453674.png";
+import juniorBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_22_34_57_1770493453675.png";
+import juniorShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770493453669.png";
+import juniorBalcony from "@assets/ChatGPT_Image_7_февр._2026_г.,_22_07_35_1770493453673.png";
 
 export type RoomCategory = typeof roomCategories[number];
 
@@ -67,7 +73,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Просторное решение для тех, кому важен воздух и свобода движения. Раздвижная двуспальная кровать и мягкий диван формируют две зоны — для сна и дневного отдыха. Балкон наполняет номер естественным светом и морским настроением.",
     area: 28,
     shortTitle: "Джуниор Сьют",
-    image: "https://images.unsplash.com/photo-1590490360182-f33efe80a713?w=800&auto=format&fit=crop",
+    image: juniorMain,
+    images: [juniorMain, juniorBed, juniorSofa, juniorBath, juniorShower, juniorBalcony],
   },
   "Люкс двухкомнатный без балкона": {
     cap: 4, count: 3, maxToddlers: 1,
