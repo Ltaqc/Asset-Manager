@@ -1,13 +1,14 @@
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { Phone, Mail, MapPin, Send } from "lucide-react";
 
 const NAV_ITEMS = [
-  { label: "Главная", path: "/" },
-  { label: "Номера", path: "/rooms" },
-  { label: "Питание", path: "/food" },
-  { label: "Пляж", path: "/beach" },
-  { label: "Инфраструктура", path: "/infrastructure" },
-  { label: "Контакты", path: "/contacts" },
+  { label: "Главная", anchor: "hero" },
+  { label: "Об отеле", anchor: "about" },
+  { label: "Номера", anchor: "rooms" },
+  { label: "Питание", anchor: "food" },
+  { label: "Пляж", anchor: "beach" },
+  { label: "Инфраструктура", anchor: "infrastructure" },
+  { label: "Контакты", anchor: "contacts" },
 ];
 
 function MaxIcon({ className }: { className?: string }) {
@@ -19,32 +20,50 @@ function MaxIcon({ className }: { className?: string }) {
   );
 }
 
+function scrollToSection(anchor: string) {
+  if (anchor === "hero") {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+  const el = document.getElementById(anchor);
+  if (el) {
+    const navHeight = 64;
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
+
+  const handleNavClick = (anchor: string) => {
+    if (location !== "/") {
+      setLocation("/");
+      setTimeout(() => scrollToSection(anchor), 100);
+    } else {
+      scrollToSection(anchor);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-lg border-b border-border/30 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 gap-4">
-            <Link href="/" className="text-2xl font-display font-bold text-primary tracking-tight shrink-0" data-testid="link-logo">
+            <button onClick={() => handleNavClick("hero")} className="text-2xl font-display font-bold text-primary tracking-tight shrink-0" data-testid="link-logo">
               AL MARE
-            </Link>
+            </button>
 
             <div className="hidden lg:flex items-center gap-1">
               {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.path}
-                  href={item.path}
-                  data-testid={`nav-${item.path.replace("/", "") || "home"}`}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    location === item.path
-                      ? "text-primary bg-primary/10"
-                      : "text-foreground/70 hover:text-primary hover:bg-primary/5"
-                  }`}
+                <button
+                  key={item.anchor}
+                  onClick={() => handleNavClick(item.anchor)}
+                  data-testid={`nav-${item.anchor}`}
+                  className="px-3 py-2 rounded-md text-sm font-medium transition-colors text-foreground/70 hover:text-primary hover:bg-primary/5"
                 >
                   {item.label}
-                </Link>
+                </button>
               ))}
             </div>
 
@@ -72,7 +91,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="lg:hidden">
-              <MobileMenu location={location} />
+              <MobileMenu onNavClick={handleNavClick} />
             </div>
           </div>
         </div>
@@ -111,9 +130,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <h3 className="text-xl font-display font-bold text-primary mb-6">Разделы сайта</h3>
               <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                 {NAV_ITEMS.map((item) => (
-                  <Link key={item.path} href={item.path} className="text-slate-300 hover:text-primary transition-colors text-base leading-relaxed">
+                  <button
+                    key={item.anchor}
+                    onClick={() => handleNavClick(item.anchor)}
+                    className="text-slate-300 hover:text-primary transition-colors text-base leading-relaxed text-left"
+                  >
                     {item.label}
-                  </Link>
+                  </button>
                 ))}
               </div>
             </div>
@@ -128,7 +151,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function MobileMenu({ location }: { location: string }) {
+function MobileMenu({ onNavClick }: { onNavClick: (anchor: string) => void }) {
   return (
     <details className="relative group">
       <summary className="list-none cursor-pointer p-2 rounded-md hover:bg-primary/5" data-testid="button-mobile-menu">
@@ -138,15 +161,17 @@ function MobileMenu({ location }: { location: string }) {
       </summary>
       <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 py-2 z-50">
         {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.path}
-            href={item.path}
-            className={`block px-4 py-2.5 text-sm ${
-              location === item.path ? "text-primary bg-primary/5 font-semibold" : "text-foreground/80 hover:bg-primary/5 hover:text-primary"
-            }`}
+          <button
+            key={item.anchor}
+            onClick={() => {
+              onNavClick(item.anchor);
+              const details = document.querySelector("details[open]") as HTMLDetailsElement | null;
+              if (details) details.removeAttribute("open");
+            }}
+            className="block w-full text-left px-4 py-2.5 text-sm text-foreground/80 hover:bg-primary/5 hover:text-primary"
           >
             {item.label}
-          </Link>
+          </button>
         ))}
         <div className="border-t border-border/30 mt-2 pt-2 px-4 space-y-2">
           <a href="tel:+78001234567" className="flex items-center gap-2 text-sm text-muted-foreground py-1">

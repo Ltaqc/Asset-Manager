@@ -1,8 +1,8 @@
 # Overview
 
-AL MARE is a multi-page hotel website for a seaside Ultra All Inclusive resort. The primary goal is to drive direct bookings through a transparent, interactive pricing calculator. The site targets families and couples aged 30–55, with a light, marine-themed design (white, sand, light blue, turquoise). The interface is in Russian.
+AL MARE is a one-page hotel website for a seaside Ultra All Inclusive resort. The primary goal is to drive direct bookings through a transparent, interactive pricing calculator. The site targets families and couples aged 30–55, with a light, marine-themed design (white, sand, light blue, turquoise). The interface is in Russian.
 
-The core feature is an interactive room search: guests enter dates and guest composition on the home page, then navigate to /search where all suitable rooms are displayed with calculated prices. Booking requests are stored in a PostgreSQL database.
+The site uses a one-page layout with anchor navigation. All content sections are on the home page (`/`) with smooth scrolling between them. The `/search` route is a separate page for search results. Booking requests are stored in a PostgreSQL database.
 
 ## User Preferences
 
@@ -12,7 +12,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Frontend
 - **Framework**: React 18 with TypeScript, bundled by Vite
-- **Routing**: Wouter (lightweight client-side router). Multi-page app with 7 pages: /, /search, /rooms, /food, /beach, /infrastructure, /contacts
+- **Routing**: Wouter (lightweight client-side router). One-page layout with anchor navigation. Routes: `/` (main page with all sections), `/search` (search results)
 - **Layout**: Shared Layout component (`client/src/components/Layout.tsx`) wraps all pages with fixed header nav and footer
 - **State/Data**: TanStack React Query for server state management
 - **UI Components**: shadcn/ui (new-york style) built on Radix UI primitives, styled with Tailwind CSS and CSS variables
@@ -23,14 +23,16 @@ Preferred communication style: Simple, everyday language.
 - **Path aliases**: `@/` maps to `client/src/`, `@shared/` maps to `shared/`, `@assets/` maps to `attached_assets/`
 
 ### Page Structure
-- `/` (Home) — Hero, about hotel, search form (dates + guests) → navigates to /search
+- `/` (Home) — One-page layout with sections:
+  1. Hero (hotel photo, 42vh)
+  2. Calculator (dates + guests form → navigates to /search)
+  3. About hotel
+  4. Rooms (8 room categories with cards)
+  5. Food (Ultra All Inclusive)
+  6. Beach
+  7. Infrastructure
+  8. Contacts (with Yandex Map)
 - `/search` — Filters rooms by capacity, shows pricing cards with cross-month calculation, booking modal
-- `/rooms` — All 8 room categories with descriptions, photos, capacity, link to calculator
-- `/food` — Ultra All Inclusive content (breakfast/lunch/dinner, snacks, BBQ)
-- `/beach` — Beach description with markers and gallery
-- `/infrastructure` — Amenities grid (parking, mini-golf, pool, etc.) with adults/kids sections
-- `/contacts` — Phone, email, Telegram, address cards
-
 ### Shared Room Data (`client/src/lib/roomData.ts`)
 Central module containing:
 - `ROOM_DATA` — 8 room categories with capacity, prices by month, descriptions, images
