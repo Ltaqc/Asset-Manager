@@ -62,14 +62,16 @@ export default function Home() {
           alt="AL MARE — отель с бассейном"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
-            AL MARE
-          </h1>
-          <p className="text-sm md:text-base text-white/90 mt-4 font-light tracking-widest uppercase" data-testid="text-hero-subtitle">
-            Ultra All Inclusive Resort
-          </p>
+          <div className="relative px-16 py-10">
+            <div className="absolute inset-0 rounded-full bg-black/25 blur-3xl scale-125 pointer-events-none" />
+            <h1 className="relative text-5xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
+              AL MARE
+            </h1>
+            <p className="relative text-xs md:text-sm text-white/85 mt-3 font-light tracking-[0.3em] uppercase" data-testid="text-hero-subtitle">
+              Ultra All Inclusive Resort
+            </p>
+          </div>
         </div>
       </header>
 
