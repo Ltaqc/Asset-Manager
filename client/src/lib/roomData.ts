@@ -11,6 +11,13 @@ import stdDoubleTv from "@assets/ChatGPT_Image_7_февр._2026_г.,_18_59_06_17
 import stdDoubleBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770481217285.png";
 import stdDoubleShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_19_10_23_1770481217291.png";
 import stdDoubleBalcony from "@assets/ChatGPT_Image_7_февр._2026_г.,_18_40_29_1770481217286.png";
+import familyBed from "@assets/ChatGPT_Image_7_февр._2026_г.,_20_26_22_1770487477771.png";
+import familyAngle from "@assets/ChatGPT_Image_7_февр._2026_г.,_20_05_05_1770487477767.png";
+import familyTv from "@assets/ChatGPT_Image_7_февр._2026_г.,_19_42_57_1770487477764.png";
+import familyDesk from "@assets/ChatGPT_Image_7_февр._2026_г.,_19_50_10_1770487477765.png";
+import familyBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770487477761.png";
+import familyShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770487477763.png";
+import familyBalcony from "@assets/ChatGPT_Image_7_февр._2026_г.,_20_11_45_1770487477770.png";
 
 export type RoomCategory = typeof roomCategories[number];
 
@@ -51,7 +58,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Номер для небольшой семьи или компании из трёх гостей. Двуспальная кровать дополнена комфортной дизайнерской софой, а балкон становится приятным продолжением жилого пространства.",
     area: 20,
     shortTitle: "Стандарт семейный",
-    image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&auto=format&fit=crop",
+    image: familyBed,
+    images: [familyBed, familyAngle, familyTv, familyDesk, familyBath, familyShower, familyBalcony],
   },
   "Джуниор Сьют с балконом": {
     cap: 4, count: 3, maxToddlers: 1,
