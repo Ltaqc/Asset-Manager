@@ -40,11 +40,13 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="relative"
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-primary mb-4" style={{ textShadow: "0 2px 16px rgba(255,255,255,0.7), 0 1px 3px rgba(255,255,255,0.5)" }}>
+            <div className="absolute inset-0 -inset-x-16 -inset-y-8 rounded-full" style={{ backdropFilter: "blur(8px) brightness(1.1) saturate(0.93)", WebkitBackdropFilter: "blur(8px) brightness(1.1) saturate(0.93)", maskImage: "radial-gradient(ellipse 70% 80% at 50% 50%, black 30%, transparent 70%)", WebkitMaskImage: "radial-gradient(ellipse 70% 80% at 50% 50%, black 30%, transparent 70%)" }} />
+            <h1 className="relative text-6xl md:text-8xl lg:text-9xl font-display font-bold text-primary mb-4" style={{ WebkitTextStroke: "1.5px rgba(0,0,0,0.12)" }}>
               AL MARE
             </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-primary/80 font-light tracking-widest uppercase" style={{ textShadow: "0 1px 8px rgba(255,255,255,0.6)" }}>
+            <p className="relative text-lg md:text-xl lg:text-2xl text-primary/75 font-light tracking-widest uppercase">
               Ultra All Inclusive Resort
             </p>
           </motion.div>
