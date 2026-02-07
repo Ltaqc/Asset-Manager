@@ -24,7 +24,12 @@ export function SectionHeading({ title, subtitle, light = false }: SectionHeadin
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className={`h-[2px] w-16 mx-auto rounded-full ${light ? 'bg-white/40' : 'bg-primary/30'}`}
+          className="h-[2px] w-24 mx-auto"
+          style={{
+            background: light
+              ? 'radial-gradient(ellipse at center, rgba(255,255,255,0.5) 0%, transparent 70%)'
+              : 'radial-gradient(ellipse at center, hsl(var(--primary) / 0.45) 0%, transparent 70%)',
+          }}
         />
       )}
       {subtitle && (
