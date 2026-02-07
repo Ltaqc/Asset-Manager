@@ -82,16 +82,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <footer className="bg-slate-900 text-white py-16" data-testid="section-footer">
+      <footer className="bg-slate-900 text-white py-20" data-testid="section-footer">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-16">
+            <div className="space-y-8">
               <h2 className="text-4xl font-display font-bold text-primary">AL MARE</h2>
-              <p className="text-slate-400 max-w-md">
-                Откройте для себя безграничный комфорт курортного отеля AL MARE.
-                Там, где небо встречается с морем, начинается ваш идеальный отпуск.
+              <p className="text-slate-300 max-w-md leading-relaxed text-base">
+                AL MARE — курортный отель в станице Голубицкая для спокойного отдыха у моря.
+                Комфортные номера, продуманная инфраструктура и внимательное отношение к гостям.
               </p>
-              <div className="space-y-4 pt-4">
+              <div className="space-y-5 pt-2">
                 <div className="flex items-center gap-4 text-slate-300">
                   <MapPin className="text-primary w-5 h-5 shrink-0" />
                   <span>ст. Голубицкая, ул. Набережная, д. 7</span>
@@ -107,11 +107,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
 
-            <div className="bg-white/5 p-8 rounded-2xl border border-white/10">
-              <h3 className="text-xl font-bold mb-4">Навигация</h3>
-              <div className="grid grid-cols-2 gap-4 text-slate-400">
+            <div>
+              <h3 className="text-xl font-display font-bold text-primary mb-6">Разделы сайта</h3>
+              <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                 {NAV_ITEMS.map((item) => (
-                  <Link key={item.path} href={item.path} className="hover:text-primary transition-colors">
+                  <Link key={item.path} href={item.path} className="text-slate-300 hover:text-primary transition-colors text-base leading-relaxed">
                     {item.label}
                   </Link>
                 ))}
@@ -119,7 +119,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          <div className="border-t border-white/10 mt-12 pt-8 text-center text-slate-500 text-sm">
+          <div className="border-t border-white/10 mt-16 pt-8 text-center text-slate-500 text-sm">
             &copy; {new Date().getFullYear()} AL MARE Resort. Все права защищены.
           </div>
         </div>
