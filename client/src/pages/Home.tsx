@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { SectionHeading } from "@/components/SectionHeading";
 import { motion } from "framer-motion";
 import { getDefaultCheckIn, getDefaultCheckOut } from "@/lib/roomData";
+import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_40_53_1770460891772.png";
 
 export default function Home() {
   const [, navigate] = useLocation();
@@ -32,9 +33,8 @@ export default function Home() {
   return (
     <>
       <header className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white -z-20" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?q=80&w=2574&auto=format&fit=crop')] bg-cover bg-center -z-10 opacity-30" />
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white to-transparent opacity-80 z-0" />
+        <img src={heroImage} alt="AL MARE — отель с бассейном" className="absolute inset-0 w-full h-full object-cover object-center -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 -z-[5]" />
 
         <div className="container px-4 text-center z-10 space-y-8">
           <motion.div
@@ -42,10 +42,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-primary mb-4">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-white mb-4 drop-shadow-lg">
               AL MARE
             </h1>
-            <p className="text-xl md:text-2xl lg:text-3xl text-foreground/80 font-light tracking-widest uppercase">
+            <p className="text-xl md:text-2xl lg:text-3xl text-white/90 font-light tracking-widest uppercase drop-shadow-md">
               Ultra All Inclusive Resort
             </p>
           </motion.div>
