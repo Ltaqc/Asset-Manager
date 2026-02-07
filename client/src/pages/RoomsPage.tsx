@@ -59,7 +59,7 @@ export default function RoomsPage() {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground pt-1">
                       <span className="flex items-center gap-1.5">
                         <Maximize2 className="w-3.5 h-3.5 text-primary/60" />
-                        {info.area} m{"\u00B2"}
+                        {info.area} м²
                       </span>
                       <span className="flex items-center gap-1.5">
                         <Users className="w-3.5 h-3.5 text-primary/60" />
