@@ -1,0 +1,53 @@
+TASK:
+Update the room description for the room category
+"Стандарт с раздвижной двуспальной кроватью и балконом"
+so that the updated text is applied consistently across ALL places where this room is rendered:
+- Rooms listing section ("Наши номера")
+- Room selection / price calculation page ("Подбор номеров")
+- Any shared components, data sources, or API responses
+
+IMPORTANT:
+This room description must be updated in the SINGLE SOURCE OF TRUTH
+(database record, JSON config, CMS entry, or data object),
+NOT via duplicated hardcoded text.
+
+────────────────────────────────────
+REQUIRED ROOM CARD STRUCTURE:
+────────────────────────────────────
+
+Room title:
+Стандарт с раздвижной двуспальной кроватью и балконом
+
+Short premium description (2–3 sentences, calm resort tone):
+Тёплое, уютное пространство для спокойного отдыха вдвоём. 
+Раздвижная двуспальная кровать позволяет гибко настроить комфорт, 
+а балкон наполняет номер светом и ощущением курортной свободы.
+
+Separate technical lines (must NOT be inside the paragraph):
+• Площадь номера — 16 м²  
+• Вместимость — до 2 гостей  
+
+────────────────────────────────────
+CONTENT RULES (STRICT):
+────────────────────────────────────
+- Do NOT start text with “Уютный номер…”
+- Do NOT reuse wording from other room categories
+- Do NOT mention marketing phrases or sales clichés
+- Focus on atmosphere, light, flexibility of the bed, balcony feeling
+- Text must sound premium, calm, resort-oriented
+- Neutral universal description (not tied to a specific photo)
+- Russian language, correct typography, no long complex sentences
+
+────────────────────────────────────
+TECHNICAL REQUIREMENTS:
+────────────────────────────────────
+- Ensure the updated description is reflected BOTH:
+  1) in the rooms grid
+  2) in the price calculation / search results page
+- If multiple components consume the same data,
+  update the shared data source instead of UI-only changes
+- After update, verify visually that BOTH sections display the new text
+
+RESULT:
+A single updated room description,
+consistently rendered across the entire site.
