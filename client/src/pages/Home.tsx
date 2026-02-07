@@ -58,7 +58,7 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
             AL MARE
           </h1>
-          <p className="text-lg md:text-xl text-white/90 mt-2 font-light tracking-widest uppercase" data-testid="text-hero-subtitle">
+          <p className="text-sm md:text-base text-white/90 mt-4 font-light tracking-widest uppercase" data-testid="text-hero-subtitle">
             Ultra All Inclusive Resort
           </p>
         </div>
@@ -181,6 +181,7 @@ export default function Home() {
                   "Напитки в течение дня",
                   "Пользование пляжем и шезлонгами",
                   "Доступ к инфраструктуре отеля",
+                  "Верёвочный парк для гостей отеля",
                   "Развлечения и активности для гостей",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3 text-muted-foreground">
@@ -309,14 +310,15 @@ export default function Home() {
             <p className="text-lg text-muted-foreground leading-relaxed text-center">
               На территории отеля предусмотрены развлечения для спокойного и активного отдыха:
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto pt-4">
+            <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto pt-4">
               {[
                 { icon: CircleDot, label: "Бильярд" },
                 { icon: Sun, label: "Мини-гольф" },
-                { icon: TreePine, label: "Зоны отдыха" },
+                { icon: TreePine, label: "Верёвочный парк" },
+                { icon: Waves, label: "Зоны отдыха" },
                 { icon: Footprints, label: "Ухоженная территория" },
               ].map((item, i) => (
-                <div key={i} className="flex flex-col items-center text-center space-y-4 p-6 rounded-2xl">
+                <div key={i} className="flex flex-col items-center text-center space-y-4 p-6 rounded-2xl w-36">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
                     <item.icon className="w-8 h-8" />
                   </div>
