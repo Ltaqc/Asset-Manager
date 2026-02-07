@@ -24,7 +24,7 @@ export function SectionHeading({ title, subtitle, light = false }: SectionHeadin
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className={`h-1 w-24 mx-auto rounded-full ${light ? 'bg-white/50' : 'bg-accent/30'}`}
+          className={`h-[2px] w-16 mx-auto rounded-full ${light ? 'bg-white/40' : 'bg-primary/30'}`}
         />
       )}
       {subtitle && (
