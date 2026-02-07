@@ -6,8 +6,8 @@ declare global {
   }
 }
 
-const HOTEL_COORDS = [45.3225, 37.2685];
-const MAP_ZOOM = 16;
+const HOTEL_COORDS = [45.326978, 37.290373];
+const MAP_ZOOM = 15;
 
 export function YandexMap({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -23,13 +23,22 @@ export function YandexMap({ className }: { className?: string }) {
         controls: ["zoomControl"],
       }, {
         suppressMapOpenBlock: true,
+        suppressObsoleteBrowserNotifier: true,
       });
 
       map.behaviors.enable(["drag", "scrollZoom", "multiTouch"]);
+      map.behaviors.disable(["rightMouseButtonMagnifier"]);
 
       const placemark = new window.ymaps.Placemark(HOTEL_COORDS, {}, {
         preset: "islands#blueHotelIcon",
         iconColor: "#0891b2",
+        hasBalloon: false,
+        hasHint: false,
+        openBalloonOnClick: false,
+      });
+
+      placemark.events.add("click", (e: any) => {
+        e.preventDefault();
       });
 
       map.geoObjects.add(placemark);

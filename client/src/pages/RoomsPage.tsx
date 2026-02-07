@@ -14,7 +14,11 @@ export default function RoomsPage() {
     setLocation("/");
     setTimeout(() => {
       const el = document.getElementById("calculator");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      if (el) {
+        const navHeight = 80;
+        const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
     }, 100);
   };
 

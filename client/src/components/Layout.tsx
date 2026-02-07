@@ -33,7 +33,7 @@ function scrollToSection(anchor: string) {
   }
   const el = document.getElementById(anchor);
   if (el) {
-    const navHeight = 64;
+    const navHeight = 80;
     const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
     window.scrollTo({ top, behavior: "smooth" });
   }
@@ -90,7 +90,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <MaxIcon className="w-4 h-4" />
                 </a>
               </div>
-              <a href="https://yandex.ru/maps/org/al_mare/70147997197/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs hover:text-primary transition-colors" data-testid="link-address-header">
+              <a href="https://yandex.ru/maps/?rtext=~45.326978,37.290373&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs hover:text-primary transition-colors" data-testid="link-address-header">
                 <MapPin className="w-3.5 h-3.5" />
                 ст. Голубицкая, ул. Набережная, д. 7
               </a>
@@ -117,7 +117,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 Комфортные номера, продуманная инфраструктура и внимательное отношение к гостям.
               </p>
               <div className="space-y-5 pt-2">
-                <a href="https://yandex.ru/maps/org/al_mare/70147997197/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors" data-testid="link-address-footer">
+                <a href="https://yandex.ru/maps/?rtext=~45.326978,37.290373&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors" data-testid="link-address-footer">
                   <MapPin className="text-primary w-5 h-5 shrink-0" />
                   <span>ст. Голубицкая, ул. Набережная, д. 7</span>
                 </a>
