@@ -1,0 +1,73 @@
+TASK:
+Fix room images for the category
+“Стандарт с раздвижной двуспальной кроватью и балконом”.
+
+────────────────────────────────────
+CURRENT PROBLEM:
+────────────────────────────────────
+Only ONE image is displayed for this room category,
+even though MULTIPLE images were uploaded.
+
+Images are already present in assets, but:
+- they are NOT rendered
+- only the first / default image is shown
+
+────────────────────────────────────
+REQUIRED FIX:
+────────────────────────────────────
+1. Locate the room category:
+   "Стандарт с раздвижной двуспальной кроватью и балконом"
+
+2. Ensure this category uses an IMAGES ARRAY, not a single image.
+
+Example (conceptually):
+room.images = [
+  "/assets/rooms/standard-sliding-balcony/1.jpg",
+  "/assets/rooms/standard-sliding-balcony/2.jpg",
+  "/assets/rooms/standard-sliding-balcony/3.jpg"
+]
+
+3. Replace any single-image usage:
+   ❌ room.image
+   ❌ hardcoded src
+   ❌ default placeholder
+
+   ✅ Use room.images[]
+
+────────────────────────────────────
+FRONTEND REQUIREMENTS:
+────────────────────────────────────
+- In section “Наши номера”:
+  → show the FIRST image from the images array
+
+- In price / room selection page:
+  → use the SAME images array
+  → no mismatches between sections
+
+- If multiple images exist:
+  → NEVER fallback to a default image
+
+────────────────────────────────────
+STRICT RULES:
+────────────────────────────────────
+- No hardcoded image paths
+- No placeholders if images exist
+- Images must be linked by ROOM CATEGORY ID
+- Logic must work identically in:
+  • “Номера”
+  • “Подбор номеров / Рассчитать стоимость”
+
+────────────────────────────────────
+FINAL CHECK:
+────────────────────────────────────
+After fix:
+- Upload 3–5 images for this category
+- Reload site
+- Confirm:
+  ✔ Only this room shows its own photos
+  ✔ Photos change when category changes
+  ✔ No duplicated photos between categories
+
+RESULT:
+Room category correctly displays all uploaded images
+using dynamic image binding.

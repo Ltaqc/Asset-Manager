@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "@/components/SectionHeading";
+import { RoomImageCarousel } from "@/components/RoomImageCarousel";
 import { Users, AlertCircle, Loader2, Maximize2 } from "lucide-react";
 import { roomCategories } from "@shared/schema";
 import { useCreateBooking } from "@/hooks/use-bookings";
@@ -173,11 +174,15 @@ export default function SearchPage() {
                   return (
                     <Card key={category} className="room-card overflow-hidden border-border/50 shadow-md flex flex-col" data-testid={`card-room-${category}`}>
                       <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-                        <img
-                          src={info.image}
-                          alt={category}
-                          className="room-card-img w-full h-full object-cover"
-                        />
+                        {info.images && info.images.length > 1 ? (
+                          <RoomImageCarousel images={info.images} alt={category} className="room-card-img w-full h-full object-cover" />
+                        ) : (
+                          <img
+                            src={info.image}
+                            alt={category}
+                            className="room-card-img w-full h-full object-cover"
+                          />
+                        )}
                         <div className="absolute top-4 right-4">
                           <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-primary font-bold shadow-sm">
                             <Users className="w-3 h-3 mr-1" /> до {info.cap} чел.

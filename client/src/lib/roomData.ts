@@ -1,4 +1,10 @@
 import { roomCategories } from "@shared/schema";
+import stdSlidingMain from "@assets/гостевой_дом_АЛЬМАРЕ-105_1770476132083.png";
+import stdSlidingTwin from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_57_32_1770476132080.png";
+import stdSlidingTv from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_26_30_1770476132078.png";
+import stdSlidingDesk from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_21_45_1770476132077.png";
+import stdSlidingBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770476132081.png";
+import stdSlidingShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770476132082.png";
 
 export type RoomCategory = typeof roomCategories[number];
 
@@ -11,6 +17,7 @@ export interface RoomInfo {
   area: number;
   shortTitle: string;
   image: string;
+  images?: string[];
 }
 
 export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
@@ -28,7 +35,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Тёплое, уютное пространство для спокойного отдыха вдвоём. Раздвижная двуспальная кровать позволяет гибко настроить комфорт, а балкон наполняет номер светом и ощущением курортной свободы.",
     area: 16,
     shortTitle: "Стандарт (раздвижная кровать)",
-    image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&auto=format&fit=crop",
+    image: stdSlidingMain,
+    images: [stdSlidingMain, stdSlidingTwin, stdSlidingTv, stdSlidingDesk, stdSlidingBath, stdSlidingShower],
   },
   "Стандарт семейный с балконом": {
     cap: 3, count: 6, maxToddlers: 1,
