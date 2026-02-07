@@ -58,10 +58,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <span>info@almare.ru</span>
               </a>
               <div className="flex items-center gap-2">
-                <a href="https://t.me/almare" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-telegram">
+                <a href="https://t.me/almare" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-telegram" title="Telegram">
                   <Send className="w-4 h-4" />
                 </a>
-                <a href="#" className="hover:text-primary transition-colors" data-testid="link-max">
+                <a href="#" className="hover:text-primary transition-colors" data-testid="link-max" title="MAX">
                   <MaxIcon className="w-4 h-4" />
                 </a>
               </div>
