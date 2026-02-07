@@ -5,6 +5,7 @@ import stdSlidingTv from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_26_30_1
 import stdSlidingDesk from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_21_45_1770476132077.png";
 import stdSlidingBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770476132081.png";
 import stdSlidingShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770476132082.png";
+import stdSlidingBalcony from "@assets/ChatGPT_Image_7_февр._2026_г.,_18_40_29_1770478889211.png";
 
 export type RoomCategory = typeof roomCategories[number];
 
@@ -36,7 +37,7 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     area: 16,
     shortTitle: "Стандарт (раздвижная кровать)",
     image: stdSlidingTwin,
-    images: [stdSlidingTwin, stdSlidingMain, stdSlidingTv, stdSlidingDesk, stdSlidingBath, stdSlidingShower],
+    images: [stdSlidingTwin, stdSlidingMain, stdSlidingTv, stdSlidingDesk, stdSlidingBath, stdSlidingShower, stdSlidingBalcony],
   },
   "Стандарт семейный с балконом": {
     cap: 3, count: 6, maxToddlers: 1,
