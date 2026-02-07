@@ -6,6 +6,11 @@ import stdSlidingDesk from "@assets/ChatGPT_Image_7_февр._2026_г.,_14_21_45
 import stdSlidingBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770476132081.png";
 import stdSlidingShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770476132082.png";
 import stdSlidingBalcony from "@assets/ChatGPT_Image_7_февр._2026_г.,_18_40_29_1770478889211.png";
+import stdDoubleBed from "@assets/ChatGPT_Image_7_февр._2026_г.,_18_45_40_1770481217287.png";
+import stdDoubleTv from "@assets/ChatGPT_Image_7_февр._2026_г.,_18_59_06_1770481217289.png";
+import stdDoubleBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770481217285.png";
+import stdDoubleShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_19_10_23_1770481217291.png";
+import stdDoubleBalcony from "@assets/ChatGPT_Image_7_февр._2026_г.,_18_40_29_1770481217286.png";
 
 export type RoomCategory = typeof roomCategories[number];
 
@@ -28,7 +33,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Светлое пространство для двоих с видом на курортную территорию. Двуспальная кровать, продуманная эргономика и собственный балкон создают идеальные условия для спокойного отдыха у моря.",
     area: 16,
     shortTitle: "Стандарт",
-    image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&auto=format&fit=crop",
+    image: stdDoubleBed,
+    images: [stdDoubleBed, stdDoubleTv, stdDoubleBath, stdDoubleShower, stdDoubleBalcony],
   },
   "Стандарт с раздвижной двуспальной кроватью и балконом": {
     cap: 2, count: 3, maxToddlers: 1,
