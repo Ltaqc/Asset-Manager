@@ -1,5 +1,5 @@
 import { SectionHeading } from "@/components/SectionHeading";
-import { Waves, Utensils, Sun, Umbrella, Users, Car, TreePine, ShowerHead } from "lucide-react";
+import { Car, Sun, TreePine, ShowerHead, Wifi } from "lucide-react";
 
 export default function InfrastructurePage() {
   return (
@@ -8,19 +8,16 @@ export default function InfrastructurePage() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Инфраструктура"
-            subtitle="Всё необходимое для незабываемого отдыха на территории отеля"
+            subtitle="Всё необходимое для комфортного отдыха на территории отеля"
           />
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 max-w-4xl mx-auto">
             {[
-              { icon: Car, label: "Парковка включена" },
-              { icon: Waves, label: "Бассейн" },
-              { icon: TreePine, label: "Зоны отдыха" },
-              { icon: Users, label: "Детский клуб" },
-              { icon: ShowerHead, label: "Душ и туалет" },
-              { icon: Umbrella, label: "Лежаки" },
+              { icon: Car, label: "Парковка (включена)" },
               { icon: Sun, label: "Мини-гольф" },
-              { icon: Utensils, label: "3 ресторана" },
+              { icon: TreePine, label: "Зоны отдыха" },
+              { icon: ShowerHead, label: "Душ, туалет, лежаки" },
+              { icon: Wifi, label: "Wi-Fi" },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center text-center space-y-4 p-6 rounded-2xl">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
@@ -36,21 +33,20 @@ export default function InfrastructurePage() {
               <div className="bg-secondary/20 rounded-2xl p-8 space-y-4">
                 <h3 className="text-xl font-display font-bold text-primary">Для взрослых</h3>
                 <ul className="space-y-2 text-muted-foreground">
-                  <li>Бассейн с подогревом</li>
                   <li>Зона барбекю</li>
                   <li>Мини-гольф</li>
                   <li>Бесплатная парковка</li>
                   <li>Wi-Fi на территории</li>
+                  <li>Зоны отдыха</li>
                 </ul>
               </div>
               <div className="bg-secondary/20 rounded-2xl p-8 space-y-4">
                 <h3 className="text-xl font-display font-bold text-primary">Для детей</h3>
                 <ul className="space-y-2 text-muted-foreground">
-                  <li>Детский клуб с аниматорами</li>
-                  <li>Детский бассейн</li>
                   <li>Игровая площадка</li>
                   <li>Детское меню в ресторанах</li>
                   <li>Безопасная территория</li>
+                  <li>Зоны отдыха для всей семьи</li>
                 </ul>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { SectionHeading } from "@/components/SectionHeading";
-import { Footprints, Umbrella, ShowerHead, Users } from "lucide-react";
+import { Footprints, Umbrella, Users } from "lucide-react";
 
 export default function BeachPage() {
   return (
@@ -7,31 +7,26 @@ export default function BeachPage() {
       <section className="py-24 bg-blue-50/50">
         <div className="container mx-auto px-4">
           <SectionHeading
-            title="Пляж AL MARE"
-            subtitle="Спокойный отдых у самого моря"
+            title="Пляж"
+            subtitle="Спокойный отдых у моря"
           />
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             <div className="space-y-6">
               <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
                 <p>
-                  Отель AL MARE расположен рядом с морем — до пляжа можно дойти пешком.
-                  Гостей ждёт спокойный пляжный отдых: просторная береговая линия, комфортный вход в море и возможность провести весь день у воды.
+                  Отель AL MARE расположен в пешей доступности от моря.
+                  Пляж подойдёт для спокойного отдыха, прогулок у воды и отдыха с детьми.
                 </p>
                 <p>
-                  Для гостей предусмотрены лежаки и базовая пляжная инфраструктура.
-                  После моря можно вернуться в отель, принять душ и продолжить отдых в формате Ultra All Inclusive.
-                </p>
-                <p>
-                  Пляж подходит для семей с детьми и для гостей, ценящих размеренный отдых.
+                  После моря гости могут вернуться в отель, принять душ и продолжить отдых в комфортной атмосфере.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 pt-4">
+              <div className="grid grid-cols-1 gap-4 pt-4">
                 {[
                   { icon: Footprints, label: "Пешком до моря" },
                   { icon: Umbrella, label: "Спокойная пляжная зона" },
-                  { icon: ShowerHead, label: "Душ и удобства на территории" },
-                  { icon: Users, label: "Комфортно для детей и взрослых" },
+                  { icon: Users, label: "Подходит для семейного отдыха" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3 text-foreground/80">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
