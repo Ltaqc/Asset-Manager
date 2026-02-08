@@ -3,8 +3,12 @@ import { Phone, Mail, MapPin, Send } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Главная", anchor: "hero" },
+  { label: "Об отеле", anchor: "about" },
+  { label: "All Inclusive", anchor: "uai" },
+  { label: "Питание", anchor: "food" },
+  { label: "Пляж", anchor: "beach" },
+  { label: "Инфраструктура", anchor: "infrastructure" },
   { label: "Номера", anchor: "rooms" },
-  { label: "Территория", anchor: "territory" },
   { label: "Контакты", anchor: "contacts" },
 ];
 
