@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { GuestCounter } from "@/components/GuestCounter";
 import { roomCategories } from "@shared/schema";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import { Loader2, Calculator as CalcIcon } from "lucide-react";
@@ -192,50 +193,10 @@ export function Calculator() {
               <div className="space-y-3 pt-2">
                 <Label className="text-primary font-semibold">Состав гостей</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground">Взрослые (18+)</Label>
-                    <Input
-                      data-testid="input-adults"
-                      type="number"
-                      min={1}
-                      value={adults}
-                      onChange={(e) => setAdults(Math.max(1, Number(e.target.value)))}
-                      className="bg-secondary/30"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground">Подростки (13-18)</Label>
-                    <Input
-                      data-testid="input-teens"
-                      type="number"
-                      min={0}
-                      value={teens}
-                      onChange={(e) => setTeens(Math.max(0, Number(e.target.value)))}
-                      className="bg-secondary/30"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground">Дети (2-13)</Label>
-                    <Input
-                      data-testid="input-children"
-                      type="number"
-                      min={0}
-                      value={children}
-                      onChange={(e) => setChildren(Math.max(0, Number(e.target.value)))}
-                      className="bg-secondary/30"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label className="text-xs text-muted-foreground">Малыши (0-2)</Label>
-                    <Input
-                      data-testid="input-toddlers"
-                      type="number"
-                      min={0}
-                      value={toddlers}
-                      onChange={(e) => setToddlers(Math.max(0, Number(e.target.value)))}
-                      className="bg-secondary/30"
-                    />
-                  </div>
+                  <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="input-adults" />
+                  <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="input-teens" />
+                  <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="input-children" />
+                  <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={1} data-testid="input-toddlers" />
                 </div>
               </div>
 

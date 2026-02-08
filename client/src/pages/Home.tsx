@@ -15,6 +15,7 @@ import {
   Phone, Mail, MapPin, Navigation,
   CheckCircle2, CircleDot,
 } from "lucide-react";
+import { GuestCounter } from "@/components/GuestCounter";
 import {
   GlassIcon, ChickenWingIcon, PopsicleIcon,
   SunloungerIcon, RopeParkIcon, BilliardIcon, MiniGolfIcon,
@@ -96,7 +97,7 @@ export default function Home() {
   return (
     <>
       {/* 1. Hero */}
-      <header id="hero" className="relative h-[42vh] overflow-hidden">
+      <header id="hero" className="relative h-[36vh] md:h-[42vh] overflow-hidden">
         <img
           src={heroImage}
           alt="AL MARE — отель с бассейном"
@@ -104,13 +105,14 @@ export default function Home() {
           loading="eager"
           decoding="async"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <div className="relative px-16 py-10">
-            <div className="absolute inset-0 rounded-full bg-black/60 blur-3xl scale-125 pointer-events-none" />
-            <h1 className="relative text-5xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
+          <div className="relative px-10 md:px-16 py-8 md:py-10">
+            <div className="absolute inset-0 rounded-full bg-black/50 blur-3xl scale-125 pointer-events-none" />
+            <h1 className="relative text-4xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
               AL MARE
             </h1>
-            <p className="relative text-xs md:text-sm text-white/85 mt-3 font-light tracking-[0.3em] uppercase" data-testid="text-hero-subtitle">
+            <p className="relative text-[10px] md:text-sm text-white/85 mt-2 md:mt-3 font-light tracking-[0.25em] md:tracking-[0.3em] uppercase" data-testid="text-hero-subtitle">
               Ultra All Inclusive Resort
             </p>
           </div>
@@ -118,14 +120,14 @@ export default function Home() {
       </header>
 
       {/* 2. Calculator */}
-      <section id="calculator" className="pt-16 pb-10 bg-white scroll-mt-16" data-testid="section-search-form">
+      <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-white scroll-mt-16" data-testid="section-search-form">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Рассчитайте стоимость проживания"
             subtitle="Укажите даты и состав гостей, чтобы увидеть подходящие номера с ценами"
           />
 
-          <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-6 md:p-8 space-y-6">
+          <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Дата заезда</Label>
@@ -160,22 +162,10 @@ export default function Home() {
             <div className="space-y-3">
               <Label className="text-primary font-semibold">Состав гостей</Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground">Взрослые (18+)</Label>
-                  <Input data-testid="input-adults" type="number" min={1} value={adults} onChange={(e) => setAdults(Math.max(1, Number(e.target.value)))} className="bg-secondary/30" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground">Подростки (13-18)</Label>
-                  <Input data-testid="input-teens" type="number" min={0} value={teens} onChange={(e) => setTeens(Math.max(0, Number(e.target.value)))} className="bg-secondary/30" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground">Дети (2-13)</Label>
-                  <Input data-testid="input-children" type="number" min={0} value={children} onChange={(e) => setChildren(Math.max(0, Number(e.target.value)))} className="bg-secondary/30" />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs text-muted-foreground">Малыши (0-2)</Label>
-                  <Input data-testid="input-toddlers" type="number" min={0} value={toddlers} onChange={(e) => setToddlers(Math.max(0, Number(e.target.value)))} className="bg-secondary/30" />
-                </div>
+                <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="input-adults" />
+                <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="input-teens" />
+                <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="input-children" />
+                <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={1} data-testid="input-toddlers" />
               </div>
             </div>
 
@@ -191,14 +181,14 @@ export default function Home() {
       </section>
 
       {/* 3. Rooms (moved up) */}
-      <section id="rooms" className="py-24 bg-secondary/20 scroll-mt-16">
+      <section id="rooms" className="py-14 md:py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Наши номера"
             subtitle="Элегантность и комфорт в каждой детали. Выберите подходящий вариант размещения для идеального отдыха."
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {roomCategories.map((category) => {
               const info = ROOM_DATA[category];
               return (
@@ -246,7 +236,7 @@ export default function Home() {
       </section>
 
       {/* 4. About */}
-      <section id="about" className="py-24 bg-white scroll-mt-16">
+      <section id="about" className="py-14 md:py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Об отеле"
@@ -267,7 +257,7 @@ export default function Home() {
       </section>
 
       {/* 5. Ultra All Inclusive */}
-      <section id="uai" className="py-24 bg-secondary/20 scroll-mt-16">
+      <section id="uai" className="py-14 md:py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Ultra All Inclusive в AL MARE"
@@ -304,15 +294,15 @@ export default function Home() {
       </section>
 
       {/* 6. Food */}
-      <section id="food" className="py-24 bg-white scroll-mt-16">
+      <section id="food" className="py-14 md:py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Питание в AL MARE"
             subtitle="Индивидуальное обслуживание по меню — свежесть и качество в каждом блюде"
           />
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="space-y-6">
-              <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
+            <div className="order-2 md:order-1 space-y-5 md:space-y-6">
+              <div className="text-base md:text-lg text-muted-foreground leading-relaxed space-y-4">
                 <p>
                   В AL MARE питание организовано в формате обслуживания по меню.
                   Гости выбирают блюда, а мы готовим их индивидуально — это позволяет сохранить высокое качество, свежесть и красивую подачу.
@@ -337,7 +327,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+            <div className="order-1 md:order-2 rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
               <RoomImageCarousel
                 images={FOOD_GALLERY}
                 alt="Ресторан AL MARE"
@@ -349,15 +339,15 @@ export default function Home() {
       </section>
 
       {/* 7. Beach */}
-      <section id="beach" className="py-24 bg-secondary/20 scroll-mt-16">
+      <section id="beach" className="py-14 md:py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Пляж и отдых у моря"
             subtitle="Комфортный отдых у воды"
           />
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="space-y-6">
-              <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
+            <div className="order-2 md:order-1 space-y-5 md:space-y-6">
+              <div className="text-base md:text-lg text-muted-foreground leading-relaxed space-y-4">
                 <p>
                   Для гостей AL MARE пляж — это часть комфортного отдыха.
                   Мы позаботились о том, чтобы вы могли просто наслаждаться морем.
@@ -396,7 +386,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+            <div className="order-1 md:order-2 rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
               <RoomImageCarousel
                 images={BEACH_GALLERY}
                 alt="Пляж AL MARE"
@@ -408,7 +398,7 @@ export default function Home() {
       </section>
 
       {/* 8. Infrastructure & Territory (merged) */}
-      <section id="infrastructure" className="py-24 bg-white scroll-mt-16">
+      <section id="infrastructure" className="py-14 md:py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Инфраструктура и развлечения"
@@ -416,12 +406,12 @@ export default function Home() {
           />
 
           <div className="max-w-6xl mx-auto space-y-10">
-            <p className="text-lg text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
               На территории отеля предусмотрена продуманная инфраструктура для комфортного отдыха всей семьи — от расслабляющих зон до активных развлечений на свежем воздухе.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-10 items-start">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-start">
+              <div className="order-2 md:order-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 {[
                   { icon: BilliardIcon, label: "Бильярд", desc: "Спокойный отдых в уютной атмосфере" },
                   { icon: MiniGolfIcon, label: "Мини-гольф", desc: "Увлекательное развлечение для всей семьи" },
@@ -442,7 +432,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <div className="rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+              <div className="order-1 md:order-2 rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
                 <RoomImageCarousel
                   images={TERRITORY_GALLERY}
                   alt="Территория AL MARE"
@@ -455,7 +445,7 @@ export default function Home() {
       </section>
 
       {/* 10. Contacts */}
-      <section id="contacts" className="py-24 bg-white scroll-mt-16">
+      <section id="contacts" className="py-14 md:py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Контакты"
@@ -504,7 +494,7 @@ export default function Home() {
 
               <div className="space-y-4">
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-border/30">
-                  <YandexMap className="w-full h-[400px]" />
+                  <YandexMap className="w-full h-[280px] md:h-[400px]" />
                 </div>
                 <a
                   href="https://yandex.ru/maps/?rtext=~45.326978,37.290373&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7"

@@ -6,19 +6,22 @@ export function FloatingContact() {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    if (!open) return;
+    function handleClickOutside(e: MouseEvent | TouchEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     }
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, [open]);
 
   return (
-    <div ref={menuRef} className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3" data-testid="floating-contact">
+    <div ref={menuRef} className="fixed bottom-5 right-4 md:bottom-6 md:right-6 z-40 flex flex-col items-end gap-3" data-testid="floating-contact">
       <div
         className={`flex flex-col gap-2 transition-all duration-300 origin-bottom-right ${
           open ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-90 translate-y-2 pointer-events-none"
@@ -26,10 +29,10 @@ export function FloatingContact() {
       >
         <a
           href="tel:+79184710374"
-          className="flex items-center gap-3 bg-white rounded-xl shadow-lg border border-border/40 px-4 py-3 transition-all duration-200 hover:shadow-xl group"
+          className="flex items-center gap-3 bg-white rounded-xl shadow-lg border border-border/40 px-4 py-3 transition-all duration-200 active:bg-secondary/50 group min-h-[48px]"
           data-testid="floating-call"
         >
-          <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-green-500/20">
+          <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
             <Phone className="w-5 h-5 text-green-600" />
           </div>
           <div className="pr-2">
@@ -43,9 +46,9 @@ export function FloatingContact() {
           data-testid="floating-chat"
           data-chat-integration="n8n"
           data-chat-ready="false"
-          className="flex items-center gap-3 bg-white rounded-xl shadow-lg border border-border/40 px-4 py-3 transition-all duration-200 hover:shadow-xl group text-left"
+          className="flex items-center gap-3 bg-white rounded-xl shadow-lg border border-border/40 px-4 py-3 transition-all duration-200 active:bg-secondary/50 group text-left min-h-[48px]"
         >
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 transition-colors group-hover:bg-primary/20">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
             <MessageCircle className="w-5 h-5 text-primary" />
           </div>
           <div className="pr-2">
@@ -61,7 +64,7 @@ export function FloatingContact() {
         className={`w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 ${
           open
             ? "bg-foreground/90 text-white rotate-0"
-            : "bg-primary text-white hover:shadow-xl hover:scale-105"
+            : "bg-primary text-white active:scale-95"
         }`}
         aria-label={open ? "Закрыть меню связи" : "Связаться с нами"}
       >

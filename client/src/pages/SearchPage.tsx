@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "@/components/SectionHeading";
 import { RoomImageCarousel } from "@/components/RoomImageCarousel";
 import { Users, AlertCircle, Loader2, Maximize2 } from "lucide-react";
+import { GuestCounter } from "@/components/GuestCounter";
 import { roomCategories } from "@shared/schema";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import {
@@ -113,7 +114,7 @@ export default function SearchPage() {
                     setCheckOut(d.toISOString().split("T")[0]);
                   }
                 }}
-                className="bg-secondary/30 border-primary/20"
+                className="h-12 bg-secondary/30 border-primary/20"
               />
             </div>
             <div className="space-y-1.5">
@@ -124,25 +125,13 @@ export default function SearchPage() {
                 value={checkOut}
                 min={checkIn}
                 onChange={(e) => setCheckOut(e.target.value)}
-                className="bg-secondary/30 border-primary/20"
+                className="h-12 bg-secondary/30 border-primary/20"
               />
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs text-muted-foreground">Взрослые (18+)</Label>
-              <Input data-testid="search-adults" type="number" min={1} value={adults} onChange={(e) => setAdults(Math.max(1, Number(e.target.value)))} className="bg-secondary/30" />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs text-muted-foreground">Подростки (13-18)</Label>
-              <Input data-testid="search-teens" type="number" min={0} value={teens} onChange={(e) => setTeens(Math.max(0, Number(e.target.value)))} className="bg-secondary/30" />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs text-muted-foreground">Дети (2-13)</Label>
-              <Input data-testid="search-children" type="number" min={0} value={children} onChange={(e) => setChildren(Math.max(0, Number(e.target.value)))} className="bg-secondary/30" />
-            </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs text-muted-foreground">Малыши (0-2)</Label>
-              <Input data-testid="search-toddlers" type="number" min={0} value={toddlers} onChange={(e) => setToddlers(Math.max(0, Number(e.target.value)))} className="bg-secondary/30" />
-            </div>
+            <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="search-adults" />
+            <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="search-teens" />
+            <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="search-children" />
+            <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={1} data-testid="search-toddlers" />
           </div>
         </div>
       </section>
@@ -168,7 +157,7 @@ export default function SearchPage() {
               <p className="text-muted-foreground mb-8" data-testid="text-results-count">
                 Найдено подходящих категорий: {suitableRooms.length}
               </p>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {suitableRooms.map(({ category, result }) => {
                   const info = ROOM_DATA[category];
                   return (
@@ -258,20 +247,40 @@ export default function SearchPage() {
       </section>
 
       {selectedRoom && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedRoom(null)}>
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4" onClick={(e) => e.stopPropagation()} data-testid="modal-booking">
-            <h3 className="text-xl font-display font-bold text-primary">Оставить заявку</h3>
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center"
+          onClick={() => setSelectedRoom(null)}
+          data-testid="modal-overlay"
+        >
+          <div
+            className="bg-white rounded-t-2xl md:rounded-2xl max-w-md w-full p-6 space-y-4 max-h-[85vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+            data-testid="modal-booking"
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-display font-bold text-primary">Оставить заявку</h3>
+              <button
+                onClick={() => setSelectedRoom(null)}
+                className="w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground active:bg-secondary/50"
+                aria-label="Закрыть"
+                data-testid="modal-close"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
             <p className="text-sm text-muted-foreground">{selectedRoom}</p>
             <form onSubmit={handleSubmitBooking} className="space-y-4">
               <div className="space-y-2">
                 <Label>Ваше имя</Label>
-                <Input data-testid="booking-name" placeholder="Иван Иванов" value={contactName} onChange={(e) => setContactName(e.target.value)} />
+                <Input data-testid="booking-name" placeholder="Иван Иванов" value={contactName} onChange={(e) => setContactName(e.target.value)} className="h-12" />
               </div>
               <div className="space-y-2">
                 <Label>Телефон</Label>
-                <Input data-testid="booking-phone" placeholder="+7 900 123 45 67" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} />
+                <Input data-testid="booking-phone" placeholder="+7 900 123 45 67" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} className="h-12" inputMode="tel" />
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 pt-2">
                 <Button type="button" variant="outline" className="flex-1" onClick={() => setSelectedRoom(null)}>Отмена</Button>
                 <Button type="submit" className="flex-1" disabled={createBooking.isPending} data-testid="button-submit-booking">
                   {createBooking.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Отправить"}

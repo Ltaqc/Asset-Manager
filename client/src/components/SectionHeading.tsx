@@ -8,13 +8,13 @@ interface SectionHeadingProps {
 
 export function SectionHeading({ title, subtitle, light = false }: SectionHeadingProps) {
   return (
-    <div className="text-center mb-16 space-y-4">
+    <div className="text-center mb-10 md:mb-16 space-y-3 md:space-y-4">
       <motion.h2 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className={`text-4xl md:text-5xl font-bold ${light ? 'text-white' : 'text-primary'}`}
+        className={`text-2xl md:text-4xl lg:text-5xl font-bold ${light ? 'text-white' : 'text-primary'}`}
       >
         {title}
       </motion.h2>
@@ -38,7 +38,7 @@ export function SectionHeading({ title, subtitle, light = false }: SectionHeadin
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className={`text-lg max-w-2xl mx-auto ${light ? 'text-white/90' : 'text-muted-foreground'}`}
+          className={`text-sm md:text-lg max-w-2xl mx-auto px-2 ${light ? 'text-white/90' : 'text-muted-foreground'}`}
         >
           {subtitle}
         </motion.p>

@@ -1,5 +1,6 @@
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
-import { Phone, Mail, MapPin, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Send, X, Menu } from "lucide-react";
 import { FloatingContact } from "@/components/FloatingContact";
 
 const NAV_ITEMS = [
@@ -110,39 +111,39 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       <FloatingContact />
 
-      <footer className="bg-slate-900 text-white py-20" data-testid="section-footer">
+      <footer className="bg-slate-900 text-white py-16 md:py-20" data-testid="section-footer">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-16">
-            <div className="space-y-8">
-              <h2 className="text-4xl font-display font-bold text-primary">AL MARE</h2>
-              <p className="text-slate-300 max-w-md leading-relaxed text-base">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16">
+            <div className="space-y-6 md:space-y-8">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-primary">AL MARE</h2>
+              <p className="text-slate-300 max-w-md leading-relaxed text-sm md:text-base">
                 AL MARE — курортный отель в станице Голубицкая для спокойного отдыха у моря.
                 Комфортные номера, продуманная инфраструктура и внимательное отношение к гостям.
               </p>
-              <div className="space-y-5 pt-2">
+              <div className="space-y-4 md:space-y-5 pt-2">
                 <a href="https://yandex.ru/maps/?rtext=~45.326978,37.290373&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors" data-testid="link-address-footer">
                   <MapPin className="text-primary w-5 h-5 shrink-0" />
-                  <span>ст. Голубицкая, ул. Набережная, д. 7</span>
+                  <span className="text-sm md:text-base">ст. Голубицкая, ул. Набережная, д. 7</span>
                 </a>
                 <a href="tel:+79184710374" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
                   <Phone className="text-primary w-5 h-5 shrink-0" />
-                  <span>+7 (918) 471-03-74</span>
+                  <span className="text-sm md:text-base">+7 (918) 471-03-74</span>
                 </a>
                 <a href="mailto:info@almare.ru" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
                   <Mail className="text-primary w-5 h-5 shrink-0" />
-                  <span>info@almare.ru</span>
+                  <span className="text-sm md:text-base">info@almare.ru</span>
                 </a>
               </div>
             </div>
 
             <div>
-              <h3 className="text-xl font-display font-bold text-primary mb-6">Разделы сайта</h3>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+              <h3 className="text-lg md:text-xl font-display font-bold text-primary mb-4 md:mb-6">Разделы сайта</h3>
+              <div className="grid grid-cols-2 gap-x-8 gap-y-3 md:gap-y-4">
                 {NAV_ITEMS.map((item) => (
                   <button
                     key={item.anchor}
                     onClick={() => handleNavClick(item.anchor)}
-                    className="text-slate-300 hover:text-primary transition-colors text-base leading-relaxed text-left"
+                    className="text-slate-300 hover:text-primary transition-colors text-sm md:text-base leading-relaxed text-left py-1"
                   >
                     {item.label}
                   </button>
@@ -151,7 +152,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          <div className="border-t border-white/10 mt-16 pt-8 text-center text-slate-500 text-sm">
+          <div className="border-t border-white/10 mt-12 md:mt-16 pt-6 md:pt-8 text-center text-slate-500 text-xs md:text-sm">
             &copy; {new Date().getFullYear()} AL MARE Resort. Все права защищены.
           </div>
         </div>
@@ -161,36 +162,78 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 function MobileMenu({ onNavClick }: { onNavClick: (anchor: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const close = useCallback(() => setOpen(false), []);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClickOutside(e: MouseEvent | TouchEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        close();
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [open, close]);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   return (
-    <details className="relative group">
-      <summary className="list-none cursor-pointer p-2 rounded-md hover:bg-primary/5" data-testid="button-mobile-menu">
-        <svg className="w-6 h-6 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </summary>
-      <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 py-2 z-50">
-        {NAV_ITEMS.map((item) => (
-          <button
-            key={item.anchor}
-            onClick={() => {
-              onNavClick(item.anchor);
-              const details = document.querySelector("details[open]") as HTMLDetailsElement | null;
-              if (details) details.removeAttribute("open");
-            }}
-            className="block w-full text-left px-4 py-2.5 text-sm text-foreground/80 hover:bg-primary/5 hover:text-primary"
-          >
-            {item.label}
-          </button>
-        ))}
-        <div className="border-t border-border/30 mt-2 pt-2 px-4 space-y-2">
-          <a href="tel:+79184710374" className="flex items-center gap-2 text-sm text-muted-foreground py-1">
-            <Phone className="w-3.5 h-3.5" /> +7 (918) 471-03-74
-          </a>
-          <a href="mailto:info@almare.ru" className="flex items-center gap-2 text-sm text-muted-foreground py-1">
-            <Mail className="w-3.5 h-3.5" /> info@almare.ru
-          </a>
-        </div>
-      </div>
-    </details>
+    <div ref={menuRef} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="p-2 rounded-md min-w-[44px] min-h-[44px] flex items-center justify-center"
+        data-testid="button-mobile-menu"
+        aria-label={open ? "Закрыть меню" : "Открыть меню"}
+      >
+        {open ? (
+          <X className="w-6 h-6 text-foreground" />
+        ) : (
+          <Menu className="w-6 h-6 text-foreground" />
+        )}
+      </button>
+
+      {open && (
+        <>
+          <div className="fixed inset-0 top-16 bg-black/30 z-40" onClick={close} />
+          <div className="fixed right-0 top-16 w-72 max-w-[85vw] bg-white rounded-bl-2xl shadow-2xl border-l border-b border-border/50 py-3 z-50 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            {NAV_ITEMS.map((item) => (
+              <button
+                key={item.anchor}
+                onClick={() => {
+                  onNavClick(item.anchor);
+                  close();
+                }}
+                className="block w-full text-left px-5 py-3.5 text-base text-foreground/80 active:bg-primary/10 transition-colors min-h-[44px]"
+                data-testid={`mobile-nav-${item.anchor}`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <div className="border-t border-border/30 mt-2 pt-3 px-5 space-y-3 pb-2">
+              <a href="tel:+79184710374" className="flex items-center gap-3 text-sm text-muted-foreground py-2 min-h-[44px]">
+                <Phone className="w-4 h-4 shrink-0" /> +7 (918) 471-03-74
+              </a>
+              <a href="mailto:info@almare.ru" className="flex items-center gap-3 text-sm text-muted-foreground py-2 min-h-[44px]">
+                <Mail className="w-4 h-4 shrink-0" /> info@almare.ru
+              </a>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   );
 }
