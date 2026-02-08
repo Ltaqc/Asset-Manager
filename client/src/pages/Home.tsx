@@ -26,8 +26,17 @@ import foodPhoto1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_18_05_56_177
 import foodPhoto2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_16_20_50_1770563622554.png";
 import foodPhoto3 from "@assets/ChatGPT_Image_8_февр._2026_г.,_16_21_25_1770563622555.png";
 import foodPhoto4 from "@assets/ChatGPT_Image_8_февр._2026_г.,_15_58_53_1770563622551.png";
+import beachPetanque from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_07_36_1770566998764.png";
+import beachKubb from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_09_28_1770566998766.png";
+import beachRopePark from "@assets/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770566998762.png";
 
 const FOOD_GALLERY = [foodPhoto1, foodPhoto2, foodPhoto3, foodPhoto4];
+const BEACH_GALLERY = [
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop",
+  beachPetanque,
+  beachKubb,
+  beachRopePark,
+];
 
 import territoryBeach from "@/assets/images/territory-beach.jpg";
 import territoryPool from "@/assets/images/territory-pool.jpg";
@@ -383,11 +392,11 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="rounded-2xl overflow-hidden shadow-lg">
-              <img
-                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop"
+            <div className="rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+              <RoomImageCarousel
+                images={BEACH_GALLERY}
                 alt="Пляж AL MARE"
-                className="w-full h-[400px] object-cover"
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
