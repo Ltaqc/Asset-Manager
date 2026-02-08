@@ -14,7 +14,7 @@ import {
   Phone, Mail, MapPin, Navigation,
 } from "lucide-react";
 import { YandexMap } from "@/components/YandexMap";
-import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
+import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.webp";
 
 export default function Home() {
   const [, navigate] = useLocation();
