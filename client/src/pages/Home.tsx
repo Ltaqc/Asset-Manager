@@ -30,10 +30,13 @@ import foodPhoto4 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_15
 import beachPetanque from "@assets/optimized/beach_petanque_wide_1770566998764.webp";
 import beachKubb from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_19_09_28_1770566998766.webp";
 import beachRopePark from "@assets/optimized/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770566998762.webp";
+import beachLoungeMain from "@assets/optimized/beach_lounge_main_1770570903453.webp";
+import beachLoungeAlt from "@assets/optimized/beach_lounge_alt_1770570903455.webp";
 
 const FOOD_GALLERY = [foodPhoto1, foodPhoto2, foodPhoto3, foodPhoto4];
 const BEACH_GALLERY = [
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop",
+  beachLoungeMain,
+  beachLoungeAlt,
   beachPetanque,
   beachKubb,
   beachRopePark,
