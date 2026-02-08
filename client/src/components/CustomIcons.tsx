@@ -116,6 +116,20 @@ export function PoolIcon({ className }: IconProps) {
   );
 }
 
+export function KidsAnimationIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="4.5" r="2" />
+      <path d="M9 21V13l-4-2" />
+      <path d="M15 21V13l4-2" />
+      <path d="M12 8v5" />
+      <path d="M7 8l5 2 5-2" />
+      <path d="M5 17l3-1" />
+      <path d="M19 17l-3-1" />
+    </svg>
+  );
+}
+
 export function KidsRoomIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

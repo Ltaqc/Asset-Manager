@@ -18,7 +18,7 @@ import {
 import {
   GlassIcon, ChickenWingIcon, PopsicleIcon,
   SunloungerIcon, RopeParkIcon, BilliardIcon, MiniGolfIcon,
-  LoungeChairIcon, TreeLeafIcon, PoolIcon, KidsRoomIcon,
+  LoungeChairIcon, TreeLeafIcon, PoolIcon, KidsRoomIcon, KidsAnimationIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
 import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
@@ -417,6 +417,7 @@ export default function Home() {
                   { icon: TreeLeafIcon, label: "Ухоженная территория", desc: "Зелёная и аккуратная территория отеля" },
                   { icon: PoolIcon, label: "Бассейн", desc: "Подогреваемый бассейн для отдыха взрослых и детей" },
                   { icon: KidsRoomIcon, label: "Детская комната", desc: "Игровое пространство для детей с безопасной средой" },
+                  { icon: KidsAnimationIcon, label: "Анимация для детей", desc: "Развлекательные программы и мероприятия для детей" },
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col items-center text-center space-y-2.5 p-4 rounded-2xl" data-testid={`infra-icon-${i}`}>
                     <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-primary">
