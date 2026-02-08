@@ -103,3 +103,27 @@ export function TreeLeafIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function PoolIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 15c2-1 4-1 6 0s4 1 6 0 4-1 6 0" />
+      <path d="M2 19c2-1 4-1 6 0s4 1 6 0 4-1 6 0" />
+      <line x1="7" y1="4" x2="7" y2="15" />
+      <line x1="17" y1="4" x2="17" y2="15" />
+      <line x1="7" y1="8" x2="17" y2="8" />
+    </svg>
+  );
+}
+
+export function KidsRoomIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="4" r="2.5" />
+      <path d="M8 22v-6a4 4 0 0 1 8 0v6" />
+      <path d="M6 13l2 3" />
+      <path d="M18 13l-2 3" />
+      <path d="M10 22h4" />
+    </svg>
+  );
+}

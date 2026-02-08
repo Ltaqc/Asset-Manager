@@ -18,7 +18,7 @@ import {
 import {
   GlassIcon, ChickenWingIcon, PopsicleIcon,
   SunloungerIcon, RopeParkIcon, BilliardIcon, MiniGolfIcon,
-  LoungeChairIcon, TreeLeafIcon,
+  LoungeChairIcon, TreeLeafIcon, PoolIcon, KidsRoomIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
 import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
@@ -33,16 +33,16 @@ import territoryBar from "@/assets/images/territory-bar.jpg";
 import territoryKids from "@/assets/images/territory-kids.jpg";
 import territoryRestTerrace from "@/assets/images/territory-rest-terrace.jpg";
 
-const TERRITORY_ITEMS = [
-  { image: territoryBeach, title: "Благоустроенный пляж", desc: "Собственный пляж с шезлонгами и зонтами в шаговой доступности от отеля" },
-  { image: territoryPool, title: "Бассейн", desc: "Открытый бассейн с чистой водой для комфортного купания и отдыха" },
-  { image: territoryVip, title: "VIP-шезлонги", desc: "Премиальные зоны для загара с повышенным уровнем комфорта и приватности" },
-  { image: territoryLounge, title: "Lounge-зона", desc: "Уютное пространство с мягкой мебелью для расслабленного отдыха" },
-  { image: territoryRestaurant, title: "Ресторан", desc: "Основной ресторан отеля с обслуживанием по меню и авторской кухней" },
-  { image: territoryTerrace, title: "Открытая терраса", desc: "Обеденная зона на свежем воздухе с видом на территорию отеля" },
-  { image: territoryBar, title: "Летний бар", desc: "Прохладительные напитки и коктейли в течение всего дня" },
-  { image: territoryKids, title: "Детская комната", desc: "Игровое пространство для маленьких гостей под присмотром" },
-  { image: territoryRestTerrace, title: "Террасы для отдыха", desc: "Тихие уголки на территории для спокойного времяпрепровождения" },
+const TERRITORY_GALLERY = [
+  territoryBeach,
+  territoryPool,
+  territoryVip,
+  territoryLounge,
+  territoryRestaurant,
+  territoryTerrace,
+  territoryBar,
+  territoryKids,
+  territoryRestTerrace,
 ];
 
 export default function Home() {
@@ -391,7 +391,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. Infrastructure */}
+      {/* 8. Infrastructure & Territory (merged) */}
       <section id="infrastructure" className="py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
@@ -399,55 +399,40 @@ export default function Home() {
             subtitle="Развлечения для спокойного и активного отдыха"
           />
 
-          <div className="max-w-4xl mx-auto space-y-6">
-            <p className="text-lg text-muted-foreground leading-relaxed text-center">
+          <div className="max-w-6xl mx-auto space-y-10">
+            <p className="text-lg text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
               На территории отеля предусмотрена продуманная инфраструктура для комфортного отдыха всей семьи — от расслабляющих зон до активных развлечений на свежем воздухе.
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto pt-4">
-              {[
-                { icon: BilliardIcon, label: "Бильярд", desc: "Спокойный отдых в уютной атмосфере" },
-                { icon: MiniGolfIcon, label: "Мини-гольф", desc: "Лёгкое и увлекательное развлечение для всей семьи" },
-                { icon: RopeParkIcon, label: "Верёвочный парк", desc: "Активный отдых и яркие эмоции для детей и взрослых" },
-                { icon: LoungeChairIcon, label: "Зоны отдыха", desc: "Комфортные пространства для расслабления" },
-                { icon: TreeLeafIcon, label: "Ухоженная территория", desc: "Зелёная и аккуратная территория отеля" },
-              ].map((item, i) => (
-                <div key={i} className="flex flex-col items-center text-center space-y-3 p-4 rounded-2xl">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-                    <item.icon className="w-8 h-8" />
+
+            <div className="grid md:grid-cols-2 gap-10 items-start">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {[
+                  { icon: BilliardIcon, label: "Бильярд", desc: "Спокойный отдых в уютной атмосфере" },
+                  { icon: MiniGolfIcon, label: "Мини-гольф", desc: "Увлекательное развлечение для всей семьи" },
+                  { icon: RopeParkIcon, label: "Верёвочный парк", desc: "Яркие эмоции для детей и взрослых" },
+                  { icon: LoungeChairIcon, label: "Зоны отдыха", desc: "Комфортные пространства для расслабления" },
+                  { icon: TreeLeafIcon, label: "Ухоженная территория", desc: "Зелёная и аккуратная территория отеля" },
+                  { icon: PoolIcon, label: "Бассейн", desc: "Подогреваемый бассейн для отдыха взрослых и детей" },
+                  { icon: KidsRoomIcon, label: "Детская комната", desc: "Игровое пространство для детей с безопасной средой" },
+                ].map((item, i) => (
+                  <div key={i} className="flex flex-col items-center text-center space-y-2.5 p-4 rounded-2xl" data-testid={`infra-icon-${i}`}>
+                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                      <item.icon className="w-7 h-7" />
+                    </div>
+                    <span className="font-bold text-sm">{item.label}</span>
+                    <span className="text-xs text-muted-foreground leading-snug">{item.desc}</span>
                   </div>
-                  <span className="font-bold text-base">{item.label}</span>
-                  <span className="text-xs text-muted-foreground leading-snug">{item.desc}</span>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              <div className="rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+                <RoomImageCarousel
+                  images={TERRITORY_GALLERY}
+                  alt="Территория AL MARE"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 9. Territory (NEW) */}
-      <section id="territory" className="py-24 bg-secondary/20 scroll-mt-16">
-        <div className="container mx-auto px-4">
-          <SectionHeading
-            title="На территории комплекса"
-            subtitle="Всё для комфортного и разнообразного отдыха — не выходя за пределы отеля"
-          />
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {TERRITORY_ITEMS.map((item, i) => (
-              <Card key={i} className="overflow-hidden border-border/50 shadow-sm flex flex-col" data-testid={`territory-card-${i}`}>
-                <div className="aspect-[16/10] overflow-hidden bg-secondary">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
-                <div className="p-5 flex flex-col gap-2">
-                  <h3 className="text-base font-bold text-foreground">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-                </div>
-              </Card>
-            ))}
           </div>
         </div>
       </section>

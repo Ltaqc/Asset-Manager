@@ -10,7 +10,6 @@ const NAV_ITEMS = [
   { label: "Питание", anchor: "food" },
   { label: "Пляж", anchor: "beach" },
   { label: "Инфраструктура", anchor: "infrastructure" },
-  { label: "Территория", anchor: "territory" },
   { label: "Контакты", anchor: "contacts" },
 ];
 
