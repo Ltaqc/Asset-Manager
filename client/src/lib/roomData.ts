@@ -29,6 +29,16 @@ import luxLiving from "@assets/ChatGPT_Image_7_февр._2026_г.,_23_15_56_1770
 import luxDesk from "@assets/ChatGPT_Image_7_февр._2026_г.,_23_05_10_1770495988910.png";
 import luxBath from "@assets/ChatGPT_Image_7_февр._2026_г.,_22_34_57_1770495988908.png";
 import luxShower from "@assets/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770495988905.png";
+import famLuxMain from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_24_29_1770544232713.png";
+import famLuxBed from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_21_40_1770544232712.png";
+import famLuxLiving1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_19_37_1770544232709.png";
+import famLuxLiving2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_21_19_1770544232711.png";
+import famLuxBath from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_31_04_1770544232714.png";
+import famLuxShower from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_31_50_1770544232714.png";
+import famLuxMirror from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_32_41_1770544232716.png";
+import famLuxBalcony1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_33_59_1770544232717.png";
+import famLuxBalcony2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_35_54_1770544232718.png";
+import famLuxView from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_41_15_1770544232719.png";
 
 export type RoomCategory = typeof roomCategories[number];
 
@@ -96,7 +106,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Самый просторный номер для семейного отдыха с детьми. Отдельная спальня с двуспальной кроватью и детской кроваткой, гостиная с дизайнерской софой и раскладным диваном, а также балкон с видом на территорию курорта.",
     area: 41,
     shortTitle: "Люкс семейный",
-    image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&auto=format&fit=crop",
+    image: famLuxMain,
+    images: [famLuxMain, famLuxBed, famLuxLiving1, famLuxLiving2, famLuxBath, famLuxShower, famLuxMirror, famLuxBalcony1, famLuxBalcony2, famLuxView],
   },
   "Апартаменты, 1 этаж, с выходом на бассейн": {
     cap: 6, count: 1, maxToddlers: 2,
