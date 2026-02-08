@@ -26,7 +26,7 @@ import foodPhoto1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_18_05_56_177
 import foodPhoto2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_16_20_50_1770563622554.png";
 import foodPhoto3 from "@assets/ChatGPT_Image_8_февр._2026_г.,_16_21_25_1770563622555.png";
 import foodPhoto4 from "@assets/ChatGPT_Image_8_февр._2026_г.,_15_58_53_1770563622551.png";
-import beachPetanque from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_07_36_1770566998764.png";
+import beachPetanque from "@assets/beach_petanque_wide_1770566998764.png";
 import beachKubb from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_09_28_1770566998766.png";
 import beachRopePark from "@assets/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770566998762.png";
 
