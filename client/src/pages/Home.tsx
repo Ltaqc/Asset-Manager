@@ -23,6 +23,28 @@ import {
 import { YandexMap } from "@/components/YandexMap";
 import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
 
+import territoryBeach from "@/assets/images/territory-beach.jpg";
+import territoryPool from "@/assets/images/territory-pool.jpg";
+import territoryVip from "@/assets/images/territory-vip-loungers.jpg";
+import territoryLounge from "@/assets/images/territory-lounge.jpg";
+import territoryRestaurant from "@/assets/images/territory-restaurant.jpg";
+import territoryTerrace from "@/assets/images/territory-terrace.jpg";
+import territoryBar from "@/assets/images/territory-bar.jpg";
+import territoryKids from "@/assets/images/territory-kids.jpg";
+import territoryRestTerrace from "@/assets/images/territory-rest-terrace.jpg";
+
+const TERRITORY_ITEMS = [
+  { image: territoryBeach, title: "Благоустроенный пляж", desc: "Собственный пляж с шезлонгами и зонтами в шаговой доступности от отеля" },
+  { image: territoryPool, title: "Бассейн", desc: "Открытый бассейн с чистой водой для комфортного купания и отдыха" },
+  { image: territoryVip, title: "VIP-шезлонги", desc: "Премиальные зоны для загара с повышенным уровнем комфорта и приватности" },
+  { image: territoryLounge, title: "Lounge-зона", desc: "Уютное пространство с мягкой мебелью для расслабленного отдыха" },
+  { image: territoryRestaurant, title: "Ресторан", desc: "Основной ресторан отеля с обслуживанием по меню и авторской кухней" },
+  { image: territoryTerrace, title: "Открытая терраса", desc: "Обеденная зона на свежем воздухе с видом на территорию отеля" },
+  { image: territoryBar, title: "Летний бар", desc: "Прохладительные напитки и коктейли в течение всего дня" },
+  { image: territoryKids, title: "Детская комната", desc: "Игровое пространство для маленьких гостей под присмотром" },
+  { image: territoryRestTerrace, title: "Террасы для отдыха", desc: "Тихие уголки на территории для спокойного времяпрепровождения" },
+];
+
 export default function Home() {
   const [, navigate] = useLocation();
   const defaultIn = getDefaultCheckIn();
@@ -149,8 +171,63 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. About */}
-      <section id="about" className="py-24 bg-secondary/20 scroll-mt-16">
+      {/* 3. Rooms (moved up) */}
+      <section id="rooms" className="py-24 bg-secondary/20 scroll-mt-16">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Наши номера"
+            subtitle="Элегантность и комфорт в каждой детали. Выберите подходящий вариант размещения для идеального отдыха."
+          />
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {roomCategories.map((category) => {
+              const info = ROOM_DATA[category];
+              return (
+                <Card key={category} className="room-card overflow-hidden border-border/50 shadow-md flex flex-col" data-testid={`room-card-${category}`}>
+                  <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
+                    {info.images && info.images.length > 1 ? (
+                      <RoomImageCarousel images={info.images} alt={category} className="room-card-img w-full h-full object-cover" />
+                    ) : (
+                      <img src={info.image} alt={category} className="room-card-img w-full h-full object-cover" />
+                    )}
+                    <div className="absolute top-4 right-4">
+                      <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-primary font-bold shadow-sm">
+                        <Users className="w-3 h-3 mr-1" /> до {info.cap} чел.
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="p-6 flex flex-col flex-1 gap-3">
+                    <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{info.description}</p>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground pt-1">
+                      <span className="flex items-center gap-1.5" data-testid={`text-area-${category}`}>
+                        <Maximize2 className="w-3.5 h-3.5 text-primary/60" />
+                        {info.area} м²
+                      </span>
+                      <span className="flex items-center gap-1.5" data-testid={`text-capacity-${category}`}>
+                        <Users className="w-3.5 h-3.5 text-primary/60" />
+                        до {info.cap} гостей
+                      </span>
+                    </div>
+                    <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={scrollToCalculator}>
+                      Рассчитать стоимость
+                    </Button>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-muted-foreground italic">
+              * Все категории номеров включают обслуживание Ultra All Inclusive
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. About */}
+      <section id="about" className="py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Об отеле"
@@ -170,8 +247,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Ultra All Inclusive */}
-      <section id="uai" className="py-24 bg-white scroll-mt-16">
+      {/* 5. Ultra All Inclusive */}
+      <section id="uai" className="py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Ultra All Inclusive в AL MARE"
@@ -207,8 +284,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. Food */}
-      <section id="food" className="py-24 bg-blue-50/50 scroll-mt-16">
+      {/* 6. Food */}
+      <section id="food" className="py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Питание в AL MARE"
@@ -252,8 +329,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Beach */}
-      <section id="beach" className="py-24 bg-white scroll-mt-16">
+      {/* 7. Beach */}
+      <section id="beach" className="py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Пляж и отдых у моря"
@@ -314,8 +391,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. Infrastructure */}
-      <section id="infrastructure" className="py-24 bg-secondary/10 scroll-mt-16">
+      {/* 8. Infrastructure */}
+      <section id="infrastructure" className="py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Инфраструктура и развлечения"
@@ -347,63 +424,36 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. Rooms */}
-      <section id="rooms" className="py-24 bg-white scroll-mt-16">
+      {/* 9. Territory (NEW) */}
+      <section id="territory" className="py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
-            title="Наши номера"
-            subtitle="Элегантность и комфорт в каждой детали. Выберите подходящий вариант размещения для идеального отдыха."
+            title="На территории комплекса"
+            subtitle="Всё для комфортного и разнообразного отдыха — не выходя за пределы отеля"
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {roomCategories.map((category) => {
-              const info = ROOM_DATA[category];
-              return (
-                <Card key={category} className="room-card overflow-hidden border-border/50 shadow-md flex flex-col" data-testid={`room-card-${category}`}>
-                  <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-                    {info.images && info.images.length > 1 ? (
-                      <RoomImageCarousel images={info.images} alt={category} className="room-card-img w-full h-full object-cover" />
-                    ) : (
-                      <img src={info.image} alt={category} className="room-card-img w-full h-full object-cover" />
-                    )}
-                    <div className="absolute top-4 right-4">
-                      <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-primary font-bold shadow-sm">
-                        <Users className="w-3 h-3 mr-1" /> до {info.cap} чел.
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="p-6 flex flex-col flex-1 gap-3">
-                    <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{info.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground pt-1">
-                      <span className="flex items-center gap-1.5" data-testid={`text-area-${category}`}>
-                        <Maximize2 className="w-3.5 h-3.5 text-primary/60" />
-                        {info.area} м²
-                      </span>
-                      <span className="flex items-center gap-1.5" data-testid={`text-capacity-${category}`}>
-                        <Users className="w-3.5 h-3.5 text-primary/60" />
-                        до {info.cap} гостей
-                      </span>
-                    </div>
-                    <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={scrollToCalculator}>
-                      Рассчитать стоимость
-                    </Button>
-                  </div>
-                </Card>
-              );
-            })}
-          </div>
-
-          <div className="text-center mt-12">
-            <p className="text-muted-foreground italic">
-              * Все категории номеров включают обслуживание Ultra All Inclusive
-            </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {TERRITORY_ITEMS.map((item, i) => (
+              <Card key={i} className="overflow-hidden border-border/50 shadow-sm flex flex-col" data-testid={`territory-card-${i}`}>
+                <div className="aspect-[16/10] overflow-hidden bg-secondary">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div className="p-5 flex flex-col gap-2">
+                  <h3 className="text-base font-bold text-foreground">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                </div>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 9. Contacts */}
-      <section id="contacts" className="py-24 bg-blue-50/50 scroll-mt-16">
+      {/* 10. Contacts */}
+      <section id="contacts" className="py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Контакты"
