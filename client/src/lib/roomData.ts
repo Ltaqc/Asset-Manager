@@ -39,6 +39,14 @@ import famLuxMirror from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_32_41_1
 import famLuxBalcony1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_33_59_1770544232717.png";
 import famLuxBalcony2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_35_54_1770544232718.png";
 import famLuxView from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_41_15_1770544232719.png";
+import aptMain from "@assets/ChatGPT_Image_8_февр._2026_г.,_14_24_12_1770554167258.png";
+import aptLiving1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_15_23_34_1770554167255.png";
+import aptLiving2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_13_56_07_1770554167260.png";
+import aptBed1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_14_07_07_1770554167259.png";
+import aptBed2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_14_50_15_1770554167256.png";
+import aptBath from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_31_04_1770554167264.png";
+import aptShower from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_31_50_1770554167263.png";
+import aptMirror from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_32_41_1770554167262.png";
 
 export type RoomCategory = typeof roomCategories[number];
 
@@ -115,7 +123,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Полноценное курортное жильё с двумя спальнями, гостиной и собственной кухней-столовой. Прямой выход к бассейну превращает каждое утро в начало идеального дня — без лифтов, лестниц и лишних шагов.",
     area: 55,
     shortTitle: "Апартаменты (1 этаж)",
-    image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&auto=format&fit=crop",
+    image: aptMain,
+    images: [aptMain, aptLiving1, aptLiving2, aptBed1, aptBed2, aptBath, aptShower, aptMirror],
   },
   "Апартаменты, 2 этаж, с видом на бассейн": {
     cap: 6, count: 1, maxToddlers: 2,
