@@ -38,26 +38,28 @@ const BEACH_GALLERY = [
   beachRopePark,
 ];
 
-import territoryBeach from "@/assets/images/territory-beach.jpg";
-import territoryPool from "@/assets/images/territory-pool.jpg";
-import territoryVip from "@/assets/images/territory-vip-loungers.jpg";
-import territoryLounge from "@/assets/images/territory-lounge.jpg";
-import territoryRestaurant from "@/assets/images/territory-restaurant.jpg";
-import territoryTerrace from "@/assets/images/territory-terrace.jpg";
-import territoryBar from "@/assets/images/territory-bar.jpg";
-import territoryKids from "@/assets/images/territory-kids.jpg";
-import territoryRestTerrace from "@/assets/images/territory-rest-terrace.jpg";
+import infraMain from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_38_02_1770569019465.png";
+import infraKidsRoom from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_12_15_1770569019466.png";
+import infraBilliard from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_16_58_1770569019467.png";
+import infraMiniGolf from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_20_08_1770569019468.png";
+import infraPool from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_27_57_1770569019469.png";
+import infraBbq from "@assets/infra_bbq_1770569019471.jpg";
+import infraLounge from "@assets/WhatsApp_Image_2019-05-16_at_20.39.10_1770569019472.jpeg";
+import infraTerrace from "@assets/WhatsApp_Image_2019-05-16_at_20.43.38_1770569019472.jpeg";
+import infraRopePark from "@assets/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770569019473.png";
+import infraHotel from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770569019474.png";
 
 const TERRITORY_GALLERY = [
-  territoryBeach,
-  territoryPool,
-  territoryVip,
-  territoryLounge,
-  territoryRestaurant,
-  territoryTerrace,
-  territoryBar,
-  territoryKids,
-  territoryRestTerrace,
+  infraMain,
+  infraHotel,
+  infraPool,
+  infraBilliard,
+  infraMiniGolf,
+  infraRopePark,
+  infraKidsRoom,
+  infraLounge,
+  infraTerrace,
+  infraBbq,
 ];
 
 export default function Home() {
