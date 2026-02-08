@@ -74,9 +74,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="hidden xl:flex items-center gap-4 text-sm text-muted-foreground shrink-0">
-              <a href="tel:+78001234567" className="flex items-center gap-1.5 hover:text-primary transition-colors" data-testid="link-phone">
+              <a href="tel:+79184710374" className="flex items-center gap-1.5 hover:text-primary transition-colors" data-testid="link-phone">
                 <Phone className="w-3.5 h-3.5" />
-                <span>+7 (800) 123-45-67</span>
+                <span>+7 (918) 471-03-74</span>
               </a>
               <a href="mailto:info@almare.ru" className="flex items-center gap-1.5 hover:text-primary transition-colors" data-testid="link-email">
                 <Mail className="w-3.5 h-3.5" />
@@ -121,9 +121,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <MapPin className="text-primary w-5 h-5 shrink-0" />
                   <span>ст. Голубицкая, ул. Набережная, д. 7</span>
                 </a>
-                <a href="tel:+78001234567" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
+                <a href="tel:+79184710374" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
                   <Phone className="text-primary w-5 h-5 shrink-0" />
-                  <span>+7 (800) 123-45-67</span>
+                  <span>+7 (918) 471-03-74</span>
                 </a>
                 <a href="mailto:info@almare.ru" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
                   <Mail className="text-primary w-5 h-5 shrink-0" />
@@ -180,8 +180,8 @@ function MobileMenu({ onNavClick }: { onNavClick: (anchor: string) => void }) {
           </button>
         ))}
         <div className="border-t border-border/30 mt-2 pt-2 px-4 space-y-2">
-          <a href="tel:+78001234567" className="flex items-center gap-2 text-sm text-muted-foreground py-1">
-            <Phone className="w-3.5 h-3.5" /> +7 (800) 123-45-67
+          <a href="tel:+79184710374" className="flex items-center gap-2 text-sm text-muted-foreground py-1">
+            <Phone className="w-3.5 h-3.5" /> +7 (918) 471-03-74
           </a>
           <a href="mailto:info@almare.ru" className="flex items-center gap-2 text-sm text-muted-foreground py-1">
             <Mail className="w-3.5 h-3.5" /> info@almare.ru

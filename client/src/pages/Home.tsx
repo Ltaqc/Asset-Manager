@@ -431,8 +431,8 @@ export default function Home() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="font-bold text-lg text-foreground">Телефон</h3>
-                    <a href="tel:+78001234567" className="text-muted-foreground hover:text-primary transition-colors text-base" data-testid="contact-phone">
-                      +7 (800) 123-45-67
+                    <a href="tel:+79184710374" className="text-muted-foreground hover:text-primary transition-colors text-base" data-testid="contact-phone">
+                      +7 (918) 471-03-74
                     </a>
                   </div>
                 </div>
