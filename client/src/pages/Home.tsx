@@ -21,14 +21,14 @@ import {
   LoungeChairIcon, TreeLeafIcon, PoolIcon, KidsRoomIcon, KidsAnimationIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
-import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
-import foodPhoto1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_18_05_56_1770563622557.png";
-import foodPhoto2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_16_20_50_1770563622554.png";
-import foodPhoto3 from "@assets/ChatGPT_Image_8_февр._2026_г.,_16_21_25_1770563622555.png";
-import foodPhoto4 from "@assets/ChatGPT_Image_8_февр._2026_г.,_15_58_53_1770563622551.png";
-import beachPetanque from "@assets/beach_petanque_wide_1770566998764.png";
-import beachKubb from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_09_28_1770566998766.png";
-import beachRopePark from "@assets/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770566998762.png";
+import heroImage from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.webp";
+import foodPhoto1 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_18_05_56_1770563622557.webp";
+import foodPhoto2 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_16_20_50_1770563622554.webp";
+import foodPhoto3 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_16_21_25_1770563622555.webp";
+import foodPhoto4 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_15_58_53_1770563622551.webp";
+import beachPetanque from "@assets/optimized/beach_petanque_wide_1770566998764.webp";
+import beachKubb from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_19_09_28_1770566998766.webp";
+import beachRopePark from "@assets/optimized/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770566998762.webp";
 
 const FOOD_GALLERY = [foodPhoto1, foodPhoto2, foodPhoto3, foodPhoto4];
 const BEACH_GALLERY = [
@@ -38,16 +38,16 @@ const BEACH_GALLERY = [
   beachRopePark,
 ];
 
-import infraMain from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_38_02_1770569019465.png";
-import infraKidsRoom from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_12_15_1770569019466.png";
-import infraBilliard from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_16_58_1770569019467.png";
-import infraMiniGolf from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_20_08_1770569019468.png";
-import infraPool from "@assets/ChatGPT_Image_8_февр._2026_г.,_19_27_57_1770569019469.png";
-import infraBbq from "@assets/infra_bbq_1770569019471.jpg";
-import infraLounge from "@assets/WhatsApp_Image_2019-05-16_at_20.39.10_1770569019472.jpeg";
-import infraTerrace from "@assets/WhatsApp_Image_2019-05-16_at_20.43.38_1770569019472.jpeg";
-import infraRopePark from "@assets/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770569019473.png";
-import infraHotel from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770569019474.png";
+import infraMain from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_12_38_02_1770569019465.webp";
+import infraKidsRoom from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_19_12_15_1770569019466.webp";
+import infraBilliard from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_19_16_58_1770569019467.webp";
+import infraMiniGolf from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_19_20_08_1770569019468.webp";
+import infraPool from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_19_27_57_1770569019469.webp";
+import infraBbq from "@assets/optimized/infra_bbq_1770569019471.webp";
+import infraLounge from "@assets/optimized/WhatsApp_Image_2019-05-16_at_20.39.10_1770569019472.webp";
+import infraTerrace from "@assets/optimized/WhatsApp_Image_2019-05-16_at_20.43.38_1770569019472.webp";
+import infraRopePark from "@assets/optimized/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770569019473.webp";
+import infraHotel from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770569019474.webp";
 
 const TERRITORY_GALLERY = [
   infraMain,
@@ -101,6 +101,8 @@ export default function Home() {
           src={heroImage}
           alt="AL MARE — отель с бассейном"
           className="absolute inset-0 w-full h-full object-cover object-center"
+          loading="eager"
+          decoding="async"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <div className="relative px-16 py-10">
@@ -205,7 +207,7 @@ export default function Home() {
                     {info.images && info.images.length > 1 ? (
                       <RoomImageCarousel images={info.images} alt={category} className="room-card-img w-full h-full object-cover" />
                     ) : (
-                      <img src={info.image} alt={category} className="room-card-img w-full h-full object-cover" />
+                      <img src={info.image} alt={category} className="room-card-img w-full h-full object-cover" loading="lazy" decoding="async" />
                     )}
                     <div className="absolute top-4 right-4">
                       <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-primary font-bold shadow-sm">

@@ -5,9 +5,10 @@ interface RoomImageCarouselProps {
   images: string[];
   alt: string;
   className?: string;
+  loading?: "lazy" | "eager";
 }
 
-export function RoomImageCarousel({ images, alt, className = "" }: RoomImageCarouselProps) {
+export function RoomImageCarousel({ images, alt, className = "", loading = "lazy" }: RoomImageCarouselProps) {
   const [current, setCurrent] = useState(0);
 
   const prev = useCallback((e: React.MouseEvent) => {
@@ -23,7 +24,7 @@ export function RoomImageCarousel({ images, alt, className = "" }: RoomImageCaro
   }, [images.length]);
 
   if (images.length <= 1) {
-    return <img src={images[0]} alt={alt} className={className} />;
+    return <img src={images[0]} alt={alt} className={className} loading={loading} decoding="async" />;
   }
 
   return (
@@ -32,6 +33,8 @@ export function RoomImageCarousel({ images, alt, className = "" }: RoomImageCaro
         src={images[current]}
         alt={`${alt} — ${current + 1}`}
         className={`${className} transition-opacity duration-300`}
+        loading={loading}
+        decoding="async"
       />
 
       <button

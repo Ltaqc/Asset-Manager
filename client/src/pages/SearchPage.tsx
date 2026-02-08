@@ -181,6 +181,8 @@ export default function SearchPage() {
                             src={info.image}
                             alt={category}
                             className="room-card-img w-full h-full object-cover"
+                            loading="lazy"
+                            decoding="async"
                           />
                         )}
                         <div className="absolute top-4 right-4">
