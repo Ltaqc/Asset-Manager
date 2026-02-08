@@ -47,6 +47,15 @@ import aptBed2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_14_50_15_177055
 import aptBath from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_31_04_1770554167264.png";
 import aptShower from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_31_50_1770554167263.png";
 import aptMirror from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_32_41_1770554167262.png";
+import apt2Main from "@assets/ChatGPT_Image_8_февр._2026_г.,_15_29_03_1770554851362.png";
+import apt2Living from "@assets/ChatGPT_Image_8_февр._2026_г.,_15_32_29_1770554851363.png";
+import apt2Bed1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_14_53_45_1770554851359.png";
+import apt2Bed2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_14_57_28_1770554851361.png";
+import apt2Bath from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_31_04_1770554851350.png";
+import apt2Shower from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_31_50_1770554851353.png";
+import apt2Mirror from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_32_41_1770554851355.png";
+import apt2Balcony from "@assets/ChatGPT_Image_8_февр._2026_г.,_15_40_16_1770554851364.png";
+import apt2Exterior from "@assets/ChatGPT_Image_8_февр._2026_г.,_12_38_02_1770554851357.png";
 
 export type RoomCategory = typeof roomCategories[number];
 
@@ -132,7 +141,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Панорамный вид на бассейн и территорию курорта с двух балконов. Две отдельные спальни, гостиная и кухня-столовая создают ощущение собственной резиденции — с полным комфортом и приватностью для всей семьи.",
     area: 52,
     shortTitle: "Апартаменты (2 этаж)",
-    image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&auto=format&fit=crop",
+    image: apt2Main,
+    images: [apt2Main, apt2Living, apt2Bed1, apt2Bed2, apt2Bath, apt2Shower, apt2Mirror, apt2Balcony, apt2Exterior],
   },
 };
 
