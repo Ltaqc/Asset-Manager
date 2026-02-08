@@ -366,7 +366,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="space-y-3">
-                <p className="text-base font-semibold text-foreground">Игры на песке для гостей отеля:</p>
+                <p className="text-base font-semibold text-foreground">Игры на песке:</p>
                 <div className="space-y-3">
                   {[
                     { icon: CircleDot, label: "Петанк — игра с металлическими шарами на песке" },
