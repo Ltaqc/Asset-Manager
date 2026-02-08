@@ -354,9 +354,6 @@ export default function Home() {
                 <p className="text-base font-semibold text-foreground">Включено:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: GlassIcon, label: "Напитки без ограничений в течение дня" },
-                    { icon: PopsicleIcon, label: "Мороженое для взрослых и детей" },
-                    { icon: ChickenWingIcon, label: "Зона барбекю для уютных вечеров" },
                     { icon: SunloungerIcon, label: "Шезлонги для гостей отеля на пляже" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
