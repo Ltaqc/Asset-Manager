@@ -1,5 +1,6 @@
 import { useLocation } from "wouter";
 import { Phone, Mail, MapPin, Send } from "lucide-react";
+import { FloatingContact } from "@/components/FloatingContact";
 
 const NAV_ITEMS = [
   { label: "Главная", anchor: "hero" },
@@ -107,6 +108,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <main className="flex-grow pt-16">
         {children}
       </main>
+
+      <FloatingContact />
 
       <footer className="bg-slate-900 text-white py-20" data-testid="section-footer">
         <div className="container mx-auto px-4">
