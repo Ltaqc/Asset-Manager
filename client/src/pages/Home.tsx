@@ -22,6 +22,12 @@ import {
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
 import heroImage from "@assets/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.png";
+import foodPhoto1 from "@assets/ChatGPT_Image_8_февр._2026_г.,_18_05_56_1770563622557.png";
+import foodPhoto2 from "@assets/ChatGPT_Image_8_февр._2026_г.,_16_20_50_1770563622554.png";
+import foodPhoto3 from "@assets/ChatGPT_Image_8_февр._2026_г.,_16_21_25_1770563622555.png";
+import foodPhoto4 from "@assets/ChatGPT_Image_8_февр._2026_г.,_15_58_53_1770563622551.png";
+
+const FOOD_GALLERY = [foodPhoto1, foodPhoto2, foodPhoto3, foodPhoto4];
 
 import territoryBeach from "@/assets/images/territory-beach.jpg";
 import territoryPool from "@/assets/images/territory-pool.jpg";
@@ -318,11 +324,11 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="rounded-2xl overflow-hidden shadow-lg">
-              <img
-                src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&auto=format&fit=crop"
-                alt="Питание AL MARE"
-                className="w-full h-[400px] object-cover"
+            <div className="rounded-2xl overflow-hidden shadow-lg aspect-[4/3]">
+              <RoomImageCarousel
+                images={FOOD_GALLERY}
+                alt="Ресторан AL MARE"
+                className="w-full h-full object-cover"
               />
             </div>
           </div>
