@@ -178,6 +178,30 @@ export default function SearchPage() {
 
       <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
+          {hasResults && (
+            <div className="mb-6 flex items-center gap-2 flex-wrap text-sm text-muted-foreground md:hidden" data-testid="guest-summary-mobile">
+              <Users className="w-4 h-4 text-primary shrink-0" />
+              <span className="font-medium text-foreground">
+                {[
+                  adults > 0 && `${adults} ${adults === 1 ? "взрослый" : adults < 5 ? "взрослых" : "взрослых"}`,
+                  teens > 0 && `${teens} ${teens === 1 ? "подросток" : teens < 5 ? "подростка" : "подростков"}`,
+                  children > 0 && `${children} ${children === 1 ? "ребёнок" : children < 5 ? "ребёнка" : "детей"}`,
+                  toddlers > 0 && `${toddlers} ${toddlers === 1 ? "малыш" : "малыша"}`,
+                ].filter(Boolean).join(" • ")}
+              </span>
+              <a
+                href="#"
+                className="text-primary underline underline-offset-2 text-xs ml-auto shrink-0"
+                data-testid="link-change-guests"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                Изменить
+              </a>
+            </div>
+          )}
           {recommendations.seasonError ? (
             <div className="max-w-2xl mx-auto text-center py-16">
               <AlertCircle className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />

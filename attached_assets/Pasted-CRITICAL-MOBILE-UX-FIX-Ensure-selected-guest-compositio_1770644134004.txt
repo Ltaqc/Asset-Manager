@@ -1,0 +1,96 @@
+CRITICAL MOBILE UX FIX:
+Ensure selected guest composition is ALWAYS visible
+on the results page after clicking “Рассчитать”
+in the mobile version of the site.
+
+---
+
+CURRENT PROBLEM:
+
+In mobile view:
+• User selects dates and number of guests
+• Clicks “Рассчитать”
+• Gets redirected to the results page with accommodation options
+• BUT the selected guest composition is NOT visible
+
+This is WRONG and CONFUSING.
+
+User does not see:
+• how many adults
+• how many teenagers
+• how many children
+• how many infants
+
+This breaks trust and causes booking hesitation.
+
+---
+
+REQUIRED BEHAVIOR (MANDATORY):
+
+On the results page (mobile version):
+
+The selected guest composition MUST be visible AT ALL TIMES.
+
+This includes:
+• Adults (18+)
+• Teenagers (13–18)
+• Children (2–13)
+• Infants (0–2)
+
+---
+
+IMPLEMENTATION RULES:
+
+1) After clicking “Рассчитать” on mobile:
+• Do NOT hide the guest selector completely
+• Do NOT remove guest information from the UI
+
+2) The results page MUST display a compact summary block:
+“Вы выбрали:”
+
+Example (one line, compact):
+“4 взрослых • 1 ребёнок”
+or
+“2 взрослых • 2 ребёнка • 1 малыш”
+
+3) This summary block MUST be placed:
+• ABOVE “Рекомендованный вариант”
+• OR fixed at the top of the results section
+• Must be visible without scrolling back
+
+---
+
+OPTIONAL BUT STRONGLY RECOMMENDED:
+
+Add a small “Изменить” link next to the summary:
+• On tap → scroll back to guest selector
+• Or reopen guest selection controls
+
+This improves usability on mobile.
+
+---
+
+STRICT MOBILE UX RULES:
+
+• Guest summary MUST NOT be hidden behind collapsible blocks
+• Guest summary MUST NOT disappear on scroll without replacement
+• Guest summary MUST update dynamically if guest count changes
+
+---
+
+DESKTOP BEHAVIOR:
+
+Desktop version may keep current layout,
+but mobile version MUST always show guest summary
+on the results screen.
+
+---
+
+ACCEPTANCE CHECKLIST (MOBILE):
+
+☑ After “Рассчитать”, guest composition is visible
+☑ User clearly understands for HOW MANY guests prices are shown
+☑ No need to scroll back to check guest count
+☑ UX feels transparent and trustworthy
+
+This fix is FINAL and REQUIRED.
