@@ -117,23 +117,17 @@ export default function Home() {
         />
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.00) 100%)" }}
+          style={{
+            background: "radial-gradient(ellipse 70% 65% at 50% 48%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 35%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0) 100%)",
+          }}
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <div className="relative px-14 md:px-24 py-10 md:py-14">
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: "radial-gradient(ellipse 100% 100% at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0) 75%)",
-              }}
-            />
-            <h1 className="relative text-4xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
-              AL MARE
-            </h1>
-            <p className="relative text-[10px] md:text-sm text-white/85 mt-2 md:mt-3 font-light tracking-[0.25em] md:tracking-[0.3em] uppercase" data-testid="text-hero-subtitle">
-              Ultra All Inclusive Resort
-            </p>
-          </div>
+          <h1 className="relative text-4xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
+            AL MARE
+          </h1>
+          <p className="relative text-[10px] md:text-sm text-white/85 mt-2 md:mt-3 font-light tracking-[0.25em] md:tracking-[0.3em] uppercase" data-testid="text-hero-subtitle">
+            Ultra All Inclusive Resort
+          </p>
         </div>
       </header>
 

@@ -1,0 +1,111 @@
+CRITICAL UI / DESIGN FIX:
+Fix the gradient overlay on the hero (main) image
+under the title “AL MARE / Ultra All Inclusive Resort”.
+
+Current problems (MUST be fixed):
+• Overlay is rectangular — this is WRONG
+• Visible hard edges / endings of the overlay — FORBIDDEN
+• Overlay shape is noticeable — FORBIDDEN
+
+---
+
+REQUIRED VISUAL RESULT (IMPORTANT):
+
+• The darkening under the text must be:
+  – OVAL / ELLIPTICAL
+  – SOFT
+  – INVISIBLE AT EDGES
+  – NATURALLY BLENDED into the photo
+
+• The user must NOT see:
+  – rectangles
+  – borders
+  – corners
+  – overlay endings
+  – any geometric shape
+
+The effect must look like:
+“natural vignette / spotlight behind text”
+
+---
+
+MANDATORY IMPLEMENTATION METHOD (NO ALTERNATIVES):
+
+DO NOT use:
+❌ rectangular divs
+❌ linear gradients alone
+❌ background-color overlays
+❌ hard masks
+
+YOU MUST use ONE of the following (preferred order):
+
+OPTION 1 (BEST — REQUIRED IF POSSIBLE):
+Radial gradient overlay
+
+Example (conceptual):
+background:
+radial-gradient(
+  ellipse at center,
+  rgba(0, 0, 0, 0.55) 0%,
+  rgba(0, 0, 0, 0.35) 35%,
+  rgba(0, 0, 0, 0.15) 60%,
+  rgba(0, 0, 0, 0.0) 100%
+);
+
+OPTION 2 (ACCEPTABLE):
+Pseudo-element (::before or ::after)
+with radial-gradient and pointer-events: none
+
+---
+
+POSITIONING RULES:
+
+• Center of the radial gradient MUST be aligned
+  with the text block (“AL MARE”)
+• NOT centered to the full image blindly
+
+• Overlay must scale responsively:
+  – desktop
+  – tablet
+  – mobile
+
+• No cropping
+• No fixed pixel sizes
+
+---
+
+MOBILE + DESKTOP CONSISTENCY (CRITICAL):
+
+• EXACT SAME visual logic on desktop and mobile
+• Same softness
+• Same oval shape
+• Same invisibility of edges
+
+If media queries are used:
+• ONLY adjust intensity slightly
+• NEVER change shape to rectangle
+
+---
+
+STRICT FORBIDDEN RULES:
+
+• No visible edges
+• No box-like overlay
+• No background-image dark block
+• No gradient-to-transparent rectangle
+• No clipping masks with straight lines
+
+If ANY rectangle is visible → task is FAILED.
+
+---
+
+ACCEPTANCE CRITERIA (CHECK MANUALLY):
+
+☑ Text is readable
+☑ Darkening looks natural
+☑ No visible gradient borders
+☑ No shape recognition by eye
+☑ Looks premium, hotel-level, not “website overlay”
+
+This is a FINAL visual rule.
+Do not improvise.
