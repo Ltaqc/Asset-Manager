@@ -1,0 +1,83 @@
+CRITICAL MOBILE UI FIX (DATES OVERLAP + MISALIGNMENT):
+
+Problem (MOBILE ONLY):
+On BOTH screens (before and after clicking “Рассчитать”):
+• Date fields “Дата заезда” and “Дата выезда” overlap / merge into each other
+• The entire date block is shifted to the right (not centered)
+• This looks broken and must be fixed
+
+Important:
+• Calculation logic is correct
+• Fix is UI/CSS/layout only
+
+---
+
+REQUIRED RESULT (MOBILE):
+
+1) NO OVERLAP:
+• “Дата заезда” and “Дата выезда” must never overlap
+• Each field must be fully visible and tappable
+• No shared borders visually “sticking” together
+
+2) PERFECT CENTERING:
+• The date block must be centered relative to the screen
+• Both inputs must have equal width and equal left/right padding
+• No horizontal shift to the right
+
+3) SAME FIX ON ALL STATES:
+• Must work on the initial calculator view
+• Must work on the results view after “Рассчитать”
+• Must work regardless of long date strings (“15 июня 2026 г.”)
+
+---
+
+MANDATORY IMPLEMENTATION (CHOOSE ONE, PREFERRED ORDER):
+
+OPTION A (PREFERRED — MOST RELIABLE):
+Stack dates vertically on mobile:
+• Дата заезда (100% width)
+• Дата выезда (100% width)
+With consistent spacing (gap/margin)
+
+OPTION B (ALLOWED if you insist on 2 columns):
+Use CSS grid/flex with strict widths:
+• container: display: grid; grid-template-columns: 1fr 1fr;
+• gap: 12–16px (no zero gap)
+• each input: width: 100%; min-width: 0;
+• container: width: 100%; max-width: 100%;
+• ensure box-sizing: border-box on inputs and wrapper
+
+---
+
+STRICTLY FORBIDDEN:
+
+• No negative margins
+• No absolute positioning for inputs
+• No transforms to “visually center”
+• No overlapping borders or shared separators
+• No layout that breaks at small widths (≤ 375px)
+
+---
+
+TEST CASES (MOBILE):
+
+Must look correct on:
+• iPhone SE width (small)
+• iPhone 13/14/15 standard
+• iPhone Pro Max
+• Android common widths
+
+Also test with Russian long date format:
+“15 июня 2026 г.” / “20 июня 2026 г.”
+
+---
+
+ACCEPTANCE CHECKLIST:
+
+☑ No overlap between date fields
+☑ Date block centered on screen
+☑ Same behavior before and after “Рассчитать”
+☑ Tappable and readable on mobile
+☑ Desktop layout unchanged
+
+This fix is FINAL and MOBILE-ONLY.

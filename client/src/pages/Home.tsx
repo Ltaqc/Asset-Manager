@@ -140,7 +140,7 @@ export default function Home() {
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Дата заезда</Label>
                 <Input
@@ -155,7 +155,7 @@ export default function Home() {
                       setCheckOut(d.toISOString().split("T")[0]);
                     }
                   }}
-                  className="h-12 bg-secondary/30 border-primary/20"
+                  className="h-12 bg-secondary/30 border-primary/20 w-full"
                 />
               </div>
               <div className="space-y-2">
@@ -166,7 +166,7 @@ export default function Home() {
                   value={checkOut}
                   min={checkIn}
                   onChange={(e) => setCheckOut(e.target.value)}
-                  className="h-12 bg-secondary/30 border-primary/20"
+                  className="h-12 bg-secondary/30 border-primary/20 w-full"
                 />
               </div>
             </div>

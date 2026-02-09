@@ -136,7 +136,7 @@ export default function SearchPage() {
           <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-8" data-testid="heading-search">Подбор номеров</h1>
 
           <div className="flex flex-col gap-4 md:flex-row md:items-end">
-            <div className="grid grid-cols-2 gap-3 w-full md:w-auto md:shrink-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full md:w-auto md:shrink-0">
               <div className="space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата заезда</Label>
                 <Input
