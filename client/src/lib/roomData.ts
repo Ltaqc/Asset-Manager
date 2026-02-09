@@ -1,11 +1,10 @@
 import { roomCategories } from "@shared/schema";
-import stdSlidingMain from "@assets/optimized/гостевой_дом_АЛЬМАРЕ-105_1770476132083.webp";
-import stdSlidingTwin from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_18_26_02_1770478435931.webp";
-import stdSlidingTv from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_14_26_30_1770476132078.webp";
-import stdSlidingDesk from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_14_21_45_1770476132077.webp";
-import stdSlidingBath from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770476132081.webp";
-import stdSlidingShower from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770476132082.webp";
-import stdSlidingBalcony from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_18_40_29_1770478889211.webp";
+import stdSlidingTwin from "@assets/optimized/std_sliding_twin_v2_1770627970168.webp";
+import stdSlidingMain from "@assets/optimized/std_sliding_double_v2_1770627970175.webp";
+import stdSlidingTv from "@assets/optimized/std_sliding_tv_v2_1770627970177.webp";
+import stdSlidingBath from "@assets/optimized/std_sliding_bath_v2_1770627970169.webp";
+import stdSlidingShower from "@assets/optimized/std_sliding_shower_v2_1770627970172.webp";
+import stdSlidingBalcony from "@assets/optimized/std_sliding_balcony_v2_1770627970173.webp";
 import stdDoubleBed from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_18_45_40_1770481217287.webp";
 import stdDoubleTv from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_18_59_06_1770481217289.webp";
 import stdDoubleBath from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_15_04_47_1770481217285.webp";
@@ -88,7 +87,7 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     area: 16,
     shortTitle: "Стандарт (раздвижная кровать)",
     image: stdSlidingTwin,
-    images: [stdSlidingTwin, stdSlidingMain, stdSlidingTv, stdSlidingDesk, stdSlidingBath, stdSlidingShower, stdSlidingBalcony],
+    images: [stdSlidingTwin, stdSlidingMain, stdSlidingTv, stdSlidingBath, stdSlidingShower, stdSlidingBalcony],
   },
   "Стандарт семейный с балконом": {
     cap: 3, count: 6, maxToddlers: 1,
