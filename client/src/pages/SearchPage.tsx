@@ -136,8 +136,8 @@ export default function SearchPage() {
           <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-8" data-testid="heading-search">Подбор номеров</h1>
 
           <div className="flex flex-col gap-4 md:flex-row md:items-end">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 w-full md:w-auto md:shrink-0">
-              <div className="space-y-1.5">
+            <div className="flex gap-2 md:gap-4 w-full md:w-auto md:shrink-0">
+              <div className="flex-1 min-w-0 space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата заезда</Label>
                 <Input
                   data-testid="search-checkin"
@@ -151,10 +151,10 @@ export default function SearchPage() {
                       setCheckOut(d.toISOString().split("T")[0]);
                     }
                   }}
-                  className="h-12 bg-secondary/30 border-primary/20 w-full"
+                  className="h-12 bg-secondary/30 border-primary/20 w-full box-border"
                 />
               </div>
-              <div className="space-y-1.5">
+              <div className="flex-1 min-w-0 space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата выезда</Label>
                 <Input
                   data-testid="search-checkout"
@@ -162,7 +162,7 @@ export default function SearchPage() {
                   value={checkOut}
                   min={checkIn}
                   onChange={(e) => setCheckOut(e.target.value)}
-                  className="h-12 bg-secondary/30 border-primary/20 w-full"
+                  className="h-12 bg-secondary/30 border-primary/20 w-full box-border"
                 />
               </div>
             </div>
