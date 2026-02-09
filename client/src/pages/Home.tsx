@@ -369,7 +369,7 @@ export default function Home() {
                   {[
                     { icon: SunloungerIcon, label: "Шезлонги на пляже" },
                     { icon: RopeParkIcon, label: "Верёвочный парк для детей и взрослых" },
-                    { icon: AquaparkIcon, label: "Надувной аквапарк" },
+                    { icon: AquaparkIcon, label: "Надувной аквапарк с бассейнами, горками и игровыми элементами" },
                     { icon: BeachCafeIcon, label: "Питание и напитки в пляжных кафе" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">

@@ -145,10 +145,10 @@ export function KidsRoomIcon({ className }: IconProps) {
 export function AquaparkIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 12c1.5-1.5 3-2 4.5-1s3 1 4.5 0 3-1.5 4.5-1 3 .5 4.5-1" />
-      <path d="M2 17c1.5-1.5 3-2 4.5-1s3 1 4.5 0 3-1.5 4.5-1 3 .5 4.5-1" />
-      <path d="M12 3v5" />
-      <path d="M8 5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v3c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2V5z" />
+      <path d="M4 4c2 0 3 3 4 6s2 6 4 6" />
+      <path d="M12 16c2 0 3-3 4-6s2-6 4-6" />
+      <path d="M2 19c1.5-1 3-1.5 4.5-.5s3 1 4.5 0 3-1.5 4.5-.5 3 .5 4.5-.5" />
+      <circle cx="5" cy="3" r="1.5" />
     </svg>
   );
 }
