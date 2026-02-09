@@ -1,0 +1,87 @@
+CRITICAL MOBILE LAYOUT FIX:
+Normalize horizontal alignment and right edge consistency
+across the entire mobile booking section.
+
+---
+
+CURRENT PROBLEM (MOBILE):
+
+• The booking block visually shifts to the right
+• Right edge is inconsistent:
+  – some elements reach the edge
+  – some are inset
+  – some overflow
+• This creates a broken, unbalanced mobile layout
+
+This issue is visible when:
+• zooming out
+• using iOS Safari
+• scrolling the page
+
+---
+
+REQUIRED FINAL RESULT (MOBILE):
+
+• All booking UI elements must align to ONE vertical grid
+• Left and right edges must be perfectly consistent
+• No element may visually “stick out” or be inset arbitrarily
+
+---
+
+MANDATORY CONTAINER RULE (CRITICAL):
+
+1) Define ONE mobile container for the booking section:
+• width: 100%
+• max-width: 100%
+• padding-left = padding-right (e.g. 16px or 20px)
+• margin: 0 auto
+• box-sizing: border-box
+
+2) ALL child elements must:
+• inherit the same horizontal padding
+• use width: 100%
+• use box-sizing: border-box
+• NOT use 100vw
+
+---
+
+STRICTLY FORBIDDEN (MOBILE):
+
+• width: 100vw
+• negative margins
+• mixed paddings on left/right
+• elements positioned outside the main container
+• different right paddings for date fields, guest fields, buttons
+
+---
+
+ELEMENTS TO VERIFY (MOBILE):
+
+• Date fields (Дата заезда / Дата выезда)
+• Guest selector card
+• “Рассчитать стоимость проживания” button
+• Summary line (“2 взрослых • 1 подросток • 1 ребёнок”)
+• Recommended option card
+
+ALL must share identical left/right edges.
+
+---
+
+DEBUGGING STEP (MANDATORY):
+
+Temporarily:
+• add outline: 1px solid red to the main container
+• visually confirm that NO child overflows the outline
+• remove outline after fix
+
+---
+
+ACCEPTANCE CHECKLIST:
+
+☑ Left and right edges are visually identical
+☑ No element sticks out on the right
+☑ Layout remains stable on zoom
+☑ Works on iPhone SE / Pro / Pro Max
+☑ Desktop layout unchanged
+
+This fix is FINAL and MOBILE-ONLY.

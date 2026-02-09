@@ -130,7 +130,7 @@ export default function SearchPage() {
   const hasAlternatives = recommendations.alternatives.length > 0;
 
   return (
-    <div className="bg-secondary/10 min-h-screen">
+    <div className="bg-secondary/10 min-h-screen overflow-x-hidden">
       <section className="py-12 bg-white border-b border-border/30">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-8" data-testid="heading-search">Подбор номеров</h1>
@@ -166,7 +166,7 @@ export default function SearchPage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-2 md:gap-4 w-full md:flex-1 md:min-w-0 items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 w-full md:flex-1 md:min-w-0 items-center">
               <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="search-adults" />
               <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="search-teens" />
               <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="search-children" />

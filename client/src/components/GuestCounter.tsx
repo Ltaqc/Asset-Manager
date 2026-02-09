@@ -51,7 +51,7 @@ export function GuestCounter({
           type="button"
           onClick={decrement}
           disabled={value <= min}
-          className="flex items-center justify-center w-11 h-full text-primary transition-colors active:bg-primary/10 disabled:opacity-30 disabled:pointer-events-none shrink-0"
+          className="flex items-center justify-center w-9 sm:w-11 h-full text-primary transition-colors active:bg-primary/10 disabled:opacity-30 disabled:pointer-events-none shrink-0"
           aria-label={`Уменьшить ${label}`}
           data-testid={testId ? `${testId}-minus` : undefined}
         >
@@ -80,7 +80,7 @@ export function GuestCounter({
           type="button"
           onClick={increment}
           disabled={value >= max}
-          className="flex items-center justify-center w-11 h-full text-primary transition-colors active:bg-primary/10 disabled:opacity-30 disabled:pointer-events-none shrink-0"
+          className="flex items-center justify-center w-9 sm:w-11 h-full text-primary transition-colors active:bg-primary/10 disabled:opacity-30 disabled:pointer-events-none shrink-0"
           aria-label={`Увеличить ${label}`}
           data-testid={testId ? `${testId}-plus` : undefined}
         >
