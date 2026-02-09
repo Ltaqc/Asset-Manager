@@ -1,0 +1,135 @@
+Task:
+Implement accommodation recommendation logic INSIDE the website section:
+“Рассчитайте стоимость проживания”.
+
+Context:
+The guest enters:
+• check-in date
+• check-out date
+• number of adults
+• number of children
+
+Trigger:
+When the guest clicks the button “Рассчитать”,
+the calculator must not only compute the price,
+but also generate the best accommodation offers.
+
+Goal:
+After clicking “Рассчитать”, show a structured result screen with:
+1) ⭐ Recommended placement (primary)
+2) 🔁 Alternative placement options (secondary)
+
+This logic must work for ANY guest count,
+including when total guests exceed the max single-room capacity
+(e.g. 8 guests while max room is 6).
+
+---
+
+DATA DEFINITIONS:
+TotalGuests = Adults + Children
+Each room type has:
+• id
+• name
+• capacity
+• price for selected dates
+• availability for selected dates
+• attributes (balcony, 2-room, etc.)
+
+MaxSingleRoomCapacity = max(capacity among available room types)
+
+---
+
+STEP 1 — SEARCH & FILTER AVAILABLE ROOMS
+On “Рассчитать” click:
+• load room availability for selected dates
+• calculate price per room type for full stay
+• keep only rooms that are available (availability > 0)
+
+If no rooms available at all:
+• show message:
+  “К сожалению, на выбранные даты свободных номеров нет.”
+
+---
+
+STEP 2 — DETERMINE PRIMARY RECOMMENDATION
+
+Case 1: Single-room placement possible
+If exists room where capacity >= TotalGuests:
+• Primary recommendation = best single room option
+Selection priority:
+  1) minimal overcapacity (closest fit to TotalGuests)
+  2) higher comfort attributes
+  3) best price/comfort balance
+
+Label:
+“Рекомендованный вариант для X взрослых и Y детей”
+
+Case 2: Single-room placement NOT possible
+If TotalGuests > MaxSingleRoomCapacity:
+• Primary recommendation MUST be a multi-room combination
+The system must generate combinations of multiple rooms where:
+  – sum(capacities) >= TotalGuests
+  – rooms are available for selected dates
+  – number of rooms is minimal
+  – comfort prioritized
+Primary = best combination according to:
+  1) fewer rooms
+  2) closer capacity to TotalGuests
+  3) better comfort
+  4) better total price
+
+Label:
+“Рекомендованный вариант размещения для всей группы”
+
+---
+
+STEP 3 — GENERATE ALTERNATIVES (SPLIT ACCOMMODATION)
+
+Generate 2–3 alternative combinations (max),
+for ANY guest count, including:
+• 4 guests → 2 × double rooms
+• 5 guests → 2 rooms combos (2+3, 2+4, etc.)
+• 6 guests → 2 × triple, or 3 × double, etc.
+• 8 guests → 6+2, 4+4, 2+2+2+2, etc.
+
+Rules:
+• show only logical, realistic combinations
+• show only if available
+• do NOT overload the UI
+
+---
+
+UI OUTPUT (AFTER “Рассчитать”)
+
+Show results in 2 blocks:
+
+BLOCK 1:
+⭐ Рекомендованный вариант
+Display:
+• room name(s) / combination
+• capacity summary (e.g., “вмещает до 8 гостей”)
+• total price for full stay
+• short “why recommended” line
+Button:
+“Забронировать этот вариант”
+
+BLOCK 2:
+🔁 Альтернативные варианты размещения
+Display each alternative:
+• combination description (e.g., “2 номера: 1×двухместный + 1×трехместный”)
+• total capacity
+• total price
+• short benefit line (privacy, quieter, etc.)
+Button:
+“Выбрать этот вариант”
+
+Text tone:
+Solution-oriented, caring, family-friendly.
+Never say “no suitable rooms” if multi-room placement is possible.
+
+---
+
+FINAL RESULT:
+When user clicks “Рассчитать”, the calculator outputs
+a clear recommended placement + alternatives,
+even for large groups where one-room placement is impossible.

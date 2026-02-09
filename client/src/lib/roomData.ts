@@ -259,3 +259,187 @@ export function isRoomSuitable(category: RoomCategory, adults: number, teens: nu
   const mainGuests = adults + teens + childrenCount;
   return mainGuests <= info.cap;
 }
+
+export interface RoomCombo {
+  rooms: Array<{ category: RoomCategory; roomCost: number }>;
+  totalCapacity: number;
+  totalMaxToddlers: number;
+  totalRoomCost: number;
+  foodCost: number;
+  totalPrice: number;
+  nights: number;
+  label: string;
+  why: string;
+}
+
+export interface Recommendations {
+  primary: RoomCombo | null;
+  alternatives: RoomCombo[];
+  seasonError: string | null;
+}
+
+function computeRoomCost(category: RoomCategory, checkIn: string, checkOut: string): { roomCost: number; nights: number } | null {
+  const inDate = new Date(checkIn);
+  const outDate = new Date(checkOut);
+  const nights = Math.ceil((outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (nights < 1) return null;
+
+  const roomInfo = ROOM_DATA[category];
+  let roomCost = 0;
+  for (let i = 0; i < nights; i++) {
+    const d = new Date(inDate);
+    d.setDate(d.getDate() + i);
+    const monthNum = d.getMonth() + 1;
+    if (monthNum < 6 || monthNum > 9) return null;
+    const rate = roomInfo.prices[monthNum];
+    if (!rate) return null;
+    roomCost += rate;
+  }
+  return { roomCost, nights };
+}
+
+function comboLabel(rooms: Array<{ category: RoomCategory }>): string {
+  const counts: Record<string, number> = {};
+  for (const r of rooms) {
+    const short = ROOM_DATA[r.category].shortTitle;
+    counts[short] = (counts[short] || 0) + 1;
+  }
+  return Object.entries(counts).map(([name, c]) => c > 1 ? `${c}× ${name}` : name).join(" + ");
+}
+
+function guestsLabel(adults: number, children: number, teens: number): string {
+  const parts: string[] = [];
+  if (adults > 0) parts.push(`${adults} взр.`);
+  if (teens > 0) parts.push(`${teens} подр.`);
+  if (children > 0) parts.push(`${children} дет.`);
+  return parts.join(", ");
+}
+
+export function generateRecommendations(
+  checkIn: string,
+  checkOut: string,
+  adults: number,
+  teens: number,
+  children: number,
+  toddlers: number,
+): Recommendations {
+  const totalMain = adults + teens + children;
+
+  const testCalc = calculateStay(roomCategories[0], checkIn, checkOut, adults, teens, children);
+  if (testCalc && "error" in testCalc) {
+    return { primary: null, alternatives: [], seasonError: testCalc.error };
+  }
+  if (!testCalc) {
+    return { primary: null, alternatives: [], seasonError: null };
+  }
+
+  const foodPerNight = (adults * FOOD_RATES.adult) + (teens * FOOD_RATES.teen) + (children * FOOD_RATES.child);
+  const nights = testCalc.nights;
+  const foodCost = foodPerNight * nights;
+
+  const roomCosts: Record<RoomCategory, number> = {} as any;
+  for (const cat of roomCategories) {
+    const rc = computeRoomCost(cat, checkIn, checkOut);
+    if (rc) roomCosts[cat] = rc.roomCost;
+  }
+
+  type RoomUnit = { category: RoomCategory; cap: number; maxToddlers: number; cost: number; count: number };
+  const availableUnits: RoomUnit[] = roomCategories
+    .filter(cat => cat in roomCosts)
+    .map(cat => ({
+      category: cat,
+      cap: ROOM_DATA[cat].cap,
+      maxToddlers: ROOM_DATA[cat].maxToddlers,
+      cost: roomCosts[cat],
+      count: ROOM_DATA[cat].count,
+    }))
+    .sort((a, b) => b.cap - a.cap);
+
+  const allCombos: RoomCombo[] = [];
+  const MAX_ROOMS = 4;
+
+  function search(
+    idx: number,
+    selected: RoomUnit[],
+    capSum: number,
+    toddlerCap: number,
+    costSum: number,
+    usedCounts: Record<string, number>,
+  ) {
+    if (capSum >= totalMain && toddlerCap >= toddlers) {
+      allCombos.push({
+        rooms: selected.map(u => ({ category: u.category, roomCost: u.cost })),
+        totalCapacity: capSum,
+        totalMaxToddlers: toddlerCap,
+        totalRoomCost: costSum,
+        foodCost,
+        totalPrice: costSum + foodCost,
+        nights,
+        label: comboLabel(selected.map(u => ({ category: u.category }))),
+        why: "",
+      });
+      return;
+    }
+    if (selected.length >= MAX_ROOMS) return;
+
+    for (let i = idx; i < availableUnits.length; i++) {
+      const unit = availableUnits[i];
+      const used = usedCounts[unit.category] || 0;
+      if (used >= unit.count) continue;
+
+      const newCap = capSum + unit.cap;
+      const newToddler = toddlerCap + unit.maxToddlers;
+      const newCost = costSum + unit.cost;
+
+      usedCounts[unit.category] = used + 1;
+      selected.push(unit);
+
+      search(i, selected, newCap, newToddler, newCost, usedCounts);
+
+      selected.pop();
+      usedCounts[unit.category] = used;
+    }
+  }
+
+  search(0, [], 0, 0, 0, {});
+
+  allCombos.sort((a, b) => {
+    if (a.rooms.length !== b.rooms.length) return a.rooms.length - b.rooms.length;
+    const overA = a.totalCapacity - totalMain;
+    const overB = b.totalCapacity - totalMain;
+    if (overA !== overB) return overA - overB;
+    return a.totalPrice - b.totalPrice;
+  });
+
+  const gl = guestsLabel(adults, children, teens);
+
+  if (allCombos.length === 0) {
+    return { primary: null, alternatives: [], seasonError: null };
+  }
+
+  const primary = allCombos[0];
+  primary.why = primary.rooms.length === 1
+    ? `Оптимальный номер для ${gl}`
+    : `Лучшая комбинация номеров для размещения ${gl}`;
+
+  const seen = new Set<string>();
+  seen.add(primary.label);
+
+  const alternatives: RoomCombo[] = [];
+  for (const combo of allCombos.slice(1)) {
+    if (seen.has(combo.label)) continue;
+    seen.add(combo.label);
+
+    if (combo.rooms.length === 1) {
+      combo.why = combo.totalCapacity > totalMain ? "Более просторный номер" : "Альтернативная категория";
+    } else {
+      combo.why = combo.rooms.length < primary.rooms.length ? "Меньше номеров" :
+        combo.totalPrice < primary.totalPrice ? "Более бюджетный вариант" : "Другая комбинация номеров";
+    }
+
+    alternatives.push(combo);
+    if (alternatives.length >= 3) break;
+  }
+
+  return { primary, alternatives, seasonError: null };
+}

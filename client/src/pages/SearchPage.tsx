@@ -1,22 +1,56 @@
 import { useState, useMemo } from "react";
-import { useSearch, useLocation } from "wouter";
+import { useSearch } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { SectionHeading } from "@/components/SectionHeading";
 import { RoomImageCarousel } from "@/components/RoomImageCarousel";
-import { Users, AlertCircle, Loader2, Maximize2 } from "lucide-react";
+import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
-import { roomCategories } from "@shared/schema";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import {
-  ROOM_DATA, FOOD_RATES, RoomCategory,
-  formatPrice, calculateStay, isRoomSuitable, nightsLabel,
-  getDefaultCheckIn, getDefaultCheckOut, CalcResult,
+  ROOM_DATA, RoomCategory,
+  formatPrice, nightsLabel,
+  getDefaultCheckIn, getDefaultCheckOut,
   isEarlyBooking, applyEarlyDiscount,
+  generateRecommendations, RoomCombo,
 } from "@/lib/roomData";
+
+function ComboRoomCards({ combo }: { combo: RoomCombo }) {
+  return (
+    <div className="space-y-3">
+      {combo.rooms.map((room, idx) => {
+        const info = ROOM_DATA[room.category];
+        return (
+          <div key={idx} className="flex gap-4 items-start" data-testid={`combo-room-${idx}`}>
+            <div className="w-24 h-18 md:w-32 md:h-24 rounded-lg overflow-hidden bg-secondary shrink-0">
+              <img
+                src={info.image}
+                alt={room.category}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-foreground text-sm md:text-base truncate">{info.shortTitle}</p>
+              <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
+                <span className="flex items-center gap-1">
+                  <Users className="w-3 h-3" /> до {info.cap} гостей
+                </span>
+                <span className="flex items-center gap-1">
+                  <Maximize2 className="w-3 h-3" /> {info.area} м²
+                </span>
+              </div>
+              <p className="text-sm text-primary font-semibold mt-1">{formatPrice(room.roomCost)} за номер</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function SearchPage() {
   const searchString = useSearch();
@@ -30,51 +64,35 @@ export default function SearchPage() {
   const [children, setChildren] = useState(Number(params.get("children")) || 0);
   const [toddlers, setToddlers] = useState(Number(params.get("toddlers")) || 0);
 
-  const [selectedRoom, setSelectedRoom] = useState<RoomCategory | null>(null);
+  const [selectedCombo, setSelectedCombo] = useState<RoomCombo | null>(null);
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [showAllRooms, setShowAllRooms] = useState(false);
 
   const createBooking = useCreateBooking();
 
   const earlyBooking = useMemo(() => isEarlyBooking(checkIn), [checkIn]);
 
-  const suitableRooms = useMemo(() => {
-    const results: Array<{ category: RoomCategory; result: CalcResult }> = [];
-
-    for (const category of roomCategories) {
-      const info = ROOM_DATA[category];
-      if (!isRoomSuitable(category, adults, teens, children, toddlers)) continue;
-
-      const calc = calculateStay(category, checkIn, checkOut, adults, teens, children);
-      if (!calc || "error" in calc) continue;
-
-      results.push({ category, result: calc });
-    }
-
-    return results;
+  const recommendations = useMemo(() => {
+    return generateRecommendations(checkIn, checkOut, adults, teens, children, toddlers);
   }, [checkIn, checkOut, adults, teens, children, toddlers]);
 
-  const seasonError = useMemo(() => {
-    if (!checkIn || !checkOut) return null;
-    const calc = calculateStay(roomCategories[0], checkIn, checkOut, adults, teens, children);
-    if (calc && "error" in calc) return calc.error;
-    return null;
-  }, [checkIn, checkOut, adults, teens, children]);
-
-  const handleBook = (category: RoomCategory) => {
-    setSelectedRoom(category);
+  const handleBook = (combo: RoomCombo) => {
+    setSelectedCombo(combo);
   };
 
   const handleSubmitBooking = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedRoom) return;
-    const calc = calculateStay(selectedRoom, checkIn, checkOut, adults, teens, children);
-    if (!calc || "error" in calc) return;
+    if (!selectedCombo) return;
 
-    const finalPrice = earlyBooking ? applyEarlyDiscount(calc.total) : calc.total;
+    const roomLabel = selectedCombo.rooms.length === 1
+      ? selectedCombo.rooms[0].category
+      : selectedCombo.rooms.map(r => ROOM_DATA[r.category].shortTitle).join(" + ");
+
+    const finalPrice = earlyBooking ? applyEarlyDiscount(selectedCombo.totalPrice) : selectedCombo.totalPrice;
 
     createBooking.mutate({
-      roomCategory: selectedRoom,
+      roomCategory: roomLabel,
       checkIn,
       checkOut,
       adults,
@@ -86,18 +104,23 @@ export default function SearchPage() {
       contactPhone: contactPhone || null,
     }, {
       onSuccess: () => {
-        setSelectedRoom(null);
+        setSelectedCombo(null);
         setContactName("");
         setContactPhone("");
       }
     });
   };
 
+  const finalPrice = (price: number) => earlyBooking ? applyEarlyDiscount(price) : price;
+
+  const hasResults = recommendations.primary !== null;
+  const hasAlternatives = recommendations.alternatives.length > 0;
+
   return (
     <div className="bg-secondary/10 min-h-screen">
       <section className="py-12 bg-white border-b border-border/30">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-8">Подбор номеров</h1>
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-8" data-testid="heading-search">Подбор номеров</h1>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <div className="space-y-1.5">
@@ -136,120 +159,285 @@ export default function SearchPage() {
         </div>
       </section>
 
-      <section className="py-12">
+      <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
-          {seasonError ? (
+          {recommendations.seasonError ? (
             <div className="max-w-2xl mx-auto text-center py-16">
               <AlertCircle className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-              <h2 className="text-2xl font-display font-bold text-foreground mb-2">Нет доступных номеров</h2>
-              <p className="text-muted-foreground text-lg">{seasonError}</p>
+              <h2 className="text-2xl font-display font-bold text-foreground mb-2" data-testid="text-no-rooms">Нет доступных номеров</h2>
+              <p className="text-muted-foreground text-lg">{recommendations.seasonError}</p>
             </div>
-          ) : suitableRooms.length === 0 ? (
+          ) : !hasResults ? (
             <div className="max-w-2xl mx-auto text-center py-16">
               <AlertCircle className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
-              <h2 className="text-2xl font-display font-bold text-foreground mb-2">Нет подходящих номеров</h2>
+              <h2 className="text-2xl font-display font-bold text-foreground mb-2" data-testid="text-no-rooms">Нет подходящих вариантов</h2>
               <p className="text-muted-foreground text-lg">
-                Для указанного состава гостей подходящих номеров не найдено. Попробуйте изменить параметры поиска.
+                К сожалению, для указанного состава гостей подходящих вариантов размещения не найдено. Попробуйте изменить параметры.
               </p>
             </div>
           ) : (
-            <>
-              <p className="text-muted-foreground mb-8" data-testid="text-results-count">
-                Найдено подходящих категорий: {suitableRooms.length}
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {suitableRooms.map(({ category, result }) => {
-                  const info = ROOM_DATA[category];
-                  return (
-                    <Card key={category} className="room-card overflow-hidden border-border/50 shadow-md flex flex-col" data-testid={`card-room-${category}`}>
-                      <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-                        {info.images && info.images.length > 1 ? (
-                          <RoomImageCarousel images={info.images} alt={category} className="room-card-img w-full h-full object-cover" />
-                        ) : (
-                          <img
-                            src={info.image}
-                            alt={category}
-                            className="room-card-img w-full h-full object-cover"
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        )}
-                        <div className="absolute top-4 right-4">
-                          <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-primary font-bold shadow-sm">
-                            <Users className="w-3 h-3 mr-1" /> до {info.cap} чел.
-                          </Badge>
+            <div className="space-y-8 md:space-y-12">
+              {recommendations.primary && (
+                <div data-testid="block-recommended">
+                  <div className="flex items-center gap-2 mb-4 md:mb-6">
+                    <Star className="w-5 h-5 text-amber-500 fill-amber-500" />
+                    <h2 className="text-xl md:text-2xl font-display font-bold text-foreground">Рекомендованный вариант</h2>
+                  </div>
+
+                  <Card className="overflow-hidden border-primary/20 shadow-lg border-2">
+                    <div className="md:flex">
+                      <div className="md:w-2/5 lg:w-1/3">
+                        <div className="aspect-[4/3] overflow-hidden bg-secondary">
+                          {recommendations.primary.rooms.length === 1 ? (
+                            (() => {
+                              const info = ROOM_DATA[recommendations.primary!.rooms[0].category];
+                              return info.images && info.images.length > 1
+                                ? <RoomImageCarousel images={info.images} alt={recommendations.primary!.rooms[0].category} className="w-full h-full object-cover" />
+                                : <img src={info.image} alt={recommendations.primary!.rooms[0].category} className="w-full h-full object-cover" loading="lazy" decoding="async" />;
+                            })()
+                          ) : (
+                            <img
+                              src={ROOM_DATA[recommendations.primary.rooms[0].category].image}
+                              alt="Рекомендованный вариант"
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          )}
                         </div>
                       </div>
-                      <div className="p-6 flex flex-col flex-1 gap-4">
-                        <h3 className="text-lg font-bold font-display text-foreground">{category}</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{info.description}</p>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1.5">
-                            <Maximize2 className="w-3.5 h-3.5 text-primary/60" />
-                            {info.area} м²
-                          </span>
-                          <span className="flex items-center gap-1.5">
-                            <Users className="w-3.5 h-3.5 text-primary/60" />
-                            до {info.cap} гостей
-                          </span>
+
+                      <div className="p-5 md:p-6 flex flex-col flex-1 gap-4">
+                        <div>
+                          <h3 className="text-lg md:text-xl font-bold font-display text-foreground" data-testid="text-recommended-title">
+                            {recommendations.primary.rooms.length === 1
+                              ? recommendations.primary.rooms[0].category
+                              : recommendations.primary.label}
+                          </h3>
+                          <p className="text-sm text-muted-foreground mt-1" data-testid="text-recommended-why">
+                            {recommendations.primary.why}
+                          </p>
                         </div>
 
-                        <div className="bg-primary/5 rounded-xl p-4 space-y-2">
-                          <div className="text-sm text-muted-foreground">
-                            {result.nights} {nightsLabel(result.nights)}
+                        {recommendations.primary.rooms.length > 1 && (
+                          <ComboRoomCards combo={recommendations.primary} />
+                        )}
+
+                        {recommendations.primary.rooms.length === 1 && (
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <span className="flex items-center gap-1.5">
+                              <Maximize2 className="w-3.5 h-3.5 text-primary/60" />
+                              {ROOM_DATA[recommendations.primary.rooms[0].category].area} м²
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                              <Users className="w-3.5 h-3.5 text-primary/60" />
+                              до {recommendations.primary.totalCapacity} гостей
+                            </span>
                           </div>
+                        )}
+
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <Badge variant="secondary" className="text-xs">
+                            <Users className="w-3 h-3 mr-1" />
+                            вмещает до {recommendations.primary.totalCapacity} гостей
+                          </Badge>
+                          <Badge variant="secondary" className="text-xs">
+                            {recommendations.primary.nights} {nightsLabel(recommendations.primary.nights)}
+                          </Badge>
+                          {recommendations.primary.rooms.length > 1 && (
+                            <Badge variant="secondary" className="text-xs">
+                              {recommendations.primary.rooms.length} {recommendations.primary.rooms.length === 2 ? "номера" : "номеров"}
+                            </Badge>
+                          )}
+                        </div>
+
+                        <div className="bg-primary/5 rounded-xl p-4 space-y-1">
                           {earlyBooking ? (
                             <>
-                              <div className="text-base text-muted-foreground line-through" data-testid={`price-old-${category}`}>
-                                {formatPrice(result.total)}
+                              <div className="text-base text-muted-foreground line-through" data-testid="price-recommended-old">
+                                {formatPrice(recommendations.primary.totalPrice)}
                               </div>
-                              <div className="text-2xl font-bold font-display text-primary" data-testid={`price-total-${category}`}>
-                                {formatPrice(applyEarlyDiscount(result.total))}
+                              <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
+                                {formatPrice(finalPrice(recommendations.primary.totalPrice))}
                               </div>
-                              <div className="text-xs text-muted-foreground">
-                                {formatPrice(Math.round(applyEarlyDiscount(result.total) / result.nights))} за ночь
-                              </div>
-                              <div className="text-xs font-medium text-green-600" data-testid={`discount-label-${category}`}>
+                              <div className="text-xs font-medium text-green-600" data-testid="discount-recommended">
                                 Скидка раннего бронирования
                               </div>
                             </>
                           ) : (
-                            <>
-                              <div className="text-2xl font-bold font-display text-primary" data-testid={`price-total-${category}`}>
-                                {formatPrice(result.total)}
-                              </div>
-                              <div className="text-xs text-muted-foreground">
-                                {formatPrice(result.perNight)} за ночь
-                              </div>
-                            </>
+                            <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
+                              {formatPrice(recommendations.primary.totalPrice)}
+                            </div>
                           )}
+                          <div className="text-xs text-muted-foreground">
+                            {formatPrice(Math.round(finalPrice(recommendations.primary.totalPrice) / recommendations.primary.nights))} за ночь
+                          </div>
                         </div>
 
-                        <p className="text-xs text-muted-foreground italic">
-                          * Расчёт является предварительным
-                        </p>
+                        <p className="text-xs text-muted-foreground italic">* Расчёт является предварительным</p>
 
                         <Button
-                          data-testid={`button-select-${category}`}
-                          className="w-full mt-auto"
-                          onClick={() => handleBook(category)}
+                          data-testid="button-book-recommended"
+                          className="w-full md:w-auto mt-auto"
+                          onClick={() => handleBook(recommendations.primary!)}
                         >
-                          Выбрать номер
+                          Забронировать этот вариант
                         </Button>
                       </div>
-                    </Card>
-                  );
-                })}
+                    </div>
+                  </Card>
+                </div>
+              )}
+
+              {hasAlternatives && (
+                <div data-testid="block-alternatives">
+                  <div className="flex items-center gap-2 mb-4 md:mb-6">
+                    <ArrowRightLeft className="w-5 h-5 text-primary/70" />
+                    <h2 className="text-xl md:text-2xl font-display font-bold text-foreground">Альтернативные варианты</h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {recommendations.alternatives.map((combo, idx) => {
+                      const isSingle = combo.rooms.length === 1;
+                      const firstRoom = combo.rooms[0];
+                      const info = ROOM_DATA[firstRoom.category];
+
+                      return (
+                        <Card key={idx} className="overflow-hidden border-border/50 shadow-md flex flex-col" data-testid={`card-alternative-${idx}`}>
+                          <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
+                            {isSingle && info.images && info.images.length > 1 ? (
+                              <RoomImageCarousel images={info.images} alt={firstRoom.category} className="w-full h-full object-cover" />
+                            ) : (
+                              <img src={info.image} alt={combo.label} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                            )}
+                            <div className="absolute top-3 right-3">
+                              <Badge variant="secondary" className="backdrop-blur-md bg-white/90 text-primary font-bold shadow-sm text-xs">
+                                <Users className="w-3 h-3 mr-1" /> до {combo.totalCapacity} чел.
+                              </Badge>
+                            </div>
+                          </div>
+
+                          <div className="p-5 flex flex-col flex-1 gap-3">
+                            <h3 className="text-base font-bold font-display text-foreground">
+                              {isSingle ? firstRoom.category : combo.label}
+                            </h3>
+                            <p className="text-xs text-muted-foreground">{combo.why}</p>
+
+                            {!isSingle && <ComboRoomCards combo={combo} />}
+
+                            {isSingle && (
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Maximize2 className="w-3 h-3 text-primary/60" /> {info.area} м²
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Users className="w-3 h-3 text-primary/60" /> до {info.cap} гостей
+                                </span>
+                              </div>
+                            )}
+
+                            <div className="bg-primary/5 rounded-xl p-4 space-y-1 mt-auto">
+                              <div className="text-sm text-muted-foreground">
+                                {combo.nights} {nightsLabel(combo.nights)}
+                                {!isSingle && ` · ${combo.rooms.length} ${combo.rooms.length === 2 ? "номера" : "номеров"}`}
+                              </div>
+                              {earlyBooking ? (
+                                <>
+                                  <div className="text-sm text-muted-foreground line-through">
+                                    {formatPrice(combo.totalPrice)}
+                                  </div>
+                                  <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
+                                    {formatPrice(finalPrice(combo.totalPrice))}
+                                  </div>
+                                  <div className="text-xs font-medium text-green-600">Скидка раннего бронирования</div>
+                                </>
+                              ) : (
+                                <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
+                                  {formatPrice(combo.totalPrice)}
+                                </div>
+                              )}
+                            </div>
+
+                            <Button
+                              variant="outline"
+                              data-testid={`button-book-alt-${idx}`}
+                              className="w-full"
+                              onClick={() => handleBook(combo)}
+                            >
+                              Выбрать этот вариант
+                            </Button>
+                          </div>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div data-testid="block-all-rooms">
+                <button
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-4"
+                  onClick={() => setShowAllRooms(!showAllRooms)}
+                  data-testid="button-toggle-all-rooms"
+                >
+                  {showAllRooms ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  <span className="text-sm font-medium">
+                    {showAllRooms ? "Скрыть все категории номеров" : "Показать все категории номеров"}
+                  </span>
+                </button>
+
+                {showAllRooms && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    {Object.entries(ROOM_DATA).map(([category, info]) => {
+                      const cat = category as RoomCategory;
+                      const rc = (() => {
+                        const inDate = new Date(checkIn);
+                        const outDate = new Date(checkOut);
+                        const nights = Math.ceil((outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24));
+                        if (nights < 1) return null;
+                        let cost = 0;
+                        for (let i = 0; i < nights; i++) {
+                          const d = new Date(inDate);
+                          d.setDate(d.getDate() + i);
+                          const m = d.getMonth() + 1;
+                          if (m < 6 || m > 9 || !info.prices[m]) return null;
+                          cost += info.prices[m];
+                        }
+                        return { cost, nights };
+                      })();
+                      if (!rc) return null;
+
+                      return (
+                        <Card key={category} className="overflow-hidden border-border/50 shadow-sm flex flex-col" data-testid={`card-allroom-${cat}`}>
+                          <div className="aspect-[4/3] overflow-hidden bg-secondary">
+                            <img src={info.image} alt={category} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                          </div>
+                          <div className="p-4 flex flex-col flex-1 gap-2">
+                            <h4 className="text-sm font-bold text-foreground">{info.shortTitle}</h4>
+                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                              <span><Users className="w-3 h-3 inline mr-1" />до {info.cap}</span>
+                              <span><Maximize2 className="w-3 h-3 inline mr-1" />{info.area} м²</span>
+                            </div>
+                            <div className="text-sm font-semibold text-primary mt-auto">
+                              от {formatPrice(earlyBooking ? applyEarlyDiscount(rc.cost) : rc.cost)}
+                              <span className="text-xs text-muted-foreground font-normal"> / {rc.nights} {nightsLabel(rc.nights)}</span>
+                            </div>
+                          </div>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-            </>
+            </div>
           )}
         </div>
       </section>
 
-      {selectedRoom && (
+      {selectedCombo && (
         <div
           className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center"
-          onClick={() => setSelectedRoom(null)}
+          onClick={() => setSelectedCombo(null)}
           data-testid="modal-overlay"
         >
           <div
@@ -260,7 +448,7 @@ export default function SearchPage() {
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-display font-bold text-primary">Оставить заявку</h3>
               <button
-                onClick={() => setSelectedRoom(null)}
+                onClick={() => setSelectedCombo(null)}
                 className="w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground active:bg-secondary/50"
                 aria-label="Закрыть"
                 data-testid="modal-close"
@@ -270,7 +458,28 @@ export default function SearchPage() {
                 </svg>
               </button>
             </div>
-            <p className="text-sm text-muted-foreground">{selectedRoom}</p>
+
+            <div className="space-y-2 text-sm">
+              <p className="font-medium text-foreground" data-testid="modal-room-label">
+                {selectedCombo.rooms.length === 1
+                  ? selectedCombo.rooms[0].category
+                  : selectedCombo.label}
+              </p>
+              {selectedCombo.rooms.length > 1 && (
+                <div className="space-y-1 text-xs text-muted-foreground">
+                  {selectedCombo.rooms.map((r, i) => (
+                    <p key={i}>{ROOM_DATA[r.category].shortTitle} — {formatPrice(r.roomCost)}</p>
+                  ))}
+                </div>
+              )}
+              <p className="text-muted-foreground">
+                {checkIn} — {checkOut} · {selectedCombo.nights} {nightsLabel(selectedCombo.nights)}
+              </p>
+              <p className="font-bold text-primary text-lg" data-testid="modal-total-price">
+                Итого: {formatPrice(finalPrice(selectedCombo.totalPrice))}
+              </p>
+            </div>
+
             <form onSubmit={handleSubmitBooking} className="space-y-4">
               <div className="space-y-2">
                 <Label>Ваше имя</Label>
@@ -281,7 +490,7 @@ export default function SearchPage() {
                 <Input data-testid="booking-phone" placeholder="+7 900 123 45 67" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} className="h-12" inputMode="tel" />
               </div>
               <div className="flex gap-3 pt-2">
-                <Button type="button" variant="outline" className="flex-1" onClick={() => setSelectedRoom(null)}>Отмена</Button>
+                <Button type="button" variant="outline" className="flex-1" onClick={() => setSelectedCombo(null)}>Отмена</Button>
                 <Button type="submit" className="flex-1" disabled={createBooking.isPending} data-testid="button-submit-booking">
                   {createBooking.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Отправить"}
                 </Button>
