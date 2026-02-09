@@ -8,6 +8,7 @@ declare global {
 
 const HOTEL_COORDS = [45.326978, 37.290373];
 const MAP_ZOOM = 15;
+const YANDEX_TRAVEL_URL = "https://travel.yandex.ru/hotels/anapa/al-mare-otel-2919830429/";
 
 export function YandexMap({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,16 +30,19 @@ export function YandexMap({ className }: { className?: string }) {
       map.behaviors.enable(["drag", "scrollZoom", "multiTouch"]);
       map.behaviors.disable(["rightMouseButtonMagnifier"]);
 
-      const placemark = new window.ymaps.Placemark(HOTEL_COORDS, {}, {
+      const placemark = new window.ymaps.Placemark(HOTEL_COORDS, {
+        hintContent: "AL MARE — открыть на Яндекс Путешествиях",
+      }, {
         preset: "islands#blueHotelIcon",
         iconColor: "#0891b2",
         hasBalloon: false,
-        hasHint: false,
+        hasHint: true,
         openBalloonOnClick: false,
+        cursor: "pointer",
       });
 
-      placemark.events.add("click", (e: any) => {
-        e.preventDefault();
+      placemark.events.add("click", () => {
+        window.open(YANDEX_TRAVEL_URL, "_blank", "noopener,noreferrer");
       });
 
       map.geoObjects.add(placemark);
