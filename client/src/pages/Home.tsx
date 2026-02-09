@@ -34,11 +34,15 @@ import beachRopePark from "@assets/optimized/ChatGPT_Image_5_февр._2026_г.,
 import beachLoungeMain from "@assets/optimized/beach_lounge_main_1770570903453.webp";
 import beachLoungeAlt from "@assets/optimized/beach_lounge_alt_1770570903455.webp";
 import beachSeaSparkling from "@assets/optimized/beach_sea_sparkling_1770571117379.webp";
+import beachCafe from "@assets/optimized/beach_cafe_1770640618446.webp";
+import beachAquapark from "@assets/optimized/beach_aquapark_1770641467286.webp";
 
 const FOOD_GALLERY = [foodPhoto1, foodPhoto2, foodPhoto3, foodPhoto4];
 const BEACH_GALLERY = [
   beachLoungeMain,
   beachSeaSparkling,
+  beachCafe,
+  beachAquapark,
   beachLoungeAlt,
   beachPetanque,
   beachKubb,
