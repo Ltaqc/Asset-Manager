@@ -86,3 +86,17 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Date inputs must respect container width on mobile */
+@media (max-width: 768px) {
+  input[type="date"] {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
