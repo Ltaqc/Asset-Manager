@@ -1,0 +1,171 @@
+CRITICAL TASK:
+Extend and finalize the logic of alternative accommodation options
+inside the section “Подбор номеров / Рассчитайте стоимость проживания”.
+
+This task extends existing logic and must NOT break:
+• Ultra All Inclusive pricing
+• unified total price calculation
+• recommended option logic
+
+---
+
+PART 1 — NUMBER OF ALTERNATIVE OPTIONS (UPDATED RULE)
+
+Current behavior:
+Only 3 alternative placement options are shown.
+
+Required behavior:
+• Show from MINIMUM 3 to MAXIMUM 6 alternative placement options
+• If 4, 5, or 6 valid logical alternatives exist — SHOW ALL of them
+• Do NOT artificially limit to 3 if more valid options exist
+
+Upper limit:
+• MAXIMUM = 6 alternatives
+• NEVER show more than 6
+
+Lower limit:
+• MINIMUM = 3, if at least 3 valid options exist
+
+---
+
+PART 2 — GENERATION LOGIC FOR ALTERNATIVES (STRICT)
+
+Alternative placement = logically different accommodation SCENARIOS,
+not random combinations.
+
+Algorithm:
+1) Generate all valid room combinations
+   where sum(capacity) ≥ TotalGuests
+   and rooms are available for selected dates
+
+2) Sort combinations by:
+   a) room count (ascending)
+   b) comfort level
+   c) total price
+
+3) Group combinations into DISTINCT SCENARIOS, for example:
+   • minimal room count
+   • more privacy (more rooms)
+   • larger rooms
+   • balanced option
+
+4) Select up to 6 best DISTINCT scenarios
+
+IMPORTANT:
+• Scenarios must feel meaningfully different to the guest
+• Do NOT show visually or logically duplicated options
+
+---
+
+MANDATORY EXAMPLE RULE (MUST BE SUPPORTED):
+
+For 6 guests:
+If valid combinations exist:
+• 2 rooms (4+2)
+• 3 rooms (2+2+2)
+• 2 rooms (3+3)
+• 1 large + 1 small
+• etc.
+
+System MUST be able to show up to 6 such variants if available.
+
+---
+
+PART 3 — BEHAVIOR OF “ВЫБРАТЬ ЭТОТ ВАРИАНТ” (NEW STEP)
+
+Current behavior:
+Clicking “Выбрать этот вариант” immediately proceeds to booking.
+
+Required NEW behavior:
+Clicking “Выбрать этот вариант” must OPEN a detailed confirmation view.
+
+---
+
+PART 4 — DETAILED CONFIRMATION VIEW (MANDATORY)
+
+After clicking “Выбрать этот вариант” on an alternative:
+
+Open a modal or dedicated confirmation block that shows:
+
+1) Clear title:
+“Вы выбрали вариант размещения”
+
+2) Detailed list of included rooms:
+For EACH room:
+• Room name
+• Capacity
+• Number of rooms of this type
+• Price for the ENTIRE stay (with all discounts applied)
+
+Example:
+• Джуниор Сюит — до 4 гостей — 122 400 ₽ за 26 ночей
+• Стандарт — до 2 гостей — 61 200 ₽ за 26 ночей
+
+3) Total summary:
+• Итоговая стоимость за N ночей
+• This MUST equal the sum of room totals
+• Food cost already included (but NOT shown separately)
+
+---
+
+PART 5 — FINAL ACTION BUTTON (INSIDE CONFIRMATION)
+
+Inside the confirmation view:
+
+Primary button:
+“Забронировать этот вариант”
+
+Only after this click:
+• proceed to booking
+• lock selected rooms
+• pass exact room composition to booking flow
+
+This step is REQUIRED to:
+• reduce booking errors
+• increase trust
+• make multi-room placement explicit
+
+---
+
+PART 6 — PRICE CONSISTENCY RULE (RECONFIRMED)
+
+At EVERY stage:
+• Alternative card price
+• Confirmation view prices
+• Final booking price
+
+MUST BE IDENTICAL and mathematically consistent.
+
+TOTAL PRICE =
+sum(room accommodation totals)
++ food cost (already included)
+
+NO breakdown visible to guest.
+
+---
+
+PART 7 — UX PRINCIPLES (DO NOT VIOLATE)
+
+• Guest always sees:
+  – 1 recommended option
+  – 3–6 alternative options (if available)
+
+• Guest NEVER selects room count manually
+• Guest NEVER assembles combinations himself
+• System proposes — guest chooses
+
+• Additional confirmation step exists ONLY for alternatives
+  (recommended option may go directly to booking)
+
+---
+
+FINAL ACCEPTANCE CHECKLIST:
+
+• Alternatives can be 3, 4, 5, or 6 — depending on availability
+• 6 guests → 3-room scenarios can appear
+• Clicking “Выбрать этот вариант” opens detailed composition
+• Guest sees exact rooms and prices before booking
+• Final booking price matches confirmation
+• Ultra All Inclusive logic preserved
+
+This logic is FINAL and UNIVERSAL.

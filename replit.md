@@ -88,13 +88,16 @@ The `bookings` table stores:
 ### Recommendation & Alternative Placement Logic
 - `generateRecommendations()` uses DFS to find all valid room combinations, then applies scenario-based selection
 - **Primary**: Minimum rooms, minimum overcapacity, then cheapest. Single room preferred if it fits all guests.
-- **Alternatives**: Max 3 scenarios, distributed across distinct room-count levels:
-  - `comfortMinRooms = ceil(totalGuests / 2)` — defines the "comfort" room count for privacy scenarios
-  - `sameCountLimit = max(1, 3 - distinctMultiRoomLevels)` — reserves slots for multi-room options
-  - One combo per room-count level to ensure broad representation
+- **Alternatives**: MINIMUM 3, MAXIMUM 6 distinct scenarios shown (if enough valid combos exist)
+  - First: up to 3 same-room-count alternatives (different categories)
+  - Then: up to 2 combos per higher room-count level (more privacy scenarios)
+  - Backfill: remaining same-count options if < 6 total
 - **Scenario labels**: "Альтернативная категория", "Более просторный номер", "Баланс комфорта и цены", "Больше личного пространства"
 - **Section title**: "Альтернативные варианты размещения"
-- **Examples**: 2 guests → single + alternatives; 4 guests → single + 2× Standard; 6 guests → Apartments + 2-room + 3× Standard; 8 guests → 2× Junior Suite + multi-room alternatives
+- **Two-step booking for alternatives**: Clicking "Выбрать этот вариант" opens a confirmation modal showing per-room breakdown (name, capacity, price for entire stay). Then "Забронировать этот вариант" proceeds to the booking form.
+- **Recommended option**: Goes directly to booking modal (no confirmation step)
+- **Per-room prices in confirmation**: Each room shows accommodation + food share (food distributed evenly across rooms, rounding adjusted so sum = total exactly)
+- **Examples**: 2 guests → single + up to 6 alts; 4 guests → single + multi-room options; 6 guests → Apartments + 2-room + 3-room combos; 8 guests → 2× Junior Suite + multi-room alternatives
 
 ### API Endpoints
 - `POST /api/bookings` - Create a new booking request

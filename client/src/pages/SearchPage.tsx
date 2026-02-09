@@ -67,6 +67,7 @@ export default function SearchPage() {
   const [toddlers, setToddlers] = useState(Number(params.get("toddlers")) || 0);
 
   const [selectedCombo, setSelectedCombo] = useState<RoomCombo | null>(null);
+  const [confirmingCombo, setConfirmingCombo] = useState<RoomCombo | null>(null);
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [showAllRooms, setShowAllRooms] = useState(false);
@@ -81,6 +82,16 @@ export default function SearchPage() {
 
   const handleBook = (combo: RoomCombo) => {
     setSelectedCombo(combo);
+  };
+
+  const handleConfirmAlternative = (combo: RoomCombo) => {
+    setConfirmingCombo(combo);
+  };
+
+  const handleProceedToBooking = () => {
+    if (!confirmingCombo) return;
+    setSelectedCombo(confirmingCombo);
+    setConfirmingCombo(null);
   };
 
   const handleSubmitBooking = (e: React.FormEvent) => {
@@ -369,7 +380,7 @@ export default function SearchPage() {
                               variant="outline"
                               data-testid={`button-book-alt-${idx}`}
                               className="w-full"
-                              onClick={() => handleBook(combo)}
+                              onClick={() => handleConfirmAlternative(combo)}
                             >
                               Выбрать этот вариант
                             </Button>
@@ -427,6 +438,110 @@ export default function SearchPage() {
           )}
         </div>
       </section>
+
+      {confirmingCombo && (() => {
+        const combo = confirmingCombo;
+        const numRooms = combo.rooms.length;
+        const displayTotal = finalPrice(combo.totalPrice);
+
+        const grouped: Array<{ category: RoomCategory; count: number; cap: number; totalRoomCost: number }> = [];
+        for (const r of combo.rooms) {
+          const existing = grouped.find(g => g.category === r.category);
+          if (existing) {
+            existing.count++;
+            existing.totalRoomCost += r.roomCost;
+          } else {
+            grouped.push({ category: r.category, count: 1, cap: ROOM_DATA[r.category].cap, totalRoomCost: r.roomCost });
+          }
+        }
+
+        const rawTotal = combo.totalPrice;
+        const groupRawPrices = grouped.map(g => Math.round(rawTotal * g.totalRoomCost / combo.rooms.reduce((s, r) => s + r.roomCost, 0)));
+        const rawSum = groupRawPrices.reduce((s, p) => s + p, 0);
+        groupRawPrices[groupRawPrices.length - 1] += rawTotal - rawSum;
+        const groupDisplayPrices = groupRawPrices.map(p => earlyBooking ? applyEarlyDiscount(p) : p);
+        const displaySum = groupDisplayPrices.reduce((s, p) => s + p, 0);
+        if (displaySum !== displayTotal) {
+          groupDisplayPrices[groupDisplayPrices.length - 1] += displayTotal - displaySum;
+        }
+
+        return (
+          <div
+            className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center"
+            onClick={() => setConfirmingCombo(null)}
+            data-testid="modal-confirm-overlay"
+          >
+            <div
+              className="bg-white rounded-t-2xl md:rounded-2xl max-w-lg w-full p-6 space-y-5 max-h-[85vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+              data-testid="modal-confirm"
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-display font-bold text-primary" data-testid="confirm-title">Вы выбрали вариант размещения</h3>
+                <button
+                  onClick={() => setConfirmingCombo(null)}
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground active:bg-secondary/50"
+                  aria-label="Закрыть"
+                  data-testid="confirm-close"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-3" data-testid="confirm-rooms-list">
+                {grouped.map((g, i) => {
+                  const info = ROOM_DATA[g.category];
+                  return (
+                    <div key={i} className="flex gap-3 items-start bg-secondary/20 rounded-lg p-3" data-testid={`confirm-room-${i}`}>
+                      <div className="w-16 h-12 rounded-md overflow-hidden bg-secondary shrink-0">
+                        <img src={info.image} alt={g.category} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-foreground text-sm" data-testid={`confirm-room-name-${i}`}>
+                          {g.count > 1 ? `${g.count}× ${info.shortTitle}` : g.category}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          до {g.cap} гостей{g.count > 1 ? ` × ${g.count} номера` : ""}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="font-bold text-primary text-sm" data-testid={`confirm-room-price-${i}`}>{formatPrice(groupDisplayPrices[i])}</p>
+                        <p className="text-xs text-muted-foreground">за {combo.nights} {nightsLabel(combo.nights)}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="bg-primary/5 rounded-xl p-4 space-y-1.5">
+                <p className="text-sm text-muted-foreground">
+                  {combo.nights} {nightsLabel(combo.nights)}
+                  {numRooms > 1 && ` · ${numRooms} ${numRooms === 2 ? "номера" : numRooms <= 4 ? "номера" : "номеров"}`}
+                </p>
+                {earlyBooking && (
+                  <p className="text-sm text-muted-foreground line-through" data-testid="confirm-old-price">{formatPrice(combo.totalPrice)}</p>
+                )}
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-bold text-foreground">Итоговая стоимость:</span>
+                  <span className="text-2xl font-bold font-display text-primary" data-testid="confirm-total-price">{formatPrice(displayTotal)}</span>
+                </div>
+                {earlyBooking && (
+                  <p className="text-xs font-medium text-green-600">Скидка раннего бронирования</p>
+                )}
+              </div>
+
+              <p className="text-xs text-muted-foreground italic">* Расчёт является предварительным</p>
+
+              <div className="flex gap-3">
+                <Button type="button" variant="outline" className="flex-1" onClick={() => setConfirmingCombo(null)} data-testid="confirm-cancel">Назад</Button>
+                <Button className="flex-1" onClick={handleProceedToBooking} data-testid="confirm-book">Забронировать этот вариант</Button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {selectedCombo && (
         <div
