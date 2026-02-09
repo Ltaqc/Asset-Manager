@@ -36,9 +36,12 @@ Preferred communication style: Simple, everyday language.
 - `/search` — Filters rooms by capacity, shows pricing cards with cross-month calculation, booking modal
 ### Shared Room Data (`client/src/lib/roomData.ts`)
 Central module containing:
-- `ROOM_DATA` — 8 room categories with capacity, prices by month, descriptions, images
-- `FOOD_RATES` — Pricing per age group per night
-- `calculateStay()` — Cross-month aware pricing calculation
+- `ROOM_DATA` — 8 room categories with capacity, accommodation prices by month, descriptions, images
+- `FOOD_RATES` — Pricing per age group per night (adult: 4500, teen: 4500, child: 3000, toddler: 0)
+- `calculateAccommodationCost(category, checkIn, checkOut)` — Room-only cost, cross-month aware
+- `calculateFoodCost(adults, teens, children, nights)` — Food cost for all guests
+- `calculateRoomTotalPrice(category, checkIn, checkOut, adults, teens, children)` — Single atomic function: accommodation + food = total
+- `generateRecommendations()` — DFS room combo search with food cost included once per guest group
 - `isRoomSuitable()` — Capacity filtering with crib rules (max 1 toddler)
 - `formatPrice()`, `nightsLabel()`, helper functions
 
@@ -70,13 +73,15 @@ The `bookings` table stores:
 - `createdAt` (timestamp) - Auto-set on creation
 
 ### Pricing Logic
-- Universal pricing: ONE atomic function `calculateRoomTotalPrice(category, checkIn, checkOut)` is the single source of truth
-- Room rates are all-inclusive (Ultra All Inclusive) — no separate food charges
-- Room pricing varies by room category and month (June through September)
+- Ultra All Inclusive model: EVERY price = accommodation + food, always combined, never shown separately
+- ONE atomic function `calculateRoomTotalPrice(category, checkIn, checkOut, adults, teens, children)` is the single source of truth
+- Accommodation pricing varies by room category and month (June through September)
+- Food pricing: adult 4500/night, teen 4500/night, child 3000/night, toddler free
 - Cross-month stays are calculated night-by-night using the rate for each night's month
-- Single room: TotalPrice = calculateRoomTotalPrice(room, dates)
-- Multi-room: TotalPrice = sum of each room's calculateRoomTotalPrice result
-- Validation: sum(displayed per-room prices) must always equal displayed TotalPrice
+- Single room: TotalPrice = accommodation + food (via atomic function)
+- Multi-room: TotalPrice = sum(each room's accommodation) + food once for all guests
+- Food cost is counted ONCE per guest group, NOT per room
+- NO price breakdowns displayed: guest sees ONLY the total price
 - Early booking discount (10%) applied at display level when check-in > 30 days away
 - Capacity: adults + teens + children must fit room cap; max 1 toddler (crib)
 

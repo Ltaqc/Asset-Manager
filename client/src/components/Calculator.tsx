@@ -34,8 +34,8 @@ export function Calculator() {
 
   const result = useMemo(() => {
     if (!checkIn || !checkOut || !roomCategory) return null;
-    return calculateRoomTotalPrice(roomCategory, checkIn, checkOut);
-  }, [roomCategory, checkIn, checkOut]);
+    return calculateRoomTotalPrice(roomCategory, checkIn, checkOut, adults, teens, children, toddlers);
+  }, [roomCategory, checkIn, checkOut, adults, teens, children, toddlers]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

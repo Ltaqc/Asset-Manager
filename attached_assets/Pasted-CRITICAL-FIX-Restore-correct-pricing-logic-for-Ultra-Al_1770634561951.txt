@@ -1,0 +1,115 @@
+CRITICAL FIX: Restore correct pricing logic for Ultra All Inclusive hotel.
+
+Hotel model:
+AL MARE operates as ULTRA ALL INCLUSIVE.
+
+This means:
+• EVERY booking price = accommodation + food
+• Food cost is ALWAYS included
+• Food cost must NEVER be removed
+• Food cost must NEVER be shown separately
+
+---
+
+CORE PRICING RULE (MANDATORY):
+
+For ANY room or combination of rooms,
+the final price MUST be calculated as:
+
+TOTAL PRICE =
+ACCOMMODATION_COST
++ FOOD_COST
+
+The guest must see ONLY the TOTAL PRICE.
+
+No breakdowns.
+No separation.
+No labels like “питание” or “проживание”.
+
+---
+
+DEFINITIONS:
+
+• Nights = check-out date − check-in date
+• Guests = adults + teenagers + children
+• Infants may be excluded if free (if applicable)
+
+For each room:
+• RoomAccommodationCost =
+  baseRoomPricePerNight × nights × roomCount
+  with all discounts and seasonal coefficients applied
+
+• FoodCost =
+  foodPricePerPersonPerDay × guests × nights
+  with all applicable discounts applied
+
+---
+
+SINGLE ROOM LOGIC:
+
+If placement uses one room:
+• AccommodationCost = calculateRoomAccommodationCost(room)
+• FoodCost = calculateFoodCost(guests, nights)
+• TotalPrice = AccommodationCost + FoodCost
+
+Display:
+• ONLY TotalPrice
+• Label: “Итоговая стоимость за N ночей”
+
+---
+
+MULTI-ROOM (ALTERNATIVE) LOGIC:
+
+If placement uses multiple rooms:
+• AccommodationCost =
+  sum(calculateRoomAccommodationCost(each room))
+
+• FoodCost =
+  calculateFoodCost(total guests, nights)
+  (IMPORTANT: food is counted ONCE per guest, not per room)
+
+• TotalPrice = AccommodationCost + FoodCost
+
+Display:
+• ONLY TotalPrice
+• No per-room food allocation
+• No food breakdown
+
+---
+
+STRICTLY FORBIDDEN:
+
+• Removing food cost from calculations
+• Showing accommodation price without food
+• Showing food price separately
+• Showing partial totals
+• Mixing price units
+
+---
+
+UI FIX — AGE SELECTORS (CRITICAL):
+
+Problem:
+Age selectors moved down and broke layout.
+
+Requirement:
+• All age selectors MUST be on ONE horizontal line
+• Same height
+• Same vertical alignment
+• No wrapping
+• Use flex layout with align-items: center
+• This applies to desktop layout
+
+---
+
+FINAL VALIDATION CHECKLIST (MUST PASS):
+
+• 2 guests → price includes food
+• 4 guests → price includes food
+• 6 guests → price includes food
+• 8 guests → multi-room + food included
+• No visible food breakdown
+• Prices are stable and logical
+• Age selectors aligned in one row
+
+This is a BUSINESS-CRITICAL FIX.

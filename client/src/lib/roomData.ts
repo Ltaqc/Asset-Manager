@@ -146,6 +146,13 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
   },
 };
 
+export const FOOD_RATES = {
+  adult: 4500,
+  teen: 4500,
+  child: 3000,
+  toddler: 0,
+};
+
 export const EARLY_BOOKING_DAYS = 30;
 export const EARLY_BOOKING_DISCOUNT = 0.10;
 
@@ -169,6 +176,11 @@ export function formatPrice(value: number): string {
 export function getMinPrice(category: RoomCategory): number {
   const prices = Object.values(ROOM_DATA[category].prices);
   return Math.min(...prices);
+}
+
+export function calculateFoodCost(adults: number, teens: number, children: number, toddlers: number, nights: number): number {
+  const foodPerNight = (adults * FOOD_RATES.adult) + (teens * FOOD_RATES.teen) + (children * FOOD_RATES.child) + (toddlers * FOOD_RATES.toddler);
+  return foodPerNight * nights;
 }
 
 export function getDefaultCheckIn(): string {
@@ -198,6 +210,8 @@ export function nightsLabel(n: number): string {
 
 export interface CalcResult {
   nights: number;
+  accommodationCost: number;
+  foodCost: number;
   total: number;
   perNight: number;
 }
@@ -206,11 +220,11 @@ export interface CalcError {
   error: string;
 }
 
-export function calculateRoomTotalPrice(
+export function calculateAccommodationCost(
   category: RoomCategory,
   checkIn: string,
   checkOut: string,
-): CalcResult | CalcError | null {
+): { nights: number; cost: number } | CalcError | null {
   if (!checkIn || !checkOut) return null;
 
   const inDate = new Date(checkIn);
@@ -221,7 +235,7 @@ export function calculateRoomTotalPrice(
   if (nights < 1) return null;
 
   const roomInfo = ROOM_DATA[category];
-  let total = 0;
+  let cost = 0;
 
   for (let i = 0; i < nights; i++) {
     const d = new Date(inDate);
@@ -232,12 +246,30 @@ export function calculateRoomTotalPrice(
     }
     const rate = roomInfo.prices[monthNum];
     if (!rate) return { error: "Нет данных о ценах для выбранного месяца" };
-    total += rate;
+    cost += rate;
   }
 
-  const perNight = Math.round(total / nights);
+  return { nights, cost };
+}
 
-  return { nights, total, perNight };
+export function calculateRoomTotalPrice(
+  category: RoomCategory,
+  checkIn: string,
+  checkOut: string,
+  adults: number,
+  teens: number,
+  children: number,
+  toddlers: number = 0,
+): CalcResult | CalcError | null {
+  const accom = calculateAccommodationCost(category, checkIn, checkOut);
+  if (!accom) return null;
+  if ("error" in accom) return accom;
+
+  const foodCost = calculateFoodCost(adults, teens, children, toddlers, accom.nights);
+  const total = accom.cost + foodCost;
+  const perNight = Math.round(total / accom.nights);
+
+  return { nights: accom.nights, accommodationCost: accom.cost, foodCost, total, perNight };
 }
 
 export function isRoomSuitable(category: RoomCategory, adults: number, teens: number, childrenCount: number, toddlers: number): boolean {
@@ -291,7 +323,7 @@ export function generateRecommendations(
 ): Recommendations {
   const totalMain = adults + teens + children;
 
-  const testCalc = calculateRoomTotalPrice(roomCategories[0], checkIn, checkOut);
+  const testCalc = calculateAccommodationCost(roomCategories[0], checkIn, checkOut);
   if (testCalc && "error" in testCalc) {
     return { primary: null, alternatives: [], seasonError: testCalc.error };
   }
@@ -300,21 +332,22 @@ export function generateRecommendations(
   }
 
   const nights = testCalc.nights;
+  const foodCost = calculateFoodCost(adults, teens, children, toddlers, nights);
 
-  const roomCosts: Record<RoomCategory, number> = {} as any;
+  const roomAccomCosts: Record<RoomCategory, number> = {} as any;
   for (const cat of roomCategories) {
-    const rc = calculateRoomTotalPrice(cat, checkIn, checkOut);
-    if (rc && !("error" in rc)) roomCosts[cat] = rc.total;
+    const rc = calculateAccommodationCost(cat, checkIn, checkOut);
+    if (rc && !("error" in rc)) roomAccomCosts[cat] = rc.cost;
   }
 
   type RoomUnit = { category: RoomCategory; cap: number; maxToddlers: number; cost: number; count: number };
   const availableUnits: RoomUnit[] = roomCategories
-    .filter(cat => cat in roomCosts)
+    .filter(cat => cat in roomAccomCosts)
     .map(cat => ({
       category: cat,
       cap: ROOM_DATA[cat].cap,
       maxToddlers: ROOM_DATA[cat].maxToddlers,
-      cost: roomCosts[cat],
+      cost: roomAccomCosts[cat],
       count: ROOM_DATA[cat].count,
     }))
     .sort((a, b) => b.cap - a.cap);
@@ -335,7 +368,7 @@ export function generateRecommendations(
         rooms: selected.map(u => ({ category: u.category, roomCost: u.cost })),
         totalCapacity: capSum,
         totalMaxToddlers: toddlerCap,
-        totalPrice: costSum,
+        totalPrice: costSum + foodCost,
         nights,
         label: comboLabel(selected.map(u => ({ category: u.category }))),
         why: "",

@@ -15,7 +15,8 @@ import {
   getDefaultCheckIn, getDefaultCheckOut,
   isEarlyBooking, applyEarlyDiscount,
   generateRecommendations, RoomCombo,
-  calculateRoomTotalPrice,
+  calculateRoomTotalPrice, calculateFoodCost,
+  calculateAccommodationCost,
 } from "@/lib/roomData";
 
 function ComboRoomCards({ combo }: { combo: RoomCombo }) {
@@ -44,7 +45,7 @@ function ComboRoomCards({ combo }: { combo: RoomCombo }) {
                   <Maximize2 className="w-3 h-3" /> {info.area} м²
                 </span>
               </div>
-              <p className="text-sm text-primary font-semibold mt-1">{formatPrice(room.roomCost)} за номер</p>
+              <p className="text-sm text-muted-foreground mt-1">{room.category}</p>
             </div>
           </div>
         );
@@ -123,39 +124,43 @@ export default function SearchPage() {
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-8" data-testid="heading-search">Подбор номеров</h1>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <div className="space-y-1.5">
-              <Label className="text-xs text-muted-foreground">Дата заезда</Label>
-              <Input
-                data-testid="search-checkin"
-                type="date"
-                value={checkIn}
-                onChange={(e) => {
-                  setCheckIn(e.target.value);
-                  if (e.target.value && checkOut <= e.target.value) {
-                    const d = new Date(e.target.value);
-                    d.setDate(d.getDate() + 1);
-                    setCheckOut(d.toISOString().split("T")[0]);
-                  }
-                }}
-                className="h-12 bg-secondary/30 border-primary/20"
-              />
+          <div className="flex flex-col md:flex-row gap-4 items-end">
+            <div className="grid grid-cols-2 gap-4 shrink-0">
+              <div className="space-y-1.5">
+                <Label className="text-xs text-muted-foreground">Дата заезда</Label>
+                <Input
+                  data-testid="search-checkin"
+                  type="date"
+                  value={checkIn}
+                  onChange={(e) => {
+                    setCheckIn(e.target.value);
+                    if (e.target.value && checkOut <= e.target.value) {
+                      const d = new Date(e.target.value);
+                      d.setDate(d.getDate() + 1);
+                      setCheckOut(d.toISOString().split("T")[0]);
+                    }
+                  }}
+                  className="h-12 bg-secondary/30 border-primary/20"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs text-muted-foreground">Дата выезда</Label>
+                <Input
+                  data-testid="search-checkout"
+                  type="date"
+                  value={checkOut}
+                  min={checkIn}
+                  onChange={(e) => setCheckOut(e.target.value)}
+                  className="h-12 bg-secondary/30 border-primary/20"
+                />
+              </div>
             </div>
-            <div className="space-y-1.5">
-              <Label className="text-xs text-muted-foreground">Дата выезда</Label>
-              <Input
-                data-testid="search-checkout"
-                type="date"
-                value={checkOut}
-                min={checkIn}
-                onChange={(e) => setCheckOut(e.target.value)}
-                className="h-12 bg-secondary/30 border-primary/20"
-              />
+            <div className="grid grid-cols-4 gap-4 flex-1 min-w-0 items-center">
+              <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="search-adults" />
+              <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="search-teens" />
+              <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="search-children" />
+              <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={1} data-testid="search-toddlers" />
             </div>
-            <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="search-adults" />
-            <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="search-teens" />
-            <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="search-children" />
-            <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={1} data-testid="search-toddlers" />
           </div>
         </div>
       </section>
@@ -392,7 +397,7 @@ export default function SearchPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                     {Object.entries(ROOM_DATA).map(([category, info]) => {
                       const cat = category as RoomCategory;
-                      const calcResult = calculateRoomTotalPrice(cat, checkIn, checkOut);
+                      const calcResult = calculateRoomTotalPrice(cat, checkIn, checkOut, adults, teens, children, toddlers);
                       if (!calcResult || "error" in calcResult) return null;
                       const rc = { cost: calcResult.total, nights: calcResult.nights };
 
@@ -458,21 +463,24 @@ export default function SearchPage() {
                 {checkIn} — {checkOut} · {selectedCombo.nights} {nightsLabel(selectedCombo.nights)}
               </p>
               <div className="bg-secondary/30 rounded-lg p-3 space-y-1.5 text-sm">
-                {selectedCombo.rooms.length > 1 && selectedCombo.rooms.map((r, i) => (
-                  <div key={i} className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                    <span>{ROOM_DATA[r.category].shortTitle}</span>
-                    <span>{formatPrice(r.roomCost)}</span>
+                {selectedCombo.rooms.length > 1 && (
+                  <div className="space-y-1 pb-1.5 border-b border-border/50">
+                    {selectedCombo.rooms.map((r, i) => (
+                      <div key={i} className="text-xs text-muted-foreground">
+                        {ROOM_DATA[r.category].shortTitle}
+                      </div>
+                    ))}
                   </div>
-                ))}
-                <div className={`flex flex-col gap-0.5 ${selectedCombo.rooms.length > 1 ? "border-t border-border/50 pt-1.5" : ""}`}>
+                )}
+                <div className="flex flex-col gap-0.5">
                   {earlyBooking && (
                     <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                      <span>{selectedCombo.rooms.length > 1 ? "Сумма:" : ""}</span>
+                      <span></span>
                       <span className="line-through">{formatPrice(selectedCombo.totalPrice)}</span>
                     </div>
                   )}
                   <div className="flex items-center justify-between gap-2 font-bold text-foreground">
-                    <span>{selectedCombo.rooms.length > 1 || earlyBooking ? "Итого:" : ""}</span>
+                    <span>Итого:</span>
                     <span className="text-primary text-lg" data-testid="modal-total-price">
                       {formatPrice(finalPrice(selectedCombo.totalPrice))}
                     </span>
