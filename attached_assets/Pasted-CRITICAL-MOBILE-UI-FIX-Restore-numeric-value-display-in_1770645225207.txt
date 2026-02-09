@@ -1,0 +1,93 @@
+CRITICAL MOBILE UI FIX:
+Restore numeric value display inside guest selector controls
+in the mobile version of the site.
+
+---
+
+CURRENT STATE (BUG):
+
+On mobile view, inside the guest selector block:
+• Minus (–) and Plus (+) buttons are visible
+• Category labels are visible (Adults, Teenagers, Children, Infants)
+• BUT the numeric value between “–” and “+” is NOT rendered
+
+Result:
+• Fields look empty
+• User cannot visually confirm selected quantity
+• UX looks broken, despite correct internal state and calculations
+
+IMPORTANT:
+This is a VISUAL / BINDING ISSUE ONLY.
+Calculation logic MUST NOT be changed.
+
+---
+
+REQUIRED BEHAVIOR:
+
+In mobile version:
+Inside EACH guest selector control
+(between the “–” and “+” buttons),
+the CURRENT numeric value MUST be displayed.
+
+Examples:
+• Adults (18+): 4
+• Teenagers (13–18): 1
+• Children (2–13): 1
+• Infants (0–2): 0
+
+Displayed value must:
+• Reflect current internal state
+• Update instantly on + / – tap
+• Never be empty or undefined
+
+---
+
+IMPLEMENTATION REQUIREMENTS:
+
+1) The numeric value must be rendered as:
+• a visible text node or span
+• centrally aligned between – and +
+• NOT placeholder-based
+
+2) Value binding:
+• The same state variable used for calculations
+  MUST be bound to the displayed number
+• Do NOT introduce a separate state
+
+3) Styling (mobile only):
+• Value must be readable
+• Same vertical alignment as buttons
+• Sufficient contrast
+• No opacity tricks that hide the number
+
+---
+
+STRICT RULES:
+
+• Do NOT hide the value on mobile
+• Do NOT rely on input placeholders
+• Do NOT replace selector with summary text
+• Do NOT duplicate the selector elsewhere
+
+This fix is ONLY about restoring the visible number.
+
+---
+
+DESKTOP VERSION:
+
+Desktop behavior may remain unchanged
+IF numbers are already visible there.
+
+Mobile-specific fix is REQUIRED.
+
+---
+
+ACCEPTANCE CHECKLIST (MOBILE):
+
+☑ Number visible between – and +
+☑ Value updates on tap
+☑ “0” is visible (not empty)
+☑ Matches values used in calculation
+☑ No layout shifts or wrapping
+
+This fix is FINAL.

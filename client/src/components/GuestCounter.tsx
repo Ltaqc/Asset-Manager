@@ -57,6 +57,13 @@ export function GuestCounter({
         >
           <Minus className="w-4 h-4" />
         </button>
+        <span
+          className="flex-1 flex items-center justify-center text-base font-semibold select-none min-w-[1.5rem] h-full md:hidden"
+          data-testid={testId ? `${testId}-value` : undefined}
+          aria-label={label}
+        >
+          {value}
+        </span>
         <input
           ref={inputRef}
           type="text"
@@ -65,7 +72,7 @@ export function GuestCounter({
           value={value}
           onChange={handleInputChange}
           onBlur={handleBlur}
-          className="flex-1 text-center bg-transparent border-none outline-none text-base font-semibold min-w-0 h-full appearance-none"
+          className="hidden md:flex flex-1 text-center bg-transparent border-none outline-none text-base font-semibold min-w-0 h-full appearance-none items-center justify-center"
           data-testid={testId}
           aria-label={label}
         />
