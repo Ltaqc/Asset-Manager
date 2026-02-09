@@ -426,19 +426,34 @@ export function generateRecommendations(
   seen.add(primary.label);
 
   const alternatives: RoomCombo[] = [];
+  let hasMultiRoom = primary.rooms.length > 1;
+
   for (const combo of allCombos.slice(1)) {
     if (seen.has(combo.label)) continue;
+    if (alternatives.length >= 3) break;
     seen.add(combo.label);
 
     if (combo.rooms.length === 1) {
       combo.why = combo.totalCapacity > totalMain ? "Более просторный номер" : "Альтернативная категория";
     } else {
-      combo.why = combo.rooms.length < primary.rooms.length ? "Меньше номеров" :
-        combo.totalPrice < primary.totalPrice ? "Более бюджетный вариант" : "Другая комбинация номеров";
+      combo.why = combo.totalPrice < primary.totalPrice ? "Более бюджетный вариант" : "Раздельное размещение";
+      hasMultiRoom = true;
     }
 
     alternatives.push(combo);
-    if (alternatives.length >= 3) break;
+  }
+
+  if (!hasMultiRoom && totalMain >= 2) {
+    const multiCombos = allCombos.filter(c => c.rooms.length > 1 && !seen.has(c.label));
+    if (multiCombos.length > 0) {
+      const best = multiCombos[0];
+      best.why = "Раздельное размещение";
+      if (alternatives.length >= 3) {
+        alternatives[2] = best;
+      } else {
+        alternatives.push(best);
+      }
+    }
   }
 
   return { primary, alternatives, seasonError: null };

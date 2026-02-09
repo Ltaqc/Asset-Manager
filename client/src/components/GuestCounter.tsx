@@ -44,8 +44,8 @@ export function GuestCounter({
   }, [value, min, max, onChange]);
 
   return (
-    <div className="space-y-1.5">
-      <label className="text-xs text-muted-foreground block">{label}</label>
+    <div className="flex flex-col">
+      <label className="text-xs text-muted-foreground block mb-1.5 min-h-[2rem] leading-tight flex items-end">{label}</label>
       <div className="flex items-center h-12 bg-secondary/30 border border-primary/20 rounded-md overflow-hidden">
         <button
           type="button"

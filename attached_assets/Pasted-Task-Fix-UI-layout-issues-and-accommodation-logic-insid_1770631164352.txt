@@ -1,0 +1,122 @@
+Task:
+Fix UI layout issues and accommodation logic
+inside the “Подбор номеров / Рассчитайте стоимость проживания” section.
+
+The issues below are CRITICAL and must all be fixed.
+
+---
+
+ISSUE 1 — UI BUG (AGE SELECTORS ALIGNMENT)
+
+Problem:
+The age selection fields (Adults / Teenagers / Children / Infants)
+are displayed on different vertical levels.
+The layout is broken and visually inconsistent.
+
+Requirement:
+• ALL age selectors must be on ONE horizontal line
+• Same height
+• Same vertical alignment
+• No wrapping to next line
+• No collapsing on desktop widths
+
+Implementation rules:
+• Use flex layout with align-items: center
+• Prevent line breaks
+• Ensure equal min-height for all controls
+
+This is a STRICT UI requirement.
+
+---
+
+ISSUE 2 — INCOMPLETE ALTERNATIVE PLACEMENT LOGIC
+
+Problem:
+For 4 guests, the system does NOT offer split accommodation,
+such as:
+• 2 × double rooms
+• 1 × double + 1 × triple
+
+This is incorrect.
+
+Requirement:
+For ANY number of guests ≥ 3,
+the system MUST evaluate and offer
+logical multi-room placement options.
+
+Rules:
+• Alternative placement logic must be UNIVERSAL
+• Not hard-coded to specific guest counts
+• Must work for ALL guest quantities
+
+Examples (mandatory behavior):
+• 4 guests → offer:
+  – 2 × double
+  – 1 × double + 1 × triple
+• 5 guests → offer 2-room combinations
+• 6 guests → offer 2- or 3-room combinations
+• 8 guests → offer only multi-room placement
+
+This logic must be generated algorithmically
+based on total guest count and room capacities.
+
+---
+
+ISSUE 3 — PRICE CALCULATION ERROR (CRITICAL)
+
+Problem:
+For 6 guests, the alternative option shows:
+• Junior Suite — 46 000 ₽
+• Standard — 23 000 ₽
+But total price is displayed as 183 600 ₽,
+which does NOT match the room prices.
+
+This indicates a calculation or aggregation bug.
+
+Requirement:
+• Total price MUST ALWAYS equal:
+  sum(room_price × number_of_nights × number_of_rooms)
+
+Rules:
+• Do NOT mix per-night prices with total-stay prices
+• Ensure consistent pricing units across:
+  – room cards
+  – alternative combinations
+  – total price block
+• Validate that:
+  displayed room prices and final total are mathematically consistent
+
+If inconsistency exists:
+• Fix the calculation logic
+• NOT the UI text
+
+This is a BUSINESS-CRITICAL issue.
+
+---
+
+ISSUE 4 — TEXT LABEL FIX
+
+Replace section title:
+“Альтернативные варианты”
+
+With:
+“Альтернативные варианты размещения”
+
+This change must be applied everywhere
+(desktop and mobile).
+
+---
+
+FINAL VALIDATION REQUIREMENTS:
+
+After fixes:
+• Age selectors are perfectly aligned
+• For any guest count, split accommodation is suggested when logical
+• Total prices are mathematically correct
+• Section title text is updated correctly
+• No regressions in other guest-count scenarios
+
+The system must feel:
+• Predictable
+• Trustworthy
+• Logically consistent
