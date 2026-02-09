@@ -23,6 +23,7 @@ import juniorSofa from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_22
 import juniorBath from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_22_34_57_1770493453675.webp";
 import juniorShower from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_15_12_24_1770493453669.webp";
 import juniorBalcony from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_22_07_35_1770493453673.webp";
+import luxBedNew from "@assets/optimized/lux2_bed_main_1770629313743.webp";
 import luxMain from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_23_11_47_1770495988911.webp";
 import luxLiving from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_23_15_56_1770495988912.webp";
 import luxDesk from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_23_05_10_1770495988910.webp";
@@ -113,8 +114,8 @@ export const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
     description: "Две отдельные комнаты — спальня и гостиная — обеспечивают приватность и удобство для пар или семей. Спальня с двуспальной кроватью отделена от зоны отдыха с мягким диваном, что позволяет каждому найти своё пространство.",
     area: 25,
     shortTitle: "Люкс двухкомнатный",
-    image: luxMain,
-    images: [luxMain, luxLiving, luxDesk, luxBath, luxShower],
+    image: luxBedNew,
+    images: [luxBedNew, luxMain, luxLiving, luxDesk, luxBath, luxShower],
   },
   "Люкс семейный, двухкомнатный": {
     cap: 5, count: 1, maxToddlers: 1,
