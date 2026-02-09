@@ -70,9 +70,14 @@ The `bookings` table stores:
 - `createdAt` (timestamp) - Auto-set on creation
 
 ### Pricing Logic
+- Universal pricing: ONE atomic function `calculateRoomTotalPrice(category, checkIn, checkOut)` is the single source of truth
+- Room rates are all-inclusive (Ultra All Inclusive) — no separate food charges
 - Room pricing varies by room category and month (June through September)
 - Cross-month stays are calculated night-by-night using the rate for each night's month
-- Food rates: adults/teens 4500₽/night, children 3000₽/night, toddlers free
+- Single room: TotalPrice = calculateRoomTotalPrice(room, dates)
+- Multi-room: TotalPrice = sum of each room's calculateRoomTotalPrice result
+- Validation: sum(displayed per-room prices) must always equal displayed TotalPrice
+- Early booking discount (10%) applied at display level when check-in > 30 days away
 - Capacity: adults + teens + children must fit room cap; max 1 toddler (crib)
 
 ### API Endpoints

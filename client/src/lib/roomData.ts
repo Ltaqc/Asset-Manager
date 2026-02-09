@@ -162,13 +162,6 @@ export function applyEarlyDiscount(total: number): number {
   return Math.round(total * (1 - EARLY_BOOKING_DISCOUNT));
 }
 
-export const FOOD_RATES = {
-  adult: 4500,
-  teen: 4500,
-  child: 3000,
-  toddler: 0,
-};
-
 export function formatPrice(value: number): string {
   return value.toLocaleString("ru-RU") + " \u20BD";
 }
@@ -213,13 +206,10 @@ export interface CalcError {
   error: string;
 }
 
-export function calculateStay(
+export function calculateRoomTotalPrice(
   category: RoomCategory,
   checkIn: string,
   checkOut: string,
-  adults: number,
-  teens: number,
-  children: number,
 ): CalcResult | CalcError | null {
   if (!checkIn || !checkOut) return null;
 
@@ -231,7 +221,7 @@ export function calculateStay(
   if (nights < 1) return null;
 
   const roomInfo = ROOM_DATA[category];
-  let roomCost = 0;
+  let total = 0;
 
   for (let i = 0; i < nights; i++) {
     const d = new Date(inDate);
@@ -242,12 +232,9 @@ export function calculateStay(
     }
     const rate = roomInfo.prices[monthNum];
     if (!rate) return { error: "Нет данных о ценах для выбранного месяца" };
-    roomCost += rate;
+    total += rate;
   }
 
-  const foodPerNight = (adults * FOOD_RATES.adult) + (teens * FOOD_RATES.teen) + (children * FOOD_RATES.child);
-  const foodCost = foodPerNight * nights;
-  const total = roomCost + foodCost;
   const perNight = Math.round(total / nights);
 
   return { nights, total, perNight };
@@ -264,8 +251,6 @@ export interface RoomCombo {
   rooms: Array<{ category: RoomCategory; roomCost: number }>;
   totalCapacity: number;
   totalMaxToddlers: number;
-  totalRoomCost: number;
-  foodCost: number;
   totalPrice: number;
   nights: number;
   label: string;
@@ -278,25 +263,6 @@ export interface Recommendations {
   seasonError: string | null;
 }
 
-function computeRoomCost(category: RoomCategory, checkIn: string, checkOut: string): { roomCost: number; nights: number } | null {
-  const inDate = new Date(checkIn);
-  const outDate = new Date(checkOut);
-  const nights = Math.ceil((outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24));
-  if (nights < 1) return null;
-
-  const roomInfo = ROOM_DATA[category];
-  let roomCost = 0;
-  for (let i = 0; i < nights; i++) {
-    const d = new Date(inDate);
-    d.setDate(d.getDate() + i);
-    const monthNum = d.getMonth() + 1;
-    if (monthNum < 6 || monthNum > 9) return null;
-    const rate = roomInfo.prices[monthNum];
-    if (!rate) return null;
-    roomCost += rate;
-  }
-  return { roomCost, nights };
-}
 
 function comboLabel(rooms: Array<{ category: RoomCategory }>): string {
   const counts: Record<string, number> = {};
@@ -325,7 +291,7 @@ export function generateRecommendations(
 ): Recommendations {
   const totalMain = adults + teens + children;
 
-  const testCalc = calculateStay(roomCategories[0], checkIn, checkOut, adults, teens, children);
+  const testCalc = calculateRoomTotalPrice(roomCategories[0], checkIn, checkOut);
   if (testCalc && "error" in testCalc) {
     return { primary: null, alternatives: [], seasonError: testCalc.error };
   }
@@ -333,14 +299,12 @@ export function generateRecommendations(
     return { primary: null, alternatives: [], seasonError: null };
   }
 
-  const foodPerNight = (adults * FOOD_RATES.adult) + (teens * FOOD_RATES.teen) + (children * FOOD_RATES.child);
   const nights = testCalc.nights;
-  const foodCost = foodPerNight * nights;
 
   const roomCosts: Record<RoomCategory, number> = {} as any;
   for (const cat of roomCategories) {
-    const rc = computeRoomCost(cat, checkIn, checkOut);
-    if (rc) roomCosts[cat] = rc.roomCost;
+    const rc = calculateRoomTotalPrice(cat, checkIn, checkOut);
+    if (rc && !("error" in rc)) roomCosts[cat] = rc.total;
   }
 
   type RoomUnit = { category: RoomCategory; cap: number; maxToddlers: number; cost: number; count: number };
@@ -371,9 +335,7 @@ export function generateRecommendations(
         rooms: selected.map(u => ({ category: u.category, roomCost: u.cost })),
         totalCapacity: capSum,
         totalMaxToddlers: toddlerCap,
-        totalRoomCost: costSum,
-        foodCost,
-        totalPrice: costSum + foodCost,
+        totalPrice: costSum,
         nights,
         label: comboLabel(selected.map(u => ({ category: u.category }))),
         why: "",

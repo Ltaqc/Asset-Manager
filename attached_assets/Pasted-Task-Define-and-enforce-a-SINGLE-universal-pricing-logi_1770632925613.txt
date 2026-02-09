@@ -1,0 +1,127 @@
+Task:
+Define and enforce a SINGLE, universal pricing logic
+for ALL accommodation options,
+including single-room and multi-room (alternative) placements.
+
+This logic must be used everywhere:
+• recommended option
+• alternative placement options
+• booking summary
+• checkout
+
+---
+
+CORE PRICING PRINCIPLE (MANDATORY):
+
+For ANY accommodation option,
+the final displayed price MUST ALWAYS represent:
+
+TOTAL STAY PRICE
+for the selected dates,
+including all discounts and coefficients.
+
+No mixed units are allowed.
+
+---
+
+DEFINITIONS:
+
+• TotalGuests = Adults + Teenagers + Children + Infants
+• Nights = difference between check-in and check-out dates
+• Each room has:
+  – BasePricePerNight
+  – Capacity
+  – Applicable discounts (early booking, seasonal, etc.)
+
+---
+
+STEP 1 — CALCULATE ROOM PRICE FOR STAY (ATOMIC FUNCTION)
+
+Define ONE atomic function:
+
+calculateRoomTotalPrice(room, dates) → number
+
+This function MUST:
+• take BasePricePerNight
+• multiply by Nights
+• apply seasonal coefficients
+• apply discounts (e.g. early booking)
+• return FINAL TOTAL PRICE for THIS ROOM for THIS STAY
+
+IMPORTANT:
+This function is the ONLY source of truth.
+No other price fields may be displayed.
+
+---
+
+STEP 2 — SINGLE-ROOM OPTION CALCULATION
+
+If accommodation option uses ONE room:
+• TotalPrice = calculateRoomTotalPrice(room, dates)
+• Display:
+  – “X ₽ за N ночей”
+  – or “Y ₽ / ночь” (derived from total / nights)
+
+---
+
+STEP 3 — MULTI-ROOM (ALTERNATIVE) OPTION CALCULATION
+
+If accommodation option uses MULTIPLE rooms:
+
+For each room in the combination:
+• RoomTotal = calculateRoomTotalPrice(room, dates)
+
+Then:
+• TotalPrice = sum(RoomTotal for all rooms)
+
+This rule applies universally, regardless of:
+• number of guests
+• room types
+• number of rooms
+
+---
+
+STEP 4 — DISPLAY RULES (CRITICAL)
+
+In alternative placement cards:
+
+ALLOWED:
+• Show per-room TOTAL price for the stay
+  (e.g. “122 400 ₽ за 5 ночей”)
+• Or show per-night price ONLY if clearly labeled
+  and mathematically derived from total
+
+FORBIDDEN:
+• Showing base price
+• Showing price without nights applied
+• Showing price without discounts applied
+• Mixing “per night” and “per stay” units in one card
+
+Every number shown MUST be mathematically consistent
+with the final TotalPrice.
+
+---
+
+STEP 5 — VALIDATION RULE (BUSINESS-CRITICAL)
+
+For ANY accommodation option:
+
+sum(displayed room prices) MUST EQUAL displayed TotalPrice
+
+If not:
+• this is a calculation bug
+• not a UI issue
+
+---
+
+FINAL GUARANTEE:
+
+After implementation:
+• 4 guests → correct totals for 2×double or 2+3
+• 6 guests → correct totals for any split
+• 8 guests → correct multi-room totals
+• No price mismatch anywhere
+• Guest always sees logical, trustworthy pricing
+
+This pricing logic is UNIVERSAL
+and must NOT depend on specific guest counts or room types.

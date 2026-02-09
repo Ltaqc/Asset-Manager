@@ -15,6 +15,7 @@ import {
   getDefaultCheckIn, getDefaultCheckOut,
   isEarlyBooking, applyEarlyDiscount,
   generateRecommendations, RoomCombo,
+  calculateRoomTotalPrice,
 } from "@/lib/roomData";
 
 function ComboRoomCards({ combo }: { combo: RoomCombo }) {
@@ -391,22 +392,9 @@ export default function SearchPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                     {Object.entries(ROOM_DATA).map(([category, info]) => {
                       const cat = category as RoomCategory;
-                      const rc = (() => {
-                        const inDate = new Date(checkIn);
-                        const outDate = new Date(checkOut);
-                        const nights = Math.ceil((outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24));
-                        if (nights < 1) return null;
-                        let cost = 0;
-                        for (let i = 0; i < nights; i++) {
-                          const d = new Date(inDate);
-                          d.setDate(d.getDate() + i);
-                          const m = d.getMonth() + 1;
-                          if (m < 6 || m > 9 || !info.prices[m]) return null;
-                          cost += info.prices[m];
-                        }
-                        return { cost, nights };
-                      })();
-                      if (!rc) return null;
+                      const calcResult = calculateRoomTotalPrice(cat, checkIn, checkOut);
+                      if (!calcResult || "error" in calcResult) return null;
+                      const rc = { cost: calcResult.total, nights: calcResult.nights };
 
                       return (
                         <Card key={category} className="overflow-hidden border-border/50 shadow-sm flex flex-col" data-testid={`card-allroom-${cat}`}>
@@ -473,14 +461,25 @@ export default function SearchPage() {
                 {selectedCombo.rooms.length > 1 && selectedCombo.rooms.map((r, i) => (
                   <div key={i} className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
                     <span>{ROOM_DATA[r.category].shortTitle}</span>
-                    <span>{formatPrice(r.roomCost + (i === 0 ? selectedCombo.foodCost : 0))}</span>
+                    <span>{formatPrice(r.roomCost)}</span>
                   </div>
                 ))}
-                <div className="flex items-center justify-between gap-2 font-bold text-foreground">
-                  <span>Итого:</span>
-                  <span className="text-primary text-lg" data-testid="modal-total-price">
-                    {formatPrice(finalPrice(selectedCombo.totalPrice))}
-                  </span>
+                <div className={`flex flex-col gap-0.5 ${selectedCombo.rooms.length > 1 ? "border-t border-border/50 pt-1.5" : ""}`}>
+                  {earlyBooking && (
+                    <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                      <span>{selectedCombo.rooms.length > 1 ? "Сумма:" : ""}</span>
+                      <span className="line-through">{formatPrice(selectedCombo.totalPrice)}</span>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between gap-2 font-bold text-foreground">
+                    <span>{selectedCombo.rooms.length > 1 || earlyBooking ? "Итого:" : ""}</span>
+                    <span className="text-primary text-lg" data-testid="modal-total-price">
+                      {formatPrice(finalPrice(selectedCombo.totalPrice))}
+                    </span>
+                  </div>
+                  {earlyBooking && (
+                    <div className="text-xs text-green-600 text-right">Скидка раннего бронирования</div>
+                  )}
                 </div>
               </div>
             </div>

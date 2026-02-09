@@ -8,55 +8,15 @@ import { GuestCounter } from "@/components/GuestCounter";
 import { roomCategories } from "@shared/schema";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import { Loader2, Calculator as CalcIcon } from "lucide-react";
+import {
+  RoomCategory,
+  calculateRoomTotalPrice,
+  formatPrice,
+  getDefaultCheckIn,
+  getDefaultCheckOut,
+} from "@/lib/roomData";
 
-type RoomCategory = typeof roomCategories[number];
-
-interface RoomInfo {
-  cap: number;
-  count: number;
-  prices: Record<number, number>;
-}
-
-const ROOM_DATA: Record<RoomCategory, RoomInfo> = {
-  "Стандарт с двуспальной кроватью и балконом": { cap: 2, count: 9, prices: { 6: 4600, 7: 5700, 8: 5700, 9: 4600 } },
-  "Стандарт с раздвижной двуспальной кроватью и балконом": { cap: 2, count: 3, prices: { 6: 4600, 7: 5700, 8: 5700, 9: 4600 } },
-  "Стандарт семейный с балконом": { cap: 3, count: 6, prices: { 6: 7000, 7: 8700, 8: 8700, 9: 7000 } },
-  "Джуниор Сьют с балконом": { cap: 4, count: 3, prices: { 6: 9200, 7: 11500, 8: 11500, 9: 9200 } },
-  "Люкс двухкомнатный без балкона": { cap: 4, count: 3, prices: { 6: 9200, 7: 11500, 8: 11500, 9: 9200 } },
-  "Люкс семейный, двухкомнатный": { cap: 5, count: 1, prices: { 6: 11500, 7: 14500, 8: 14500, 9: 11500 } },
-  "Апартаменты, 1 этаж, с выходом на бассейн": { cap: 6, count: 1, prices: { 6: 14000, 7: 17500, 8: 17500, 9: 14000 } },
-  "Апартаменты, 2 этаж, с видом на бассейн": { cap: 6, count: 1, prices: { 6: 14000, 7: 17500, 8: 17500, 9: 14000 } },
-};
-
-const FOOD_RATES = {
-  adult: 4500,
-  teen: 4500,
-  child: 3000,
-  toddler: 0,
-};
-
-function formatPrice(value: number): string {
-  return value.toLocaleString("ru-RU") + " \u20BD";
-}
-
-function getDefaultCheckIn(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const june1 = new Date(year, 5, 1);
-  if (now < june1) return `${year}-06-15`;
-  if (now.getMonth() >= 5 && now.getMonth() <= 8) {
-    const d = new Date(now);
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().split("T")[0];
-  }
-  return `${year + 1}-06-15`;
-}
-
-function getDefaultCheckOut(checkIn: string): string {
-  const d = new Date(checkIn);
-  d.setDate(d.getDate() + 5);
-  return d.toISOString().split("T")[0];
-}
+type _RoomCategory = RoomCategory;
 
 export function Calculator() {
   const defaultIn = getDefaultCheckIn();
@@ -74,36 +34,8 @@ export function Calculator() {
 
   const result = useMemo(() => {
     if (!checkIn || !checkOut || !roomCategory) return null;
-
-    const inDate = new Date(checkIn);
-    const outDate = new Date(checkOut);
-    const diffMs = outDate.getTime() - inDate.getTime();
-    const nights = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-
-    if (nights < 1) return null;
-
-    const roomInfo = ROOM_DATA[roomCategory];
-    let roomCost = 0;
-
-    for (let i = 0; i < nights; i++) {
-      const d = new Date(inDate);
-      d.setDate(d.getDate() + i);
-      const monthNum = d.getMonth() + 1;
-      if (monthNum < 6 || monthNum > 9) {
-        return { error: "Бронирование доступно только в летний сезон (июнь — сентябрь)" };
-      }
-      const rate = roomInfo.prices[monthNum];
-      if (!rate) return { error: "Нет данных о ценах для выбранного месяца" };
-      roomCost += rate;
-    }
-
-    const foodPerNight = (adults * FOOD_RATES.adult) + (teens * FOOD_RATES.teen) + (children * FOOD_RATES.child);
-    const foodCost = foodPerNight * nights;
-    const total = roomCost + foodCost;
-    const perNight = Math.round(total / nights);
-
-    return { nights, total, perNight };
-  }, [roomCategory, checkIn, checkOut, adults, teens, children]);
+    return calculateRoomTotalPrice(roomCategory, checkIn, checkOut);
+  }, [roomCategory, checkIn, checkOut]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
