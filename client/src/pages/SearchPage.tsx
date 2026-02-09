@@ -136,7 +136,7 @@ export default function SearchPage() {
           <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-8" data-testid="heading-search">Подбор номеров</h1>
 
           <div className="flex flex-col gap-4 md:flex-row md:items-end">
-            <div className="flex gap-3 w-full md:w-auto md:shrink-0">
+            <div className="flex gap-2 w-full md:w-auto md:shrink-0 md:gap-4">
               <div className="flex-1 min-w-0 space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата заезда</Label>
                 <Input
@@ -166,7 +166,7 @@ export default function SearchPage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 w-full md:flex-1 md:min-w-0 items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 w-full md:flex-1 md:min-w-0">
               <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="search-adults" />
               <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="search-teens" />
               <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="search-children" />

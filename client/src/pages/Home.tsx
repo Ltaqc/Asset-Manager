@@ -140,7 +140,7 @@ export default function Home() {
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <div className="flex gap-3 sm:gap-4 w-full">
+            <div className="flex gap-4 w-full">
               <div className="flex-1 min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
                 <Input
