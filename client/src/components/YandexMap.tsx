@@ -8,7 +8,7 @@ declare global {
 
 const HOTEL_COORDS = [45.326978, 37.290373];
 const MAP_ZOOM = 15;
-const YANDEX_TRAVEL_URL = "https://travel.yandex.ru/hotels/anapa/al-mare-otel-2919830429/";
+const YANDEX_TRAVEL_URL = "https://travel.yandex.ru/hotels/krasnodar-krai/al-mare/";
 
 export function YandexMap({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);

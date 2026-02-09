@@ -1,0 +1,85 @@
+CRITICAL BUGFIX + UX TASK:
+Make the hotel marker on the map clickable
+and redirect users to the official Yandex Travel hotel page.
+
+Current problem:
+• Hotel marker is visible on the map
+• Marker is NOT clickable
+• Clicking does nothing (dead UX)
+
+This MUST be fixed.
+
+---
+
+TARGET URL (FIXED, USE EXACTLY THIS):
+https://travel.yandex.ru/hotels/krasnodar-krai/al-mare/
+
+---
+
+REQUIRED USER BEHAVIOR:
+
+When a user clicks (desktop) or taps (mobile) on the hotel marker:
+→ immediately redirect to the Yandex Travel hotel page указанную выше.
+
+• Desktop: open link in a NEW tab
+• Mobile: open link in browser or Yandex Travel app if available
+
+NO confirmation dialogs.
+NO extra clicks.
+NO zoom-only behavior.
+
+---
+
+IMPLEMENTATION RULES (IMPORTANT):
+
+Case 1 — Yandex Maps API (Placemark):
+• Attach click event to the Placemark
+• On click:
+  window.open(
+    "https://travel.yandex.ru/hotels/krasnodar-krai/al-mare/",
+    "_blank"
+  );
+
+Case 2 — Map embedded via iframe (marker NOT directly clickable):
+• Marker inside iframe cannot receive custom click events
+• In this case DO NOT try to hack the marker
+• Instead:
+
+MANDATORY SOLUTION:
+• Place a transparent clickable overlay (div or button)
+  exactly above the marker position
+• Overlay must:
+  – be invisible
+  – have cursor: pointer
+  – capture click / tap
+• On click → redirect to the URL above
+
+Overlay must NOT block:
+• map scrolling
+• zoom buttons
+• general map interaction
+Only the marker area must be clickable.
+
+---
+
+UX DETAILS (REQUIRED):
+
+• Cursor changes to pointer when hovering over marker area (desktop)
+• On mobile, first tap opens the link (not second tap)
+• No visual lag
+• No broken states
+
+Optional (nice to have, but not required):
+• Tooltip on hover: “Открыть в Яндекс Путешествиях”
+
+---
+
+ACCEPTANCE CRITERIA (CHECKLIST):
+
+☑ Marker is clickable
+☑ Redirects to https://travel.yandex.ru/hotels/krasnodar-krai/al-mare/
+☑ Works on desktop and mobile
+☑ Opens in new tab on desktop
+☑ No dead clicks remain on the map
+
+This fix is FINAL and must be tested manually after implementation.
