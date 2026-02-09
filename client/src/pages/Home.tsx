@@ -120,8 +120,13 @@ export default function Home() {
           style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.00) 100%)" }}
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <div className="relative px-10 md:px-16 py-8 md:py-10">
-            <div className="absolute inset-0 rounded-full bg-black/40 blur-3xl scale-125 pointer-events-none" />
+          <div className="relative px-14 md:px-24 py-10 md:py-14">
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: "radial-gradient(ellipse 100% 100% at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0) 75%)",
+              }}
+            />
             <h1 className="relative text-4xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
               AL MARE
             </h1>
