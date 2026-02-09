@@ -23,7 +23,7 @@ import {
   AquaparkIcon, BeachCafeIcon, VolleyballIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
-import heroImage from "@assets/optimized/hero_pool_1770630366422.webp";
+import heroImage from "@assets/optimized/hero_main_1770643186337.webp";
 import foodPhoto1 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_18_05_56_1770563622557.webp";
 import foodPhoto2 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_16_20_50_1770563622554.webp";
 import foodPhoto3 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_16_21_25_1770563622555.webp";
