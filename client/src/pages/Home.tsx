@@ -20,7 +20,7 @@ import {
   GlassIcon, ChickenWingIcon, PopsicleIcon,
   SunloungerIcon, RopeParkIcon, BilliardIcon, MiniGolfIcon,
   LoungeChairIcon, TreeLeafIcon, PoolIcon, KidsRoomIcon, KidsAnimationIcon,
-  AquaparkIcon, BeachCafeIcon,
+  AquaparkIcon, BeachCafeIcon, VolleyballIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
 import heroImage from "@assets/optimized/hero_pool_1770630366422.webp";
@@ -387,7 +387,7 @@ export default function Home() {
                   {[
                     { icon: CircleDot, label: "Петанк — игра с металлическими шарами" },
                     { icon: RectangleVertical, label: "Кубб — игра с деревянными брусками" },
-                    { icon: Users, label: "Пляжный волейбол — командная игра на песке" },
+                    { icon: VolleyballIcon, label: "Пляжный волейбол — командная игра на песке" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">

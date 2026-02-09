@@ -153,6 +153,16 @@ export function AquaparkIcon({ className }: IconProps) {
   );
 }
 
+export function VolleyballIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2c3 3.5 3 8.5 0 12s-3 8.5 0 12" />
+      <path d="M2 12c3.5-3 8.5-3 12 0s8.5 3 12 0" />
+    </svg>
+  );
+}
+
 export function BeachCafeIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
