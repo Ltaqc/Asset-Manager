@@ -22,7 +22,7 @@ import {
   LoungeChairIcon, TreeLeafIcon, PoolIcon, KidsRoomIcon, KidsAnimationIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
-import heroImage from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770462591520.webp";
+import heroImage from "@assets/optimized/hero_pool_1770630366422.webp";
 import foodPhoto1 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_18_05_56_1770563622557.webp";
 import foodPhoto2 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_16_20_50_1770563622554.webp";
 import foodPhoto3 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_16_21_25_1770563622555.webp";
@@ -110,10 +110,13 @@ export default function Home() {
           loading="eager"
           decoding="async"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.00) 100%)" }}
+        />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <div className="relative px-10 md:px-16 py-8 md:py-10">
-            <div className="absolute inset-0 rounded-full bg-black/50 blur-3xl scale-125 pointer-events-none" />
+            <div className="absolute inset-0 rounded-full bg-black/40 blur-3xl scale-125 pointer-events-none" />
             <h1 className="relative text-4xl md:text-6xl font-display font-bold text-white tracking-tight" data-testid="text-hero-title">
               AL MARE
             </h1>
