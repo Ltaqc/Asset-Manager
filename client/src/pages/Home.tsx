@@ -20,6 +20,7 @@ import {
   GlassIcon, ChickenWingIcon, PopsicleIcon,
   SunloungerIcon, RopeParkIcon, BilliardIcon, MiniGolfIcon,
   LoungeChairIcon, TreeLeafIcon, PoolIcon, KidsRoomIcon, KidsAnimationIcon,
+  AquaparkIcon, BeachCafeIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
 import heroImage from "@assets/optimized/hero_pool_1770630366422.webp";
@@ -351,21 +352,25 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Пляж и отдых у моря"
-            subtitle="Комфортный отдых у воды"
+            subtitle="Комфортный отдых на пляже для гостей AL MARE"
           />
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
             <div className="order-2 md:order-1 space-y-5 md:space-y-6">
               <div className="text-base md:text-lg text-muted-foreground leading-relaxed space-y-4">
                 <p>
-                  Для гостей AL MARE пляж — это часть комфортного отдыха.
-                  Мы позаботились о том, чтобы вы могли просто наслаждаться морем.
+                  Для гостей AL MARE пляж — это часть общего формата отдыха.
+                  Мы создали пространство, где можно спокойно проводить время у моря,
+                  отдыхать с семьёй и пользоваться всей инфраструктурой пляжа.
                 </p>
               </div>
               <div className="space-y-3">
-                <p className="text-base font-semibold text-foreground">Включено:</p>
+                <p className="text-base font-semibold text-foreground">Включено для гостей отеля по браслетам:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: SunloungerIcon, label: "Шезлонги для гостей отеля на пляже" },
+                    { icon: SunloungerIcon, label: "Шезлонги на пляже" },
+                    { icon: RopeParkIcon, label: "Верёвочный парк для детей и взрослых" },
+                    { icon: AquaparkIcon, label: "Надувной аквапарк" },
+                    { icon: BeachCafeIcon, label: "Питание и напитки в пляжных кафе" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
@@ -377,12 +382,11 @@ export default function Home() {
                 </div>
               </div>
               <div className="space-y-3">
-                <p className="text-base font-semibold text-foreground">Игры на песке:</p>
+                <p className="text-base font-semibold text-foreground">Игры и активный отдых на песке:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: CircleDot, label: "Петанк — игра с металлическими шарами на песке" },
+                    { icon: CircleDot, label: "Петанк — игра с металлическими шарами" },
                     { icon: RectangleVertical, label: "Кубб — игра с деревянными брусками" },
-                    { icon: RopeParkIcon, label: "Верёвочный парк — активный отдых и развлечения для детей и взрослых" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">

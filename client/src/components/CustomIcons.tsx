@@ -141,3 +141,26 @@ export function KidsRoomIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function AquaparkIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 12c1.5-1.5 3-2 4.5-1s3 1 4.5 0 3-1.5 4.5-1 3 .5 4.5-1" />
+      <path d="M2 17c1.5-1.5 3-2 4.5-1s3 1 4.5 0 3-1.5 4.5-1 3 .5 4.5-1" />
+      <path d="M12 3v5" />
+      <path d="M8 5c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v3c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2V5z" />
+    </svg>
+  );
+}
+
+export function BeachCafeIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 8h1a4 4 0 0 1 0 8h-1" />
+      <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
+      <path d="M6 2v3" />
+      <path d="M10 2v3" />
+      <path d="M14 2v3" />
+    </svg>
+  );
+}
