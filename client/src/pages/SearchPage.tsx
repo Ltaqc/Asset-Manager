@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RoomImageCarousel } from "@/components/RoomImageCarousel";
-import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp, Utensils, BedDouble } from "lucide-react";
+import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import {
@@ -251,34 +251,28 @@ export default function SearchPage() {
                           )}
                         </div>
 
-                        <div className="bg-primary/5 rounded-xl p-4 space-y-2">
-                          <div className="flex items-center justify-between text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1.5"><BedDouble className="w-3.5 h-3.5" /> Проживание:</span>
-                            <span>{formatPrice(recommendations.primary.totalRoomCost)}</span>
+                        <div className="bg-primary/5 rounded-xl p-4 space-y-1">
+                          <div className="text-sm text-muted-foreground">
+                            {recommendations.primary.nights} {nightsLabel(recommendations.primary.nights)}
+                            {recommendations.primary.rooms.length > 1 && ` · ${recommendations.primary.rooms.length} ${recommendations.primary.rooms.length === 2 ? "номера" : "номеров"}`}
                           </div>
-                          <div className="flex items-center justify-between text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1.5"><Utensils className="w-3.5 h-3.5" /> Питание:</span>
-                            <span>{formatPrice(recommendations.primary.foodCost)}</span>
-                          </div>
-                          <div className="border-t border-primary/10 pt-2">
-                            {earlyBooking ? (
-                              <>
-                                <div className="text-sm text-muted-foreground line-through" data-testid="price-recommended-old">
-                                  {formatPrice(recommendations.primary.totalPrice)}
-                                </div>
-                                <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
-                                  {formatPrice(finalPrice(recommendations.primary.totalPrice))}
-                                </div>
-                                <div className="text-xs font-medium text-green-600" data-testid="discount-recommended">
-                                  Скидка раннего бронирования
-                                </div>
-                              </>
-                            ) : (
-                              <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
+                          {earlyBooking ? (
+                            <>
+                              <div className="text-sm text-muted-foreground line-through" data-testid="price-recommended-old">
                                 {formatPrice(recommendations.primary.totalPrice)}
                               </div>
-                            )}
-                          </div>
+                              <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
+                                {formatPrice(finalPrice(recommendations.primary.totalPrice))}
+                              </div>
+                              <div className="text-xs font-medium text-green-600" data-testid="discount-recommended">
+                                Скидка раннего бронирования
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
+                              {formatPrice(recommendations.primary.totalPrice)}
+                            </div>
+                          )}
                         </div>
 
                         <p className="text-xs text-muted-foreground italic">* Расчёт является предварительным</p>
@@ -343,36 +337,26 @@ export default function SearchPage() {
                               </div>
                             )}
 
-                            <div className="bg-primary/5 rounded-xl p-3 space-y-1.5 mt-auto">
+                            <div className="bg-primary/5 rounded-xl p-3 space-y-1 mt-auto">
                               <div className="text-xs text-muted-foreground">
                                 {combo.nights} {nightsLabel(combo.nights)}
                                 {!isSingle && ` · ${combo.rooms.length} ${combo.rooms.length === 2 ? "номера" : "номеров"}`}
                               </div>
-                              <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                                <span className="flex items-center gap-1"><BedDouble className="w-3 h-3" /> Проживание:</span>
-                                <span>{formatPrice(combo.totalRoomCost)}</span>
-                              </div>
-                              <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                                <span className="flex items-center gap-1"><Utensils className="w-3 h-3" /> Питание:</span>
-                                <span>{formatPrice(combo.foodCost)}</span>
-                              </div>
-                              <div className="border-t border-primary/10 pt-1.5">
-                                {earlyBooking ? (
-                                  <>
-                                    <div className="text-xs text-muted-foreground line-through">
-                                      {formatPrice(combo.totalPrice)}
-                                    </div>
-                                    <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
-                                      {formatPrice(finalPrice(combo.totalPrice))}
-                                    </div>
-                                    <div className="text-xs font-medium text-green-600">Скидка раннего бронирования</div>
-                                  </>
-                                ) : (
-                                  <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
+                              {earlyBooking ? (
+                                <>
+                                  <div className="text-xs text-muted-foreground line-through">
                                     {formatPrice(combo.totalPrice)}
                                   </div>
-                                )}
-                              </div>
+                                  <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
+                                    {formatPrice(finalPrice(combo.totalPrice))}
+                                  </div>
+                                  <div className="text-xs font-medium text-green-600">Скидка раннего бронирования</div>
+                                </>
+                              ) : (
+                                <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
+                                  {formatPrice(combo.totalPrice)}
+                                </div>
+                              )}
                             </div>
 
                             <Button
@@ -485,18 +469,14 @@ export default function SearchPage() {
               <p className="text-muted-foreground text-xs">
                 {checkIn} — {checkOut} · {selectedCombo.nights} {nightsLabel(selectedCombo.nights)}
               </p>
-              <div className="bg-secondary/30 rounded-lg p-3 space-y-1.5 text-xs">
-                {selectedCombo.rooms.map((r, i) => (
-                  <div key={i} className="flex items-center justify-between gap-2 text-muted-foreground">
+              <div className="bg-secondary/30 rounded-lg p-3 space-y-1.5 text-sm">
+                {selectedCombo.rooms.length > 1 && selectedCombo.rooms.map((r, i) => (
+                  <div key={i} className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
                     <span>{ROOM_DATA[r.category].shortTitle}</span>
-                    <span>{formatPrice(r.roomCost)}</span>
+                    <span>{formatPrice(r.roomCost + (i === 0 ? selectedCombo.foodCost : 0))}</span>
                   </div>
                 ))}
-                <div className="flex items-center justify-between gap-2 text-muted-foreground">
-                  <span>Питание</span>
-                  <span>{formatPrice(selectedCombo.foodCost)}</span>
-                </div>
-                <div className="border-t border-border/50 pt-1.5 flex items-center justify-between gap-2 font-bold text-foreground text-sm">
+                <div className="flex items-center justify-between gap-2 font-bold text-foreground">
                   <span>Итого:</span>
                   <span className="text-primary text-lg" data-testid="modal-total-price">
                     {formatPrice(finalPrice(selectedCombo.totalPrice))}
