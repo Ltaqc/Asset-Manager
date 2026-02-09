@@ -313,6 +313,11 @@ function guestsLabel(adults: number, children: number, teens: number): string {
   return parts.join(", ");
 }
 
+function comboSignature(combo: RoomCombo): string {
+  const sorted = [...combo.rooms].map(r => r.category).sort();
+  return sorted.join("|");
+}
+
 export function generateRecommendations(
   checkIn: string,
   checkOut: string,
@@ -398,6 +403,10 @@ export function generateRecommendations(
 
   search(0, [], 0, 0, 0, {});
 
+  if (allCombos.length === 0) {
+    return { primary: null, alternatives: [], seasonError: null };
+  }
+
   allCombos.sort((a, b) => {
     if (a.rooms.length !== b.rooms.length) return a.rooms.length - b.rooms.length;
     const overA = a.totalCapacity - totalMain;
@@ -408,9 +417,16 @@ export function generateRecommendations(
 
   const gl = guestsLabel(adults, children, teens);
 
-  if (allCombos.length === 0) {
-    return { primary: null, alternatives: [], seasonError: null };
+  const byRoomCount = new Map<number, RoomCombo[]>();
+  for (const c of allCombos) {
+    const key = c.rooms.length;
+    if (!byRoomCount.has(key)) byRoomCount.set(key, []);
+    byRoomCount.get(key)!.push(c);
   }
+
+  const sortedCounts = Array.from(byRoomCount.keys()).sort((a, b) => a - b);
+  const minActualRooms = sortedCounts[0];
+  const comfortMinRooms = Math.ceil(totalMain / 2);
 
   const primary = allCombos[0];
   primary.why = primary.rooms.length === 1
@@ -418,38 +434,57 @@ export function generateRecommendations(
     : `Лучшая комбинация номеров для размещения ${gl}`;
 
   const seen = new Set<string>();
-  seen.add(primary.label);
+  seen.add(comboSignature(primary));
 
   const alternatives: RoomCombo[] = [];
-  let hasMultiRoom = primary.rooms.length > 1;
 
-  for (const combo of allCombos.slice(1)) {
-    if (seen.has(combo.label)) continue;
-    if (alternatives.length >= 3) break;
-    seen.add(combo.label);
-
-    if (combo.rooms.length === 1) {
-      combo.why = combo.totalCapacity > totalMain ? "Более просторный номер" : "Альтернативная категория";
-    } else {
-      combo.why = combo.totalPrice < primary.totalPrice ? "Более бюджетный вариант" : "Раздельное размещение";
-      hasMultiRoom = true;
-    }
-
+  function addAlternative(combo: RoomCombo, why: string): boolean {
+    const sig = comboSignature(combo);
+    if (seen.has(sig)) return false;
+    if (combo.label === primary.label) return false;
+    seen.add(sig);
+    combo.why = why;
     alternatives.push(combo);
+    return true;
   }
 
-  if (!hasMultiRoom && totalMain >= 2) {
-    const multiCombos = allCombos.filter(c => c.rooms.length > 1 && !seen.has(c.label));
-    if (multiCombos.length > 0) {
-      const best = multiCombos[0];
-      best.why = "Раздельное размещение";
-      if (alternatives.length >= 3) {
-        alternatives[2] = best;
-      } else {
-        alternatives.push(best);
+  const multiRoomLevels = sortedCounts.filter(n => n > minActualRooms);
+  const distinctLevelsToShow = new Set<number>();
+  if (multiRoomLevels.length > 0) distinctLevelsToShow.add(multiRoomLevels[0]);
+  if (comfortMinRooms > minActualRooms && byRoomCount.has(comfortMinRooms)) {
+    distinctLevelsToShow.add(comfortMinRooms);
+  }
+  const sameCountLimit = Math.max(1, 3 - distinctLevelsToShow.size);
+
+  const sameCountGroup = byRoomCount.get(minActualRooms) || [];
+  for (const c of sameCountGroup) {
+    if (alternatives.length >= sameCountLimit) break;
+    if (c === primary) continue;
+    const why = c.rooms.length === 1
+      ? (c.totalCapacity > primary.totalCapacity ? "Более просторный номер" : "Альтернативная категория")
+      : (c.totalPrice < primary.totalPrice ? "Более бюджетный вариант" : "Баланс комфорта и цены");
+    addAlternative(c, why);
+  }
+
+  for (const level of Array.from(distinctLevelsToShow)) {
+    if (alternatives.length >= 3) break;
+    const group = byRoomCount.get(level) || [];
+    for (const c of group) {
+      if (addAlternative(c, "Больше личного пространства")) break;
+    }
+  }
+
+  if (alternatives.length < 3) {
+    for (const count of sortedCounts) {
+      if (count <= minActualRooms) continue;
+      if (alternatives.length >= 3) break;
+      const group = byRoomCount.get(count) || [];
+      for (const c of group) {
+        if (alternatives.length >= 3) break;
+        addAlternative(c, "Больше личного пространства");
       }
     }
   }
 
-  return { primary, alternatives, seasonError: null };
+  return { primary, alternatives: alternatives.slice(0, 3), seasonError: null };
 }

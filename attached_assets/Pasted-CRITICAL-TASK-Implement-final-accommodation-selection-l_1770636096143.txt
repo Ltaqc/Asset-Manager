@@ -1,0 +1,246 @@
+CRITICAL TASK:
+Implement final accommodation selection logic
+inside the section “Подбор номеров / Рассчитайте стоимость проживания”.
+
+This is NOT a cosmetic change.
+This defines the CORE BUSINESS LOGIC of the booking flow.
+
+Hotel model:
+AL MARE — ULTRA ALL INCLUSIVE RESORT.
+
+Guests always pay ONE FINAL PRICE:
+Accommodation + Food.
+Food is ALWAYS included.
+Food cost must NEVER be removed.
+Food cost must NEVER be shown separately.
+
+---
+
+SECTION CONTEXT:
+
+Trigger:
+User enters dates and number of guests
+and clicks the “Рассчитать” button.
+
+After clicking “Рассчитать”, the system must:
+• calculate prices correctly
+• recommend the best placement
+• show alternative placement options
+• never overload the user with choices
+
+---
+
+PART 1 — BASIC DEFINITIONS
+
+• TotalGuests =
+  Adults + Teenagers + Children
+  (Infants may be excluded if free)
+
+• Nights =
+  Check-out date − Check-in date
+
+• Each room has:
+  – Capacity
+  – BasePricePerNight
+  – Availability
+  – Comfort attributes
+
+• FoodPricePerPersonPerDay
+  applies to ALL paying guests
+
+---
+
+PART 2 — CORE PRICING LOGIC (MANDATORY)
+
+Define ONE source-of-truth function:
+
+calculateRoomAccommodationCost(room, nights) → number
+• BasePricePerNight × nights
+• Apply all seasonal coefficients
+• Apply all discounts (early booking, etc.)
+• Return FINAL accommodation cost for this room for the entire stay
+
+Define food calculation:
+
+calculateFoodCost(guests, nights) → number
+• FoodPricePerPersonPerDay × guests × nights
+• Apply all discounts
+• Food is calculated ONCE per guest, NOT per room
+
+---
+
+FINAL PRICE FORMULA (ABSOLUTE RULE):
+
+TOTAL PRICE =
+(sum of accommodation costs for all rooms)
++ (food cost for all guests)
+
+This applies to:
+• single-room placement
+• multi-room placement
+• recommended option
+• alternative options
+• booking summary
+
+NEVER display accommodation without food.
+NEVER remove food from calculation.
+NEVER split price into components in UI.
+
+---
+
+PART 3 — RECOMMENDED PLACEMENT LOGIC
+
+Step 1:
+Check if a SINGLE ROOM can comfortably accommodate all guests.
+
+If YES:
+• Recommended option = single best-fit room
+• Prefer minimal overcapacity and higher comfort
+
+If NO:
+• Recommended option = MULTI-ROOM placement
+• Minimal number of rooms
+• Logical comfort-first combination
+
+Display block title:
+⭐ Рекомендованный вариант
+
+---
+
+PART 4 — ALTERNATIVE PLACEMENT LOGIC (KEY REQUIREMENT)
+
+Alternative placement = different LOGICAL accommodation scenarios,
+not all mathematical combinations.
+
+RULES:
+• Do NOT show more than 3 alternative scenarios
+• Do NOT allow manual selection of room count
+• System decides combinations
+• Guest chooses only from ready options
+
+---
+
+CANONICAL RULE FOR ROOM COUNT:
+
+Define:
+maxComfortGuestsPerRoom = typical comfortable capacity (usually 2)
+
+minRooms =
+ceil(TotalGuests / maxComfortGuestsPerRoom)
+
+This rule must be considered when generating alternatives.
+
+EXAMPLE:
+• 6 guests → minRooms = 3
+The system MUST consider 3-room options as valid alternatives.
+
+---
+
+PART 5 — ALTERNATIVE SCENARIO GENERATION
+
+For any TotalGuests:
+
+1) Generate ALL valid room combinations
+   where sum(capacity) ≥ TotalGuests
+
+2) From them, SELECT ONLY:
+   • minimal room count
+   • +1 room count (for privacy scenarios)
+
+3) Group combinations into SCENARIOS, not raw lists:
+   • “Минимальное количество номеров”
+   • “Больше личного пространства”
+   • “Баланс комфорта и цены”
+
+4) Pick MAXIMUM 3 alternatives.
+
+---
+
+MANDATORY BEHAVIOR EXAMPLES:
+
+• 4 guests:
+  Alternatives MUST include:
+  – 2 × double rooms
+  – 1 × double + 1 × triple
+
+• 6 guests:
+  Alternatives MUST include:
+  – 3 × double rooms
+  – 2 × triple rooms
+  – 1 × four-bed + 1 × double
+
+• 8 guests:
+  Single-room placement impossible
+  Recommended option MUST be multi-room
+  Alternatives may include:
+  – 3–4 room scenarios
+
+---
+
+PART 6 — PRICE DISPLAY RULES (STRICT)
+
+For EACH option (recommended or alternative):
+
+• Display ONLY FINAL TOTAL PRICE
+  (Accommodation + Food)
+
+• Price MUST be:
+  – for the entire stay
+  – with all discounts applied
+
+OPTIONAL:
+• Per-night price may be derived
+  ONLY from total / nights
+  and MUST be clearly labeled
+
+FORBIDDEN:
+• Showing base price
+• Showing per-room food cost
+• Showing accommodation without food
+• Mixing per-night and per-stay units
+
+VALIDATION RULE:
+Sum of displayed room prices MUST equal displayed total.
+
+---
+
+PART 7 — UI RULES (IMPORTANT)
+
+Age selectors:
+• All selectors (Adults / Teenagers / Children / Infants)
+  MUST be on ONE horizontal line
+• Same height
+• Same vertical alignment
+• No wrapping
+• Use flex layout with align-items: center
+
+Section title:
+Replace everywhere:
+“Альтернативные варианты”
+→ “Альтернативные варианты размещения”
+
+---
+
+PART 8 — UX PRINCIPLES (DO NOT VIOLATE)
+
+• Always show ONE recommended option
+• Show MAXIMUM 3 alternatives
+• Never overwhelm the user
+• Never say “no suitable options” if multi-room placement is possible
+• System must feel confident and caring
+
+---
+
+FINAL ACCEPTANCE CRITERIA:
+
+After implementation:
+• 2 guests → correct price with food
+• 4 guests → split options shown correctly
+• 6 guests → 3-room scenarios considered
+• 8 guests → multi-room recommended
+• Prices are stable and mathematically correct
+• No food breakdown visible
+• UI alignment is correct
+
+This logic is FINAL and UNIVERSAL.
+It must NOT depend on specific guest counts.

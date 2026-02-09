@@ -39,9 +39,9 @@ Central module containing:
 - `ROOM_DATA` — 8 room categories with capacity, accommodation prices by month, descriptions, images
 - `FOOD_RATES` — Pricing per age group per night (adult: 4500, teen: 4500, child: 3000, toddler: 0)
 - `calculateAccommodationCost(category, checkIn, checkOut)` — Room-only cost, cross-month aware
-- `calculateFoodCost(adults, teens, children, nights)` — Food cost for all guests
-- `calculateRoomTotalPrice(category, checkIn, checkOut, adults, teens, children)` — Single atomic function: accommodation + food = total
-- `generateRecommendations()` — DFS room combo search with food cost included once per guest group
+- `calculateFoodCost(adults, teens, children, toddlers, nights)` — Food cost for all guests (toddlers=0 rate)
+- `calculateRoomTotalPrice(category, checkIn, checkOut, adults, teens, children, toddlers)` — Single atomic function: accommodation + food = total
+- `generateRecommendations()` — Scenario-based room recommendation engine with DFS combo search
 - `isRoomSuitable()` — Capacity filtering with crib rules (max 1 toddler)
 - `formatPrice()`, `nightsLabel()`, helper functions
 
@@ -74,7 +74,7 @@ The `bookings` table stores:
 
 ### Pricing Logic
 - Ultra All Inclusive model: EVERY price = accommodation + food, always combined, never shown separately
-- ONE atomic function `calculateRoomTotalPrice(category, checkIn, checkOut, adults, teens, children)` is the single source of truth
+- ONE atomic function `calculateRoomTotalPrice(category, checkIn, checkOut, adults, teens, children, toddlers)` is the single source of truth
 - Accommodation pricing varies by room category and month (June through September)
 - Food pricing: adult 4500/night, teen 4500/night, child 3000/night, toddler free
 - Cross-month stays are calculated night-by-night using the rate for each night's month
@@ -84,6 +84,17 @@ The `bookings` table stores:
 - NO price breakdowns displayed: guest sees ONLY the total price
 - Early booking discount (10%) applied at display level when check-in > 30 days away
 - Capacity: adults + teens + children must fit room cap; max 1 toddler (crib)
+
+### Recommendation & Alternative Placement Logic
+- `generateRecommendations()` uses DFS to find all valid room combinations, then applies scenario-based selection
+- **Primary**: Minimum rooms, minimum overcapacity, then cheapest. Single room preferred if it fits all guests.
+- **Alternatives**: Max 3 scenarios, distributed across distinct room-count levels:
+  - `comfortMinRooms = ceil(totalGuests / 2)` — defines the "comfort" room count for privacy scenarios
+  - `sameCountLimit = max(1, 3 - distinctMultiRoomLevels)` — reserves slots for multi-room options
+  - One combo per room-count level to ensure broad representation
+- **Scenario labels**: "Альтернативная категория", "Более просторный номер", "Баланс комфорта и цены", "Больше личного пространства"
+- **Section title**: "Альтернативные варианты размещения"
+- **Examples**: 2 guests → single + alternatives; 4 guests → single + 2× Standard; 6 guests → Apartments + 2-room + 3× Standard; 8 guests → 2× Junior Suite + multi-room alternatives
 
 ### API Endpoints
 - `POST /api/bookings` - Create a new booking request
