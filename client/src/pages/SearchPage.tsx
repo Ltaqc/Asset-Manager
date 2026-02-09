@@ -135,8 +135,8 @@ export default function SearchPage() {
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-display font-bold text-primary mb-8" data-testid="heading-search">Подбор номеров</h1>
 
-          <div className="flex flex-col md:flex-row gap-4 items-end">
-            <div className="grid grid-cols-2 gap-4 shrink-0">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end">
+            <div className="grid grid-cols-2 gap-3 w-full md:w-auto md:shrink-0">
               <div className="space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата заезда</Label>
                 <Input
@@ -151,7 +151,7 @@ export default function SearchPage() {
                       setCheckOut(d.toISOString().split("T")[0]);
                     }
                   }}
-                  className="h-12 bg-secondary/30 border-primary/20"
+                  className="h-12 bg-secondary/30 border-primary/20 w-full"
                 />
               </div>
               <div className="space-y-1.5">
@@ -162,11 +162,11 @@ export default function SearchPage() {
                   value={checkOut}
                   min={checkIn}
                   onChange={(e) => setCheckOut(e.target.value)}
-                  className="h-12 bg-secondary/30 border-primary/20"
+                  className="h-12 bg-secondary/30 border-primary/20 w-full"
                 />
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-4 flex-1 min-w-0 items-center">
+            <div className="grid grid-cols-4 gap-2 md:gap-4 w-full md:flex-1 md:min-w-0 items-center">
               <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="search-adults" />
               <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="search-teens" />
               <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="search-children" />
