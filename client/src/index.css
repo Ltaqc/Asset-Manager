@@ -92,11 +92,39 @@ html, body {
   overflow-x: hidden;
 }
 
-/* Date inputs must respect container width on mobile */
-@media (max-width: 768px) {
-  input[type="date"] {
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+/* Date inputs: stable sizing on all mobile browsers including iOS Safari */
+.date-input-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+input[type="date"] {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* iOS Safari: prevent date input from expanding beyond container */
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+  padding: 0;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
 }

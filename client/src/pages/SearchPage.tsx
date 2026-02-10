@@ -139,31 +139,35 @@ export default function SearchPage() {
             <div className="grid grid-cols-2 gap-2 md:gap-4 w-full md:w-auto md:shrink-0">
               <div className="min-w-0 space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата заезда</Label>
-                <Input
-                  data-testid="search-checkin"
-                  type="date"
-                  value={checkIn}
-                  onChange={(e) => {
-                    setCheckIn(e.target.value);
-                    if (e.target.value && checkOut <= e.target.value) {
-                      const d = new Date(e.target.value);
-                      d.setDate(d.getDate() + 1);
-                      setCheckOut(d.toISOString().split("T")[0]);
-                    }
-                  }}
-                  className="h-12 bg-secondary/30 border-primary/20 w-full"
-                />
+                <div className="date-input-wrapper">
+                  <Input
+                    data-testid="search-checkin"
+                    type="date"
+                    value={checkIn}
+                    onChange={(e) => {
+                      setCheckIn(e.target.value);
+                      if (e.target.value && checkOut <= e.target.value) {
+                        const d = new Date(e.target.value);
+                        d.setDate(d.getDate() + 1);
+                        setCheckOut(d.toISOString().split("T")[0]);
+                      }
+                    }}
+                    className="h-12 bg-secondary/30 border-primary/20 w-full"
+                  />
+                </div>
               </div>
               <div className="min-w-0 space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата выезда</Label>
-                <Input
-                  data-testid="search-checkout"
-                  type="date"
-                  value={checkOut}
-                  min={checkIn}
-                  onChange={(e) => setCheckOut(e.target.value)}
-                  className="h-12 bg-secondary/30 border-primary/20 w-full"
-                />
+                <div className="date-input-wrapper">
+                  <Input
+                    data-testid="search-checkout"
+                    type="date"
+                    value={checkOut}
+                    min={checkIn}
+                    onChange={(e) => setCheckOut(e.target.value)}
+                    className="h-12 bg-secondary/30 border-primary/20 w-full"
+                  />
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 w-full md:flex-1 md:min-w-0">

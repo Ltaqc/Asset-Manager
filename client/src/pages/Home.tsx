@@ -143,31 +143,35 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
-                <Input
-                  data-testid="input-checkin"
-                  type="date"
-                  value={checkIn}
-                  onChange={(e) => {
-                    setCheckIn(e.target.value);
-                    if (e.target.value && checkOut <= e.target.value) {
-                      const d = new Date(e.target.value);
-                      d.setDate(d.getDate() + 1);
-                      setCheckOut(d.toISOString().split("T")[0]);
-                    }
-                  }}
-                  className="h-12 bg-secondary/30 border-primary/20 w-full"
-                />
+                <div className="date-input-wrapper">
+                  <Input
+                    data-testid="input-checkin"
+                    type="date"
+                    value={checkIn}
+                    onChange={(e) => {
+                      setCheckIn(e.target.value);
+                      if (e.target.value && checkOut <= e.target.value) {
+                        const d = new Date(e.target.value);
+                        d.setDate(d.getDate() + 1);
+                        setCheckOut(d.toISOString().split("T")[0]);
+                      }
+                    }}
+                    className="h-12 bg-secondary/30 border-primary/20 w-full"
+                  />
+                </div>
               </div>
               <div className="min-w-0 space-y-2">
                 <Label>Дата выезда</Label>
-                <Input
-                  data-testid="input-checkout"
-                  type="date"
-                  value={checkOut}
-                  min={checkIn}
-                  onChange={(e) => setCheckOut(e.target.value)}
-                  className="h-12 bg-secondary/30 border-primary/20 w-full"
-                />
+                <div className="date-input-wrapper">
+                  <Input
+                    data-testid="input-checkout"
+                    type="date"
+                    value={checkOut}
+                    min={checkIn}
+                    onChange={(e) => setCheckOut(e.target.value)}
+                    className="h-12 bg-secondary/30 border-primary/20 w-full"
+                  />
+                </div>
               </div>
             </div>
 
