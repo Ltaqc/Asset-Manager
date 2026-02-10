@@ -501,8 +501,8 @@ export default function Home() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="font-bold text-lg text-foreground">Email</h3>
-                    <a href="mailto:info@almare.ru" className="text-muted-foreground hover:text-primary transition-colors text-base" data-testid="contact-email">
-                      info@almare.ru
+                    <a href="mailto:almare@hotelalmare.ru" className="text-muted-foreground hover:text-primary transition-colors text-base" data-testid="contact-email">
+                      almare@hotelalmare.ru
                     </a>
                   </div>
                 </div>
