@@ -80,9 +80,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Phone className="w-3.5 h-3.5" />
                 <span>+7 (918) 471-03-74</span>
               </a>
-              <a href="mailto:info@almare.ru" className="flex items-center gap-1.5 hover:text-primary transition-colors" data-testid="link-email">
+              <a href="mailto:almare@hotelalmare.ru" className="flex items-center gap-1.5 hover:text-primary transition-colors" data-testid="link-email">
                 <Mail className="w-3.5 h-3.5" />
-                <span>info@almare.ru</span>
+                <span>almare@hotelalmare.ru</span>
               </a>
               <div className="flex items-center gap-2">
                 <a href="https://t.me/almare" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-telegram" title="Telegram">
@@ -129,9 +129,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <Phone className="text-primary w-5 h-5 shrink-0" />
                   <span className="text-sm md:text-base">+7 (918) 471-03-74</span>
                 </a>
-                <a href="mailto:info@almare.ru" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
+                <a href="mailto:almare@hotelalmare.ru" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
                   <Mail className="text-primary w-5 h-5 shrink-0" />
-                  <span className="text-sm md:text-base">info@almare.ru</span>
+                  <span className="text-sm md:text-base">almare@hotelalmare.ru</span>
                 </a>
               </div>
             </div>
@@ -227,8 +227,8 @@ function MobileMenu({ onNavClick }: { onNavClick: (anchor: string) => void }) {
               <a href="tel:+79184710374" className="flex items-center gap-3 text-sm text-muted-foreground py-2 min-h-[44px]">
                 <Phone className="w-4 h-4 shrink-0" /> +7 (918) 471-03-74
               </a>
-              <a href="mailto:info@almare.ru" className="flex items-center gap-3 text-sm text-muted-foreground py-2 min-h-[44px]">
-                <Mail className="w-4 h-4 shrink-0" /> info@almare.ru
+              <a href="mailto:almare@hotelalmare.ru" className="flex items-center gap-3 text-sm text-muted-foreground py-2 min-h-[44px]">
+                <Mail className="w-4 h-4 shrink-0" /> almare@hotelalmare.ru
               </a>
             </div>
           </div>
