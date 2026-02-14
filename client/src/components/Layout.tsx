@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { Phone, Mail, MapPin, Send, X, Menu } from "lucide-react";
 import { FloatingContact } from "@/components/FloatingContact";
+import { FloatingPromo } from "@/components/FloatingPromo";
 
 const NAV_ITEMS = [
   { label: "Главная", anchor: "hero" },
@@ -109,6 +110,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
+      <FloatingPromo />
       <FloatingContact />
 
       <footer className="bg-slate-900 text-white py-16 md:py-20" data-testid="section-footer">
