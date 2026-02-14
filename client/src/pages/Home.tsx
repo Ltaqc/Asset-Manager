@@ -107,7 +107,10 @@ export default function Home() {
     return d.toISOString().split("T")[0];
   };
 
-  const minCheckOut = checkIn ? addDays(checkIn, MIN_NIGHTS) : SEASON_START;
+  const today = new Date().toISOString().split("T")[0];
+  const seasonClosed = today > SEASON_END;
+  const minCheckIn = today > SEASON_START ? (today <= SEASON_END ? today : SEASON_END) : SEASON_START;
+  const minCheckOut = checkIn ? addDays(checkIn, MIN_NIGHTS) : addDays(SEASON_START, MIN_NIGHTS);
 
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
@@ -199,8 +202,9 @@ export default function Home() {
                     data-testid="input-checkin"
                     type="date"
                     value={checkIn}
-                    min={SEASON_START}
+                    min={minCheckIn}
                     max={SEASON_END}
+                    disabled={seasonClosed}
                     onChange={(e) => {
                       const val = e.target.value;
                       setCheckIn(val);
@@ -222,6 +226,7 @@ export default function Home() {
                     value={checkOut}
                     min={minCheckOut}
                     max={SEASON_END}
+                    disabled={seasonClosed || !checkIn}
                     onChange={(e) => { setCheckOut(e.target.value); setDateError(""); }}
                     className={`h-12 bg-secondary/30 border-primary/20 w-full ${!checkOut ? "text-transparent" : ""}`}
                   />
@@ -246,10 +251,10 @@ export default function Home() {
             <Button
               data-testid="button-calculate"
               type="submit"
-              disabled={!checkIn || !checkOut}
-              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!checkIn || !checkOut || seasonClosed}
+              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed relative z-[1] cursor-pointer"
             >
-              Рассчитать стоимость проживания
+              {seasonClosed ? "Сезон завершён" : "Рассчитать стоимость проживания"}
             </Button>
           </form>
         </div>
