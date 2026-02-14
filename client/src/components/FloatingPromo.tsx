@@ -18,70 +18,70 @@ export function FloatingPromo() {
 
   return (
     <>
-      {/* Fixed Bottom Bar — dark teal */}
+      {/* Unified Fixed Bottom Bar */}
       <div
         className="fixed bottom-0 left-0 right-0 z-50"
         style={{
           background: "linear-gradient(135deg, #0C3C39 0%, #115450 100%)",
-          boxShadow: "0 -4px 24px rgba(0,0,0,0.15)",
+          boxShadow: "0 -4px 24px rgba(0,0,0,0.18)",
+          borderRadius: "16px 16px 0 0",
         }}
         data-testid="promo-bar"
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-14 md:h-16">
-            <p className="text-white text-sm md:text-base font-semibold tracking-wide">
-              ЗАБРОНИРОВАТЬ
-            </p>
-            <button
-              type="button"
-              onClick={() => scrollToCalculator()}
-              className="rounded-xl md:rounded-2xl text-white font-semibold text-xs md:text-sm px-5 md:px-7 py-2.5 md:py-3 cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
-              style={{
-                background: "linear-gradient(135deg, #1FC7B6, #1AB3A3)",
-                boxShadow: "0 2px 12px rgba(31,199,182,0.3)",
-                pointerEvents: "auto",
-                position: "relative",
-                zIndex: 10,
-              }}
-              data-testid="promo-book-button"
-            >
-              <span className="pointer-events-none">ЗАБРОНИРОВАТЬ</span>
-            </button>
+        <div className="relative px-4 md:px-6">
+          <div className="flex items-center h-14 md:h-16">
+            {/* Gift + Badge — left side, gift peeks above */}
+            <div className="flex items-center gap-2 shrink-0" style={{ position: "relative", top: "-12px" }}>
+              <button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white cursor-pointer transition-all duration-200 active:scale-95 hover:brightness-110"
+                style={{
+                  background: "linear-gradient(135deg, #C4894D, #B07840)",
+                  boxShadow: "0 4px 18px rgba(196,137,77,0.4)",
+                }}
+                aria-label="Подробнее об акции"
+                data-testid="promo-gift-button"
+              >
+                <Gift className="w-5 h-5 md:w-6 md:h-6 pointer-events-none" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                className="rounded-full px-3 py-1 text-white text-[11px] md:text-xs font-bold tracking-wider cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
+                style={{
+                  background: "linear-gradient(135deg, #C4894D, #B07840)",
+                  boxShadow: "0 2px 10px rgba(196,137,77,0.3)",
+                }}
+                data-testid="promo-badge"
+              >
+                <span className="pointer-events-none">АКЦИЯ</span>
+              </button>
+            </div>
+
+            {/* Center — single book button */}
+            <div className="flex-1 flex justify-center">
+              <button
+                type="button"
+                onClick={() => scrollToCalculator()}
+                className="rounded-xl md:rounded-2xl text-white font-semibold text-sm md:text-base px-8 md:px-10 py-2.5 md:py-3 cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
+                style={{
+                  background: "linear-gradient(135deg, #1FC7B6, #1AB3A3)",
+                  boxShadow: "0 2px 14px rgba(31,199,182,0.35)",
+                  pointerEvents: "auto",
+                  position: "relative",
+                  zIndex: 10,
+                }}
+                data-testid="promo-book-button"
+              >
+                <span className="pointer-events-none">ЗАБРОНИРОВАТЬ</span>
+              </button>
+            </div>
+
+            {/* Spacer to balance the left gift area */}
+            <div className="shrink-0 w-12 md:w-14" style={{ visibility: "hidden" }} />
           </div>
         </div>
-      </div>
-
-      {/* Floating Gift Button + Badge — above bar, right side */}
-      <div
-        className="fixed right-4 md:right-6 z-50 flex items-center gap-2"
-        style={{ bottom: "76px" }}
-        data-testid="promo-gift-area"
-      >
-        <button
-          type="button"
-          onClick={() => setModalOpen(true)}
-          className="rounded-full px-3.5 py-1.5 text-white text-xs font-bold tracking-wider cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
-          style={{
-            background: "linear-gradient(135deg, #C4894D, #B07840)",
-            boxShadow: "0 2px 10px rgba(196,137,77,0.35)",
-          }}
-          data-testid="promo-badge"
-        >
-          <span className="pointer-events-none">АКЦИЯ</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => setModalOpen(true)}
-          className="w-14 h-14 rounded-full flex items-center justify-center text-white cursor-pointer transition-all duration-200 active:scale-95 hover:brightness-110"
-          style={{
-            background: "linear-gradient(135deg, #C4894D, #B07840)",
-            boxShadow: "0 4px 18px rgba(196,137,77,0.4)",
-          }}
-          aria-label="Подробнее об акции"
-          data-testid="promo-gift-button"
-        >
-          <Gift className="w-6 h-6 pointer-events-none" />
-        </button>
       </div>
 
       {/* Modal */}
