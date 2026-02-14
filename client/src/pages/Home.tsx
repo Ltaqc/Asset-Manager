@@ -205,8 +205,8 @@ export default function Home() {
                       const val = e.target.value;
                       setCheckIn(val);
                       setDateError("");
-                      if (val && (!checkOut || checkOut < addDays(val, MIN_NIGHTS))) {
-                        setCheckOut(addDays(val, MIN_NIGHTS));
+                      if (val && checkOut && checkOut < addDays(val, MIN_NIGHTS)) {
+                        setCheckOut("");
                       }
                     }}
                     className={`h-12 bg-secondary/30 border-primary/20 w-full ${!checkIn ? "text-transparent" : ""}`}
@@ -246,7 +246,8 @@ export default function Home() {
             <Button
               data-testid="button-calculate"
               type="submit"
-              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl"
+              disabled={!checkIn || !checkOut}
+              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Рассчитать стоимость проживания
             </Button>
