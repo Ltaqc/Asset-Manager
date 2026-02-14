@@ -517,6 +517,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-foreground">Telegram</h3>
+                    <span className="text-muted-foreground group-hover:text-primary transition-colors text-base">Написать в Telegram</span>
                   </div>
                 </a>
 
