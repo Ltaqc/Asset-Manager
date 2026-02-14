@@ -33,7 +33,6 @@ async function sendTelegramNotification(booking: {
   if (booking.toddlers > 0) guests.push(`Малыши: ${booking.toddlers}`);
 
   const rawPhone = booking.contactPhone || "";
-  const cleanPhone = rawPhone.replace(/[\s\-\(\)]/g, "");
   const phoneDisplay = rawPhone || "Не указан";
 
   const lines = [
@@ -50,25 +49,22 @@ async function sendTelegramNotification(booking: {
 
   const text = lines.join("\n");
 
-  const reply_markup = cleanPhone
-    ? {
-        inline_keyboard: [
-          [{ text: "📞 Позвонить гостю", url: `tel:${cleanPhone}` }],
-        ],
-      }
-    : undefined;
-
   try {
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const response = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
         text,
         parse_mode: "Markdown",
-        ...(reply_markup && { reply_markup }),
       }),
     });
+    const result = await response.json();
+    if (!result.ok) {
+      console.error("Telegram API error:", result);
+    } else {
+      console.log("Telegram notification sent, message_id:", result.result?.message_id);
+    }
   } catch (err) {
     console.error("Telegram notification failed:", err);
   }
