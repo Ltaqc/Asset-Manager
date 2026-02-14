@@ -145,8 +145,42 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Promo Banner */}
+      <section className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 py-4 md:py-5" data-testid="section-promo">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center sm:text-left">
+            <div>
+              <p className="text-base md:text-lg font-semibold text-primary">
+                Раннее бронирование — скидка 10% до 28 февраля
+              </p>
+              <p className="text-xs md:text-sm text-muted-foreground mt-0.5">
+                Забронируйте заранее и сэкономьте на отдыхе
+              </p>
+            </div>
+            <Button
+              variant="default"
+              className="shrink-0 min-h-[44px] px-6"
+              data-testid="button-promo"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById("calculator");
+                if (el) {
+                  const navHeight = 64;
+                  const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+                  window.scrollTo({ top, behavior: "smooth" });
+                  el.classList.add("calculator-highlight");
+                  setTimeout(() => el.classList.remove("calculator-highlight"), 2000);
+                }
+              }}
+            >
+              Рассчитать стоимость
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* 2. Calculator */}
-      <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-white scroll-mt-16" data-testid="section-search-form">
+      <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-white scroll-mt-16 transition-shadow duration-500" data-testid="section-search-form">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Рассчитайте стоимость проживания"

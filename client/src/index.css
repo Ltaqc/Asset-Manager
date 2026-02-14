@@ -128,3 +128,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 0;
   margin: 0;
 }
+
+/* Calculator highlight animation after promo scroll */
+@keyframes calculator-glow {
+  0% { box-shadow: 0 0 0 0 transparent; }
+  20% { box-shadow: 0 4px 24px 0 hsl(var(--primary) / 0.18); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.calculator-highlight {
+  animation: calculator-glow 2s ease-out;
+}
