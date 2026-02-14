@@ -89,16 +89,6 @@ const TERRITORY_GALLERY = [
 
 export default function Home() {
   const [, navigate] = useLocation();
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [adults, setAdults] = useState(2);
-  const [teens, setTeens] = useState(0);
-  const [children, setChildren] = useState(0);
-  const [toddlers, setToddlers] = useState(0);
-  const [dateError, setDateError] = useState("");
-
-  const SEASON_START = "2026-06-01";
-  const SEASON_END = "2026-09-15";
   const MIN_NIGHTS = 3;
 
   const addDays = (dateStr: string, days: number) => {
@@ -107,9 +97,40 @@ export default function Home() {
     return d.toISOString().split("T")[0];
   };
 
-  const today = new Date().toISOString().split("T")[0];
-  const seasonClosed = today > SEASON_END;
-  const minCheckIn = today > SEASON_START ? (today <= SEASON_END ? today : SEASON_END) : SEASON_START;
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0];
+  const year = today.getFullYear();
+
+  const seasonStartDate = new Date(year, 5, 1);
+  const seasonEndDate = new Date(year, 8, 15);
+
+  let SEASON_START: string;
+  let SEASON_END: string;
+  let defaultCheckIn: string;
+
+  if (today < seasonStartDate) {
+    SEASON_START = `${year}-06-01`;
+    SEASON_END = `${year}-09-15`;
+    defaultCheckIn = SEASON_START;
+  } else if (today > seasonEndDate) {
+    SEASON_START = `${year + 1}-06-01`;
+    SEASON_END = `${year + 1}-09-15`;
+    defaultCheckIn = SEASON_START;
+  } else {
+    SEASON_START = `${year}-06-01`;
+    SEASON_END = `${year}-09-15`;
+    defaultCheckIn = todayStr;
+  }
+
+  const [checkIn, setCheckIn] = useState(defaultCheckIn);
+  const [checkOut, setCheckOut] = useState(addDays(defaultCheckIn, MIN_NIGHTS));
+  const [adults, setAdults] = useState(2);
+  const [teens, setTeens] = useState(0);
+  const [children, setChildren] = useState(0);
+  const [toddlers, setToddlers] = useState(0);
+  const [dateError, setDateError] = useState("");
+
+  const minCheckIn = todayStr > SEASON_START && todayStr <= SEASON_END ? todayStr : SEASON_START;
   const minCheckOut = checkIn ? addDays(checkIn, MIN_NIGHTS) : addDays(SEASON_START, MIN_NIGHTS);
 
   const handleCalculate = (e: React.FormEvent) => {
@@ -123,11 +144,11 @@ export default function Home() {
       return;
     }
     if (checkIn < SEASON_START || checkIn > SEASON_END) {
-      setDateError("Дата заезда должна быть в пределах сезона: с 1 июня по 15 сентября 2026");
+      setDateError("Дата заезда должна быть в пределах сезона");
       return;
     }
-    if (checkOut < SEASON_START || checkOut > SEASON_END) {
-      setDateError("Дата выезда должна быть в пределах сезона: с 1 июня по 15 сентября 2026");
+    if (checkOut <= checkIn || checkOut > SEASON_END) {
+      setDateError("Дата выезда должна быть в пределах сезона");
       return;
     }
     const nights = Math.round((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86400000);
@@ -191,44 +212,43 @@ export default function Home() {
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября 2026 года</p>
+            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября {SEASON_START.slice(0, 4)} года</p>
             <p className="text-sm text-muted-foreground text-center -mt-2 mb-1">Минимальный срок проживания — 3 ночи</p>
 
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
-                <div className="date-input-wrapper" data-placeholder={!checkIn ? "Выберите дату (01.06 — 15.09)" : undefined}>
+                <div className="date-input-wrapper">
                   <Input
                     data-testid="input-checkin"
                     type="date"
                     value={checkIn}
                     min={minCheckIn}
                     max={SEASON_END}
-                    disabled={seasonClosed}
                     onChange={(e) => {
                       const val = e.target.value;
                       setCheckIn(val);
                       setDateError("");
                       if (val && checkOut && checkOut < addDays(val, MIN_NIGHTS)) {
-                        setCheckOut("");
+                        setCheckOut(addDays(val, MIN_NIGHTS));
                       }
                     }}
-                    className={`h-12 bg-secondary/30 border-primary/20 w-full ${!checkIn ? "text-transparent" : ""}`}
+                    className="h-12 bg-secondary/30 border-primary/20 w-full"
                   />
                 </div>
               </div>
               <div className="min-w-0 space-y-2">
                 <Label>Дата выезда</Label>
-                <div className="date-input-wrapper" data-placeholder={!checkOut ? "Выберите дату (01.06 — 15.09)" : undefined}>
+                <div className="date-input-wrapper">
                   <Input
                     data-testid="input-checkout"
                     type="date"
                     value={checkOut}
                     min={minCheckOut}
                     max={SEASON_END}
-                    disabled={seasonClosed || !checkIn}
+                    disabled={!checkIn}
                     onChange={(e) => { setCheckOut(e.target.value); setDateError(""); }}
-                    className={`h-12 bg-secondary/30 border-primary/20 w-full ${!checkOut ? "text-transparent" : ""}`}
+                    className="h-12 bg-secondary/30 border-primary/20 w-full"
                   />
                 </div>
               </div>
@@ -251,10 +271,10 @@ export default function Home() {
             <Button
               data-testid="button-calculate"
               type="submit"
-              disabled={!checkIn || !checkOut || seasonClosed}
+              disabled={!checkIn || !checkOut}
               className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed relative z-[1] cursor-pointer"
             >
-              {seasonClosed ? "Сезон завершён" : "Рассчитать стоимость проживания"}
+              Рассчитать стоимость проживания
             </Button>
           </form>
         </div>
