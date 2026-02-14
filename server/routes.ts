@@ -32,11 +32,15 @@ async function sendTelegramNotification(booking: {
   if (booking.children > 0) guests.push(`Дети: ${booking.children}`);
   if (booking.toddlers > 0) guests.push(`Малыши: ${booking.toddlers}`);
 
+  const rawPhone = booking.contactPhone || "";
+  const cleanPhone = rawPhone.replace(/[\s\-\(\)]/g, "");
+  const phoneDisplay = rawPhone || "Не указан";
+
   const lines = [
     `🏨 *Новая заявка на бронирование*`,
     ``,
     `👤 *Гость:* ${booking.contactName || "Не указано"}`,
-    `📱 *Телефон:* ${booking.contactPhone || "Не указан"}`,
+    `📱 *Телефон:* ${phoneDisplay}`,
     ``,
     `🏠 *Номер:* ${booking.roomCategory}`,
     `📅 *Даты:* ${formatDate(booking.checkIn)} — ${formatDate(booking.checkOut)}`,
@@ -46,6 +50,14 @@ async function sendTelegramNotification(booking: {
 
   const text = lines.join("\n");
 
+  const reply_markup = cleanPhone
+    ? {
+        inline_keyboard: [
+          [{ text: "📞 Позвонить гостю", url: `tel:${cleanPhone}` }],
+        ],
+      }
+    : undefined;
+
   try {
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
@@ -54,6 +66,7 @@ async function sendTelegramNotification(booking: {
         chat_id: chatId,
         text,
         parse_mode: "Markdown",
+        ...(reply_markup && { reply_markup }),
       }),
     });
   } catch (err) {
