@@ -123,26 +123,29 @@ export function FloatingPromo() {
 
             <div className="px-5 md:px-7 py-5 md:py-6 overflow-y-auto" style={{ maxHeight: "calc(90vh - 12rem)" }}>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                Зафиксируйте лучшую цену на летний отдых
-                и получите доступ к самым востребованным датам
+                Забронируйте отдых заранее и зафиксируйте лучшую цену сезона
               </p>
 
               <div className="mt-4 space-y-2.5">
-                <div className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0" />
-                  <span className="text-sm text-gray-700">Ultra All Inclusive без дополнительных расходов</span>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">Самые востребованные даты лета</span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0" />
-                  <span className="text-sm text-gray-700">Собственный пляж и аквапарк</span>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">Полный пакет Ultra All Inclusive</span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0" />
-                  <span className="text-sm text-gray-700">Развлечения и инфраструктура включены</span>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">Собственный пляж и детский аквапарк</span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0" />
-                  <span className="text-sm text-gray-700">Количество номеров по акции ограничено</span>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">Верёвочный парк, мини-гольф, бильярд и другие развлечения включены</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">Ограниченное количество номеров</span>
                 </div>
               </div>
 
