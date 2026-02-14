@@ -110,8 +110,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <FloatingPromo />
-      <FloatingContact />
+      {location === "/" && (
+        <>
+          <FloatingPromo />
+          <FloatingContact />
+        </>
+      )}
 
       <footer className="bg-slate-900 text-white py-16 md:py-20" data-testid="section-footer">
         <div className="container mx-auto px-4">
