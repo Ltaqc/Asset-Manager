@@ -3,13 +3,14 @@ import { Gift, X, CheckCircle2 } from "lucide-react";
 import heroImage from "@assets/optimized/hero_main_1770643186337.webp";
 
 function scrollToCalculator() {
-  const el = document.getElementById("calculator");
-  if (el) {
-    const navHeight = window.innerWidth < 768 ? 130 : 110;
-    const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
-    window.scrollTo({ top, behavior: "smooth" });
-    el.classList.add("calculator-highlight");
-    setTimeout(() => el.classList.remove("calculator-highlight"), 2000);
+  const section = document.getElementById("calculator");
+  if (section) {
+    const headerHeight = 64;
+    const padding = 16;
+    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: sectionTop - headerHeight - padding, behavior: "smooth" });
+    section.classList.add("calculator-highlight");
+    setTimeout(() => section.classList.remove("calculator-highlight"), 2000);
   }
 }
 

@@ -146,7 +146,7 @@ export default function Home() {
       </header>
 
       {/* 2. Calculator */}
-      <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-white scroll-mt-16 transition-shadow duration-500" data-testid="section-search-form">
+      <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-white scroll-mt-20 transition-shadow duration-500" data-testid="section-search-form">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Рассчитайте стоимость проживания"
