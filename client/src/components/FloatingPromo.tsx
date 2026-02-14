@@ -6,9 +6,8 @@ function scrollToCalculator() {
   const section = document.getElementById("calculator");
   if (section) {
     const headerHeight = 64;
-    const padding = 16;
     const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: sectionTop - headerHeight - padding, behavior: "smooth" });
+    window.scrollTo({ top: sectionTop - headerHeight, behavior: "smooth" });
     section.classList.add("calculator-highlight");
     setTimeout(() => section.classList.remove("calculator-highlight"), 2000);
   }
