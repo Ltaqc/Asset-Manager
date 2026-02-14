@@ -59,8 +59,8 @@ export function FloatingPromo() {
           onClick={() => setModalOpen(true)}
           className="w-12 h-12 rounded-full flex items-center justify-center text-white cursor-pointer transition-all duration-200 active:scale-95 hover:brightness-110"
           style={{
-            background: "linear-gradient(135deg, #0F4F4A, #0C3C39)",
-            boxShadow: "0 4px 16px rgba(15,79,74,0.4)",
+            background: "linear-gradient(135deg, #C4894D, #B07840)",
+            boxShadow: "0 4px 16px rgba(196,137,77,0.4)",
           }}
           aria-label="Подробнее об акции"
           data-testid="promo-gift-button"
