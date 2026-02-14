@@ -35,7 +35,7 @@ export function FloatingContact() {
   }, [open]);
 
   return (
-    <div ref={menuRef} className="fixed right-4 md:right-6 z-40 flex flex-col items-end gap-3" style={{ bottom: "88px" }} data-testid="floating-contact">
+    <div ref={menuRef} className="fixed right-4 md:right-6 z-40 flex flex-col items-end gap-3" style={{ bottom: "84px" }} data-testid="floating-contact">
       <div
         className={`flex flex-col gap-2 transition-all duration-300 origin-bottom-right ${
           open ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-90 translate-y-2 pointer-events-none"

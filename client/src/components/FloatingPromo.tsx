@@ -18,71 +18,66 @@ export function FloatingPromo() {
 
   return (
     <>
-      {/* Unified Fixed Bottom Bar */}
+      {/* Fixed Bottom Bar — full width, no rounding, dark brand color */}
       <div
         className="fixed bottom-0 left-0 right-0 z-50"
         style={{
-          background: "linear-gradient(135deg, #0C3C39 0%, #115450 100%)",
-          boxShadow: "0 -4px 24px rgba(0,0,0,0.18)",
-          borderRadius: "16px 16px 0 0",
+          background: "linear-gradient(135deg, #0C3C39 0%, #0F4F4A 100%)",
+          boxShadow: "0 -4px 20px rgba(0,0,0,0.15)",
+          height: "68px",
         }}
         data-testid="promo-bar"
       >
-        <div className="relative px-4 md:px-6">
-          <div className="flex items-center h-14 md:h-16">
-            {/* Gift + Badge — left side, gift peeks above */}
-            <div className="flex items-center gap-2 shrink-0" style={{ position: "relative", top: "-12px" }}>
-              <button
-                type="button"
-                onClick={() => setModalOpen(true)}
-                className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-white cursor-pointer transition-all duration-200 active:scale-95 hover:brightness-110"
-                style={{
-                  background: "linear-gradient(135deg, #C4894D, #B07840)",
-                  boxShadow: "0 4px 18px rgba(196,137,77,0.4)",
-                }}
-                aria-label="Подробнее об акции"
-                data-testid="promo-gift-button"
-              >
-                <Gift className="w-5 h-5 md:w-6 md:h-6 pointer-events-none" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setModalOpen(true)}
-                className="rounded-full px-3 py-1 text-white text-[11px] md:text-xs font-bold tracking-wider cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
-                style={{
-                  background: "linear-gradient(135deg, #C4894D, #B07840)",
-                  boxShadow: "0 2px 10px rgba(196,137,77,0.3)",
-                }}
-                data-testid="promo-badge"
-              >
-                <span className="pointer-events-none">АКЦИЯ</span>
-              </button>
-            </div>
-
-            {/* Center — single book button */}
-            <div className="flex-1 flex justify-center">
-              <button
-                type="button"
-                onClick={() => scrollToCalculator()}
-                className="rounded-xl md:rounded-2xl text-white font-semibold text-sm md:text-base px-8 md:px-10 py-2.5 md:py-3 cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
-                style={{
-                  background: "linear-gradient(135deg, #1FC7B6, #1AB3A3)",
-                  boxShadow: "0 2px 14px rgba(31,199,182,0.35)",
-                  pointerEvents: "auto",
-                  position: "relative",
-                  zIndex: 10,
-                }}
-                data-testid="promo-book-button"
-              >
-                <span className="pointer-events-none">ЗАБРОНИРОВАТЬ</span>
-              </button>
-            </div>
-
-            {/* Spacer to balance the left gift area */}
-            <div className="shrink-0 w-12 md:w-14" style={{ visibility: "hidden" }} />
-          </div>
+        <div className="flex items-center justify-center h-full px-4">
+          <button
+            type="button"
+            onClick={() => scrollToCalculator()}
+            className="text-white font-semibold text-sm md:text-base px-10 md:px-14 py-3 md:py-3.5 cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
+            style={{
+              background: "linear-gradient(135deg, #1FC7B6, #1AB3A3)",
+              boxShadow: "0 2px 14px rgba(31,199,182,0.35)",
+              borderRadius: "12px",
+              pointerEvents: "auto",
+              position: "relative",
+              zIndex: 10,
+            }}
+            data-testid="promo-book-button"
+          >
+            <span className="pointer-events-none">ЗАБРОНИРОВАТЬ</span>
+          </button>
         </div>
       </div>
+
+      {/* Promo block — left side, above bar */}
+      <button
+        type="button"
+        onClick={() => setModalOpen(true)}
+        className="fixed left-4 md:left-6 z-50 flex items-center gap-0 cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
+        style={{ bottom: "80px" }}
+        data-testid="promo-gift-area"
+      >
+        <div
+          className="w-12 h-12 rounded-full flex items-center justify-center text-white shrink-0"
+          style={{
+            background: "linear-gradient(135deg, #C4894D, #B07840)",
+            boxShadow: "0 4px 16px rgba(196,137,77,0.4)",
+          }}
+          data-testid="promo-gift-button"
+        >
+          <Gift className="w-5 h-5 pointer-events-none" />
+        </div>
+        <div
+          className="text-white text-[11px] md:text-xs font-bold tracking-wider px-3 py-1.5 -ml-1.5"
+          style={{
+            background: "linear-gradient(135deg, #C4894D, #B07840)",
+            borderRadius: "0 16px 16px 0",
+            boxShadow: "0 2px 10px rgba(196,137,77,0.3)",
+          }}
+          data-testid="promo-badge"
+        >
+          <span className="pointer-events-none">АКЦИЯ</span>
+        </div>
+      </button>
 
       {/* Modal */}
       {modalOpen && (
@@ -123,27 +118,31 @@ export function FloatingPromo() {
                 <p className="text-xl md:text-2xl font-display font-bold text-white tracking-tight leading-tight">
                   Раннее бронирование — скидка 10%
                 </p>
-                <p className="text-sm mt-1 text-white/70 font-medium">Ultra All Inclusive</p>
               </div>
             </div>
 
             <div className="px-5 md:px-7 py-5 md:py-6 overflow-y-auto" style={{ maxHeight: "calc(90vh - 12rem)" }}>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                Забронируйте отдых заранее и зафиксируйте лучшую цену сезона
+                Зафиксируйте лучшую цену на летний отдых
+                и получите доступ к самым востребованным датам
               </p>
 
               <div className="mt-4 space-y-2.5">
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0" />
-                  <span className="text-sm text-gray-700">Лучшие даты сезона</span>
+                  <span className="text-sm text-gray-700">Ultra All Inclusive без дополнительных расходов</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0" />
-                  <span className="text-sm text-gray-700">Полный пакет All Inclusive</span>
+                  <span className="text-sm text-gray-700">Собственный пляж и аквапарк</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0" />
-                  <span className="text-sm text-gray-700">Бесплатные развлечения и пляж</span>
+                  <span className="text-sm text-gray-700">Развлечения и инфраструктура включены</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0" />
+                  <span className="text-sm text-gray-700">Количество номеров по акции ограничено</span>
                 </div>
               </div>
 
@@ -159,7 +158,7 @@ export function FloatingPromo() {
                 }}
                 className="mt-5 w-full rounded-xl text-white font-semibold text-base cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
                 style={{
-                  background: "linear-gradient(135deg, #0C3C39, #115450)",
+                  background: "linear-gradient(135deg, #0C3C39, #0F4F4A)",
                   boxShadow: "0 4px 16px rgba(12,60,57,0.3)",
                   height: "52px",
                   display: "flex",
@@ -171,7 +170,7 @@ export function FloatingPromo() {
                 }}
                 data-testid="promo-modal-cta"
               >
-                <span className="pointer-events-none">Рассчитать стоимость</span>
+                <span className="pointer-events-none">Рассчитать стоимость проживания</span>
               </button>
             </div>
           </div>
