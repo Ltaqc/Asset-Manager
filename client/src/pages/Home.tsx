@@ -208,17 +208,17 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Рассчитайте стоимость проживания"
-            subtitle="Укажите даты и состав гостей, чтобы увидеть подходящие номера с ценами"
+            subtitle="Выберите даты проживания и состав гостей"
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября {SEASON_START.slice(0, 4)} года</p>
+            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября</p>
             <p className="text-sm text-muted-foreground text-center -mt-2 mb-1">Минимальный срок проживания — 3 ночи</p>
 
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
-                <div className="date-input-wrapper">
+                <div className="date-field-wrapper" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); input?.showPicker?.(); input?.focus(); }}>
                   <Input
                     data-testid="input-checkin"
                     type="date"
@@ -233,13 +233,13 @@ export default function Home() {
                         setCheckOut(addDays(val, MIN_NIGHTS));
                       }
                     }}
-                    className="h-12 bg-secondary/30 border-primary/20 w-full"
+                    className="h-12 bg-secondary/30 border-primary/20 w-full cursor-pointer"
                   />
                 </div>
               </div>
               <div className="min-w-0 space-y-2">
                 <Label>Дата выезда</Label>
-                <div className="date-input-wrapper">
+                <div className="date-field-wrapper" onClick={(e) => { if (checkIn) { const input = (e.currentTarget as HTMLElement).querySelector('input'); input?.showPicker?.(); input?.focus(); } }}>
                   <Input
                     data-testid="input-checkout"
                     type="date"
@@ -248,7 +248,7 @@ export default function Home() {
                     max={SEASON_END}
                     disabled={!checkIn}
                     onChange={(e) => { setCheckOut(e.target.value); setDateError(""); }}
-                    className="h-12 bg-secondary/30 border-primary/20 w-full"
+                    className="h-12 bg-secondary/30 border-primary/20 w-full cursor-pointer"
                   />
                 </div>
               </div>
