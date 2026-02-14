@@ -166,7 +166,7 @@ export default function Home() {
             subtitle="Укажите даты и состав гостей, чтобы увидеть подходящие номера с ценами"
           />
 
-          <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6 relative z-[51]">
+          <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
             <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября 2026 года</p>
 
             <div className="grid grid-cols-2 gap-4 w-full">

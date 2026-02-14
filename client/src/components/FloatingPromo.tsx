@@ -18,40 +18,10 @@ export function FloatingPromo() {
 
   return (
     <>
-      {/* Fixed Bottom Bar — full width, no rounding, dark brand color */}
-      <div
-        className="fixed bottom-0 left-0 right-0 z-50"
-        style={{
-          background: "linear-gradient(135deg, #0C3C39 0%, #0F4F4A 100%)",
-          boxShadow: "0 -4px 20px rgba(0,0,0,0.15)",
-          height: "68px",
-        }}
-        data-testid="promo-bar"
-      >
-        <div className="flex items-center justify-center h-full px-4">
-          <button
-            type="button"
-            onClick={() => scrollToCalculator()}
-            className="text-white font-semibold text-sm md:text-base px-10 md:px-14 py-3 md:py-3.5 cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
-            style={{
-              background: "linear-gradient(135deg, #1FC7B6, #1AB3A3)",
-              boxShadow: "0 2px 14px rgba(31,199,182,0.35)",
-              borderRadius: "12px",
-              pointerEvents: "auto",
-              position: "relative",
-              zIndex: 10,
-            }}
-            data-testid="promo-book-button"
-          >
-            <span className="pointer-events-none">ЗАБРОНИРОВАТЬ</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Promo block — left side, above bar */}
+      {/* Promo block — left side, bottom corner */}
       <div
         className="fixed left-4 md:left-6 z-50 flex items-center gap-2.5"
-        style={{ bottom: "80px" }}
+        style={{ bottom: "16px" }}
         data-testid="promo-gift-area"
       >
         <button
