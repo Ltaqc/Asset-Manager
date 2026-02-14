@@ -89,7 +89,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <a href="https://t.me/Al_Mare_komplex" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-telegram" title="Telegram" aria-label="Написать в Telegram">
                   <Send className="w-4 h-4" />
                 </a>
-                <a href="https://max.ru/chat/+79184710374" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-max" title="MAX" aria-label="Написать в MAX">
+                <a href="https://max.ru/u/f9LHodD0cOKyZuixF6xW4bLAnYDSqIQ-54OcR3omDgRgkRs2Ji9F1hlf6Rk" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-max" title="MAX" aria-label="Написать в MAX">
                   <MaxIcon className="w-4 h-4" />
                 </a>
               </div>

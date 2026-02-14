@@ -67,7 +67,7 @@ export function FloatingContact() {
         </a>
 
         <a
-          href="https://max.ru/chat/+79184710374"
+          href="https://max.ru/u/f9LHodD0cOKyZuixF6xW4bLAnYDSqIQ-54OcR3omDgRgkRs2Ji9F1hlf6Rk"
           target="_blank"
           rel="noopener noreferrer"
           data-testid="floating-max"

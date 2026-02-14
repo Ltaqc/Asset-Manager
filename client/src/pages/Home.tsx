@@ -544,7 +544,7 @@ export default function Home() {
                   </div>
                 </a>
 
-                <a href="https://max.ru/chat/+79184710374" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group cursor-pointer" data-testid="contact-max">
+                <a href="https://max.ru/u/f9LHodD0cOKyZuixF6xW4bLAnYDSqIQ-54OcR3omDgRgkRs2Ji9F1hlf6Rk" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group cursor-pointer" data-testid="contact-max">
                   <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0 group-hover:bg-primary/20 transition-colors">
                     <MaxIcon className="w-6 h-6" />
                   </div>
