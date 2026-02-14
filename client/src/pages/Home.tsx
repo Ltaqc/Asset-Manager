@@ -269,9 +269,9 @@ export default function Home() {
               data-testid="button-calculate"
               type="submit"
               disabled={!checkIn || !checkOut}
-              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed relative z-[1] cursor-pointer"
+              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed relative z-[1] cursor-pointer touch-manipulation select-none"
             >
-              Рассчитать стоимость проживания
+              <span className="pointer-events-none">Рассчитать стоимость проживания</span>
             </Button>
           </form>
         </div>

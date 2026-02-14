@@ -46,19 +46,19 @@ export function GuestCounter({
   return (
     <div className="flex flex-col">
       <label className="text-xs text-muted-foreground block mb-1.5 min-h-[2rem] leading-tight flex items-end">{label}</label>
-      <div className="flex items-center h-12 bg-secondary/30 border border-primary/20 rounded-md overflow-hidden">
+      <div className="flex items-center h-12 bg-secondary/30 border border-primary/20 rounded-md overflow-hidden relative z-[1]">
         <button
           type="button"
-          onClick={decrement}
+          onPointerDown={(e) => { e.preventDefault(); decrement(); }}
           disabled={value <= min}
-          className="flex items-center justify-center w-9 sm:w-11 h-full text-primary transition-colors active:bg-primary/10 disabled:opacity-30 disabled:pointer-events-none shrink-0"
+          className="flex items-center justify-center w-11 h-full text-primary transition-colors active:bg-primary/10 disabled:opacity-30 disabled:pointer-events-none shrink-0 touch-manipulation select-none"
           aria-label={`Уменьшить ${label}`}
           data-testid={testId ? `${testId}-minus` : undefined}
         >
-          <Minus className="w-4 h-4" />
+          <Minus className="w-4 h-4 pointer-events-none" />
         </button>
         <span
-          className="flex-1 flex items-center justify-center text-base font-semibold select-none min-w-[1.5rem] h-full md:hidden"
+          className="flex-1 flex items-center justify-center text-base font-semibold select-none min-w-[1.5rem] h-full md:hidden pointer-events-none"
           data-testid={testId ? `${testId}-value` : undefined}
           aria-label={label}
         >
@@ -78,13 +78,13 @@ export function GuestCounter({
         />
         <button
           type="button"
-          onClick={increment}
+          onPointerDown={(e) => { e.preventDefault(); increment(); }}
           disabled={value >= max}
-          className="flex items-center justify-center w-9 sm:w-11 h-full text-primary transition-colors active:bg-primary/10 disabled:opacity-30 disabled:pointer-events-none shrink-0"
+          className="flex items-center justify-center w-11 h-full text-primary transition-colors active:bg-primary/10 disabled:opacity-30 disabled:pointer-events-none shrink-0 touch-manipulation select-none"
           aria-label={`Увеличить ${label}`}
           data-testid={testId ? `${testId}-plus` : undefined}
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 pointer-events-none" />
         </button>
       </div>
     </div>
