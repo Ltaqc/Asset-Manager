@@ -145,53 +145,6 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Promo Banner — desktop only */}
-      <section className="hidden md:block py-8 bg-white" data-testid="section-promo">
-        <div className="container mx-auto px-4">
-          <div
-            className="rounded-2xl px-12 py-10 text-center"
-            style={{
-              background: "linear-gradient(135deg, #0F3F3D 0%, #135E5A 50%, #1A6F6A 100%)",
-              boxShadow: "0 12px 30px rgba(0,0,0,0.15)",
-            }}
-          >
-            <p className="text-3xl font-display font-bold text-white tracking-tight">
-              Раннее бронирование — скидка 10%
-            </p>
-            <p className="text-base mt-3 max-w-lg mx-auto" style={{ color: "rgba(255,255,255,0.85)" }}>
-              Забронируйте отдых заранее и зафиксируйте лучшую цену сезона
-            </p>
-            <p className="text-xs mt-2" style={{ color: "rgba(255,255,255,0.55)" }}>
-              Акция действует до 28 февраля 2026 года
-            </p>
-            <button
-              type="button"
-              className="mt-6 inline-flex items-center justify-center rounded-xl text-white font-semibold text-base min-h-[48px] px-8 py-3 transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer"
-              style={{
-                background: "#1FC7B6",
-                boxShadow: "0 0 20px rgba(31,199,182,0.35), 0 4px 12px rgba(0,0,0,0.15)",
-                pointerEvents: "auto",
-                position: "relative",
-                zIndex: 10,
-              }}
-              data-testid="button-promo"
-              onClick={() => {
-                const el = document.getElementById("calculator");
-                if (el) {
-                  const navHeight = 64;
-                  const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
-                  window.scrollTo({ top, behavior: "smooth" });
-                  el.classList.add("calculator-highlight");
-                  setTimeout(() => el.classList.remove("calculator-highlight"), 2000);
-                }
-              }}
-            >
-              <span className="pointer-events-none">Рассчитать стоимость</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* 2. Calculator */}
       <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-white scroll-mt-16 transition-shadow duration-500" data-testid="section-search-form">
         <div className="container mx-auto px-4">

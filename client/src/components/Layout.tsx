@@ -106,7 +106,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </nav>
 
-      <main className="flex-grow pt-16">
+      <main className="flex-grow pt-16 pb-20">
         {children}
       </main>
 
