@@ -49,10 +49,7 @@ export function FloatingContact() {
           <div className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center shrink-0">
             <Phone className="w-5 h-5 text-green-600" />
           </div>
-          <div className="pr-2">
-            <span className="text-sm font-semibold text-foreground block">Позвонить</span>
-            <span className="text-xs text-muted-foreground">+7 (918) 471-03-74</span>
-          </div>
+          <span className="text-sm font-semibold text-foreground">Позвонить</span>
         </a>
 
         <a
@@ -66,10 +63,7 @@ export function FloatingContact() {
           <div className="w-10 h-10 rounded-full bg-sky-500/10 flex items-center justify-center shrink-0">
             <Send className="w-5 h-5 text-sky-600" />
           </div>
-          <div className="pr-2">
-            <span className="text-sm font-semibold text-foreground block">Написать в Telegram</span>
-            <span className="text-xs text-muted-foreground">@Al_Mare_komplex</span>
-          </div>
+          <span className="text-sm font-semibold text-foreground">Telegram</span>
         </a>
 
         <a
@@ -83,10 +77,7 @@ export function FloatingContact() {
           <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
             <MaxIcon className="w-5 h-5 text-purple-600" />
           </div>
-          <div className="pr-2">
-            <span className="text-sm font-semibold text-foreground block">Написать в MAX</span>
-            <span className="text-xs text-muted-foreground">+7 (918) 471-03-74</span>
-          </div>
+          <span className="text-sm font-semibold text-foreground">MAX</span>
         </a>
       </div>
 
