@@ -1,5 +1,19 @@
 import { useState, useRef, useEffect } from "react";
-import { Phone, MessageCircle, X } from "lucide-react";
+import { Phone, MessageCircle, X, Send } from "lucide-react";
+
+function MaxIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M12 2C6.48 2 2 6.04 2 11c0 2.8 1.5 5.28 3.84 6.88L4.5 22l4.2-2.12C9.76 20.28 10.86 20.5 12 20.5c5.52 0 10-4.04 10-9S17.52 2 12 2z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    </svg>
+  );
+}
 
 export function FloatingContact() {
   const [open, setOpen] = useState(false);
@@ -41,21 +55,39 @@ export function FloatingContact() {
           </div>
         </a>
 
-        <button
-          onClick={() => {}}
-          data-testid="floating-chat"
-          data-chat-integration="n8n"
-          data-chat-ready="false"
-          className="flex items-center gap-3 bg-white rounded-xl shadow-lg border border-border/40 px-4 py-3 transition-all duration-200 active:bg-secondary/50 group text-left min-h-[48px]"
+        <a
+          href="https://t.me/Al_Mare_komplex"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-testid="floating-telegram"
+          aria-label="Написать в Telegram"
+          className="flex items-center gap-3 bg-white rounded-xl shadow-lg border border-border/40 px-4 py-3 transition-all duration-200 active:bg-secondary/50 group min-h-[48px]"
         >
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-            <MessageCircle className="w-5 h-5 text-primary" />
+          <div className="w-10 h-10 rounded-full bg-sky-500/10 flex items-center justify-center shrink-0">
+            <Send className="w-5 h-5 text-sky-600" />
           </div>
           <div className="pr-2">
-            <span className="text-sm font-semibold text-foreground block">Написать в чат</span>
-            <span className="text-xs text-muted-foreground">Скоро будет доступно</span>
+            <span className="text-sm font-semibold text-foreground block">Написать в Telegram</span>
+            <span className="text-xs text-muted-foreground">@Al_Mare_komplex</span>
           </div>
-        </button>
+        </a>
+
+        <a
+          href="https://max.ru/chat/+79184710374"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-testid="floating-max"
+          aria-label="Написать в MAX"
+          className="flex items-center gap-3 bg-white rounded-xl shadow-lg border border-border/40 px-4 py-3 transition-all duration-200 active:bg-secondary/50 group min-h-[48px]"
+        >
+          <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center shrink-0">
+            <MaxIcon className="w-5 h-5 text-purple-600" />
+          </div>
+          <div className="pr-2">
+            <span className="text-sm font-semibold text-foreground block">Написать в MAX</span>
+            <span className="text-xs text-muted-foreground">+7 (918) 471-03-74</span>
+          </div>
+        </a>
       </div>
 
       <button

@@ -12,7 +12,7 @@ import { roomCategories } from "@shared/schema";
 import {
   Users, Utensils, Maximize2,
   RectangleVertical,
-  Phone, Mail, MapPin, Navigation,
+  Phone, Mail, MapPin, Navigation, Send,
   CheckCircle2, CircleDot,
 } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
@@ -23,6 +23,20 @@ import {
   AquaparkIcon, BeachCafeIcon, VolleyballIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
+
+function MaxIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M12 2C6.48 2 2 6.04 2 11c0 2.8 1.5 5.28 3.84 6.88L4.5 22l4.2-2.12C9.76 20.28 10.86 20.5 12 20.5c5.52 0 10-4.04 10-9S17.52 2 12 2z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    </svg>
+  );
+}
 import heroImage from "@assets/optimized/hero_main_1770643186337.webp";
 import foodPhoto1 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_18_05_56_1770563622557.webp";
 import foodPhoto2 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_16_20_50_1770563622554.webp";
@@ -496,6 +510,30 @@ export default function Home() {
                     <a href="tel:+79184710374" className="text-muted-foreground hover:text-primary transition-colors text-base" data-testid="contact-phone">
                       +7 (918) 471-03-74
                     </a>
+                    <div className="flex items-center gap-3 pt-1">
+                      <a
+                        href="https://t.me/Al_Mare_komplex"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Написать в Telegram"
+                        data-testid="contact-telegram"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-sky-500/10 text-sky-700 hover:bg-sky-500/20 transition-colors text-sm font-medium min-h-[44px]"
+                      >
+                        <Send className="w-4 h-4" />
+                        Telegram
+                      </a>
+                      <a
+                        href="https://max.ru/chat/+79184710374"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Написать в MAX"
+                        data-testid="contact-max"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-500/10 text-purple-700 hover:bg-purple-500/20 transition-colors text-sm font-medium min-h-[44px]"
+                      >
+                        <MaxIcon className="w-4 h-4" />
+                        MAX
+                      </a>
+                    </div>
                   </div>
                 </div>
 
