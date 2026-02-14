@@ -122,6 +122,18 @@ html, body {
   opacity: 1;
 }
 
+.date-placeholder {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: hsl(var(--muted-foreground));
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 1;
+  white-space: nowrap;
+}
+
 input[type="date"] {
   min-width: 0 !important;
   max-width: 100% !important;

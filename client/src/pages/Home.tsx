@@ -122,8 +122,8 @@ export default function Home() {
     defaultCheckIn = todayStr;
   }
 
-  const [checkIn, setCheckIn] = useState(defaultCheckIn);
-  const [checkOut, setCheckOut] = useState(addDays(defaultCheckIn, MIN_NIGHTS));
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
   const [adults, setAdults] = useState(2);
   const [teens, setTeens] = useState(0);
   const [children, setChildren] = useState(0);
@@ -233,8 +233,9 @@ export default function Home() {
                         setCheckOut(addDays(val, MIN_NIGHTS));
                       }
                     }}
-                    className="h-12 bg-secondary/30 border-primary/20 w-full cursor-pointer"
+                    className={`h-12 bg-secondary/30 border-primary/20 w-full cursor-pointer ${!checkIn ? "text-transparent" : ""}`}
                   />
+                  {!checkIn && <span className="date-placeholder">Выберите даты</span>}
                 </div>
               </div>
               <div className="min-w-0 space-y-2">
@@ -248,8 +249,9 @@ export default function Home() {
                     max={SEASON_END}
                     disabled={!checkIn}
                     onChange={(e) => { setCheckOut(e.target.value); setDateError(""); }}
-                    className="h-12 bg-secondary/30 border-primary/20 w-full cursor-pointer"
+                    className={`h-12 bg-secondary/30 border-primary/20 w-full cursor-pointer ${!checkOut ? "text-transparent" : ""}`}
                   />
+                  {!checkOut && <span className="date-placeholder">Выберите даты</span>}
                 </div>
               </div>
             </div>
