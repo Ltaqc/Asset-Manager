@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 
 const MONTH_NAMES = [
@@ -54,6 +54,7 @@ export function SeasonCalendar({
 }: SeasonCalendarProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const seasonStartD = parseDate(seasonStart);
   const seasonEndD = parseDate(seasonEnd);
@@ -92,6 +93,28 @@ export function SeasonCalendar({
     document.addEventListener("pointerdown", handleClick);
     return () => document.removeEventListener("pointerdown", handleClick);
   }, [open]);
+
+  const adjustPosition = useCallback(() => {
+    const dd = dropdownRef.current;
+    if (!dd) return;
+    dd.style.left = "0";
+    dd.style.right = "auto";
+    requestAnimationFrame(() => {
+      const rect = dd.getBoundingClientRect();
+      const vw = window.innerWidth;
+      if (rect.right > vw - 8) {
+        const overflow = rect.right - vw + 8;
+        dd.style.left = `-${overflow}px`;
+      }
+      if (rect.left < 8) {
+        dd.style.left = `${8 - rect.left + parseFloat(dd.style.left || "0")}px`;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (open) adjustPosition();
+  }, [open, adjustPosition]);
 
   const canPrev = () => {
     const prevMonth = viewMonth === 0 ? 11 : viewMonth - 1;
@@ -175,7 +198,7 @@ export function SeasonCalendar({
       {open && (
         <>
           <div className="fixed inset-0 z-[55]" onPointerDown={() => setOpen(false)} />
-          <div className="absolute top-full left-0 mt-1 z-[60] bg-white rounded-xl shadow-xl border border-border/60 p-4 w-[300px] max-w-[calc(100vw-2rem)]" data-testid={testId ? `${testId}-dropdown` : undefined}>
+          <div ref={dropdownRef} className="absolute top-full mt-1 z-[60] bg-white rounded-xl shadow-xl border border-border/60 p-4 w-[300px]" style={{ left: 0 }} data-testid={testId ? `${testId}-dropdown` : undefined}>
             <div className="flex items-center justify-between mb-3">
               <button
                 type="button"
