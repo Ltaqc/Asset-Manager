@@ -99,6 +99,22 @@ html, body {
   overflow: hidden;
 }
 
+.date-input-wrapper[data-placeholder]::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: hsl(var(--muted-foreground));
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 40px);
+}
+
 input[type="date"] {
   min-width: 0 !important;
   max-width: 100% !important;

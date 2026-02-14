@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "@/components/SectionHeading";
 import { RoomImageCarousel } from "@/components/RoomImageCarousel";
-import { getDefaultCheckIn, getDefaultCheckOut, ROOM_DATA } from "@/lib/roomData";
+import { ROOM_DATA } from "@/lib/roomData";
 import { roomCategories } from "@shared/schema";
 import {
   Users, Utensils, Maximize2,
@@ -89,9 +89,8 @@ const TERRITORY_GALLERY = [
 
 export default function Home() {
   const [, navigate] = useLocation();
-  const defaultIn = getDefaultCheckIn();
-  const [checkIn, setCheckIn] = useState(defaultIn);
-  const [checkOut, setCheckOut] = useState(getDefaultCheckOut(defaultIn));
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
   const [adults, setAdults] = useState(2);
   const [teens, setTeens] = useState(0);
   const [children, setChildren] = useState(0);
@@ -103,6 +102,14 @@ export default function Home() {
 
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!checkIn) {
+      setDateError("Пожалуйста, выберите дату заезда");
+      return;
+    }
+    if (!checkOut) {
+      setDateError("Пожалуйста, выберите дату выезда");
+      return;
+    }
     if (checkIn < SEASON_START || checkIn > SEASON_END) {
       setDateError("Дата заезда должна быть в пределах сезона: с 1 июня по 15 сентября 2026");
       return;
@@ -172,7 +179,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
-                <div className="date-input-wrapper">
+                <div className="date-input-wrapper" data-placeholder={!checkIn ? "Выберите дату (01.06 — 15.09)" : undefined}>
                   <Input
                     data-testid="input-checkin"
                     type="date"
@@ -188,13 +195,13 @@ export default function Home() {
                         setCheckOut(d.toISOString().split("T")[0]);
                       }
                     }}
-                    className="h-12 bg-secondary/30 border-primary/20 w-full"
+                    className={`h-12 bg-secondary/30 border-primary/20 w-full ${!checkIn ? "text-transparent" : ""}`}
                   />
                 </div>
               </div>
               <div className="min-w-0 space-y-2">
                 <Label>Дата выезда</Label>
-                <div className="date-input-wrapper">
+                <div className="date-input-wrapper" data-placeholder={!checkOut ? "Выберите дату (01.06 — 15.09)" : undefined}>
                   <Input
                     data-testid="input-checkout"
                     type="date"
@@ -202,7 +209,7 @@ export default function Home() {
                     min={checkIn || SEASON_START}
                     max={SEASON_END}
                     onChange={(e) => { setCheckOut(e.target.value); setDateError(""); }}
-                    className="h-12 bg-secondary/30 border-primary/20 w-full"
+                    className={`h-12 bg-secondary/30 border-primary/20 w-full ${!checkOut ? "text-transparent" : ""}`}
                   />
                 </div>
               </div>
