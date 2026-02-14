@@ -146,20 +146,30 @@ export default function Home() {
       </header>
 
       {/* Promo Banner */}
-      <section className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 py-4 md:py-5" data-testid="section-promo">
+      <section className="py-6 md:py-8 bg-white" data-testid="section-promo">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center sm:text-left">
-            <div>
-              <p className="text-base md:text-lg font-semibold text-primary">
-                Раннее бронирование — скидка 10% до 28 февраля
-              </p>
-              <p className="text-xs md:text-sm text-muted-foreground mt-0.5">
-                Забронируйте заранее и сэкономьте на отдыхе
-              </p>
-            </div>
-            <Button
-              variant="default"
-              className="shrink-0 min-h-[44px] px-6"
+          <div
+            className="rounded-2xl px-6 py-8 md:px-12 md:py-10 text-center"
+            style={{
+              background: "linear-gradient(135deg, #0F3F3D 0%, #135E5A 50%, #1A6F6A 100%)",
+              boxShadow: "0 12px 30px rgba(0,0,0,0.15)",
+            }}
+          >
+            <p className="text-2xl md:text-3xl font-display font-bold text-white tracking-tight">
+              Раннее бронирование — скидка 10%
+            </p>
+            <p className="text-sm md:text-base mt-3 max-w-lg mx-auto" style={{ color: "rgba(255,255,255,0.85)" }}>
+              Забронируйте отдых заранее и зафиксируйте лучшую цену сезона
+            </p>
+            <p className="text-xs mt-2" style={{ color: "rgba(255,255,255,0.55)" }}>
+              Акция действует до 28 февраля 2026 года
+            </p>
+            <button
+              className="mt-6 inline-flex items-center justify-center rounded-xl text-white font-semibold text-base min-h-[48px] px-8 py-3 w-full sm:w-auto transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
+              style={{
+                background: "#1FC7B6",
+                boxShadow: "0 0 20px rgba(31,199,182,0.35), 0 4px 12px rgba(0,0,0,0.15)",
+              }}
               data-testid="button-promo"
               onClick={(e) => {
                 e.preventDefault();
@@ -174,7 +184,7 @@ export default function Home() {
               }}
             >
               Рассчитать стоимость
-            </Button>
+            </button>
           </div>
         </div>
       </section>
