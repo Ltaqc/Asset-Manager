@@ -512,22 +512,21 @@ export default function Home() {
                 </a>
 
                 <a href="https://t.me/Al_Mare_komplex" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group cursor-pointer" data-testid="contact-telegram">
-                  <div className="w-12 h-12 bg-sky-500/10 rounded-full flex items-center justify-center text-sky-600 shrink-0 group-hover:bg-sky-500/20 transition-colors">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0 group-hover:bg-primary/20 transition-colors">
                     <Send className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-foreground">Telegram</h3>
-                    <span className="text-muted-foreground group-hover:text-sky-600 transition-colors text-base">@Al_Mare_komplex</span>
                   </div>
                 </a>
 
                 <a href="https://max.ru/chat/+79184710374" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group cursor-pointer" data-testid="contact-max">
-                  <div className="w-12 h-12 bg-purple-500/10 rounded-full flex items-center justify-center text-purple-600 shrink-0 group-hover:bg-purple-500/20 transition-colors">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0 group-hover:bg-primary/20 transition-colors">
                     <MaxIcon className="w-6 h-6" />
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-foreground">MAX</h3>
-                    <span className="text-muted-foreground group-hover:text-purple-600 transition-colors text-base">Написать в MAX</span>
+                    <span className="text-muted-foreground group-hover:text-primary transition-colors text-base">Написать в MAX</span>
                   </div>
                 </a>
 
