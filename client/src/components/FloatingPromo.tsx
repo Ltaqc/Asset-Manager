@@ -49,35 +49,39 @@ export function FloatingPromo() {
       </div>
 
       {/* Promo block — left side, above bar */}
-      <button
-        type="button"
-        onClick={() => setModalOpen(true)}
-        className="fixed left-4 md:left-6 z-50 flex items-center gap-0 cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
+      <div
+        className="fixed left-4 md:left-6 z-50 flex items-center gap-2.5"
         style={{ bottom: "80px" }}
         data-testid="promo-gift-area"
       >
-        <div
-          className="w-12 h-12 rounded-full flex items-center justify-center text-white shrink-0"
+        <button
+          type="button"
+          onClick={() => setModalOpen(true)}
+          className="w-12 h-12 rounded-full flex items-center justify-center text-white cursor-pointer transition-all duration-200 active:scale-95 hover:brightness-110"
           style={{
-            background: "linear-gradient(135deg, #C4894D, #B07840)",
-            boxShadow: "0 4px 16px rgba(196,137,77,0.4)",
+            background: "linear-gradient(135deg, #0F4F4A, #0C3C39)",
+            boxShadow: "0 4px 16px rgba(15,79,74,0.4)",
           }}
+          aria-label="Подробнее об акции"
           data-testid="promo-gift-button"
         >
           <Gift className="w-5 h-5 pointer-events-none" />
-        </div>
-        <div
-          className="text-white text-[11px] md:text-xs font-bold tracking-wider px-3 py-1.5 -ml-1.5"
+        </button>
+        <button
+          type="button"
+          onClick={() => setModalOpen(true)}
+          className="text-white text-[11px] md:text-xs font-bold tracking-wide cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
           style={{
             background: "linear-gradient(135deg, #C4894D, #B07840)",
-            borderRadius: "0 16px 16px 0",
-            boxShadow: "0 2px 10px rgba(196,137,77,0.3)",
+            boxShadow: "0 2px 12px rgba(196,137,77,0.35)",
+            borderRadius: "20px",
+            padding: "6px 14px",
           }}
           data-testid="promo-badge"
         >
-          <span className="pointer-events-none">АКЦИЯ</span>
-        </div>
-      </button>
+          <span className="pointer-events-none">ВЫГОДНОЕ ПРЕДЛОЖЕНИЕ</span>
+        </button>
+      </div>
 
       {/* Modal */}
       {modalOpen && (
