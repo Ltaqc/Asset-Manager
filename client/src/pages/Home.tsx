@@ -96,9 +96,22 @@ export default function Home() {
   const [teens, setTeens] = useState(0);
   const [children, setChildren] = useState(0);
   const [toddlers, setToddlers] = useState(0);
+  const [dateError, setDateError] = useState("");
+
+  const SEASON_START = "2026-06-01";
+  const SEASON_END = "2026-09-15";
 
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
+    if (checkIn < SEASON_START || checkIn > SEASON_END) {
+      setDateError("Дата заезда должна быть в пределах сезона: с 1 июня по 15 сентября 2026");
+      return;
+    }
+    if (checkOut < SEASON_START || checkOut > SEASON_END) {
+      setDateError("Дата выезда должна быть в пределах сезона: с 1 июня по 15 сентября 2026");
+      return;
+    }
+    setDateError("");
     const params = new URLSearchParams({
       checkIn, checkOut,
       adults: String(adults),
@@ -164,8 +177,11 @@ export default function Home() {
                     data-testid="input-checkin"
                     type="date"
                     value={checkIn}
+                    min={SEASON_START}
+                    max={SEASON_END}
                     onChange={(e) => {
                       setCheckIn(e.target.value);
+                      setDateError("");
                       if (e.target.value && checkOut <= e.target.value) {
                         const d = new Date(e.target.value);
                         d.setDate(d.getDate() + 1);
@@ -183,13 +199,18 @@ export default function Home() {
                     data-testid="input-checkout"
                     type="date"
                     value={checkOut}
-                    min={checkIn}
-                    onChange={(e) => setCheckOut(e.target.value)}
+                    min={checkIn || SEASON_START}
+                    max={SEASON_END}
+                    onChange={(e) => { setCheckOut(e.target.value); setDateError(""); }}
                     className="h-12 bg-secondary/30 border-primary/20 w-full"
                   />
                 </div>
               </div>
             </div>
+
+            {dateError && (
+              <p className="text-sm text-red-500 text-center" data-testid="date-error">{dateError}</p>
+            )}
 
             <div className="space-y-3">
               <Label className="text-primary font-semibold">Состав гостей</Label>
