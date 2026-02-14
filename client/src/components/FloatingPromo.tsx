@@ -5,7 +5,7 @@ import heroImage from "@assets/optimized/hero_main_1770643186337.webp";
 function scrollToCalculator() {
   const el = document.getElementById("calculator");
   if (el) {
-    const navHeight = 64;
+    const navHeight = window.innerWidth < 768 ? 72 : 80;
     const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
     window.scrollTo({ top, behavior: "smooth" });
     el.classList.add("calculator-highlight");
