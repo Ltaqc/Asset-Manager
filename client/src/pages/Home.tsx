@@ -99,6 +99,15 @@ export default function Home() {
 
   const SEASON_START = "2026-06-01";
   const SEASON_END = "2026-09-15";
+  const MIN_NIGHTS = 3;
+
+  const addDays = (dateStr: string, days: number) => {
+    const d = new Date(dateStr);
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split("T")[0];
+  };
+
+  const minCheckOut = checkIn ? addDays(checkIn, MIN_NIGHTS) : SEASON_START;
 
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,6 +125,11 @@ export default function Home() {
     }
     if (checkOut < SEASON_START || checkOut > SEASON_END) {
       setDateError("Дата выезда должна быть в пределах сезона: с 1 июня по 15 сентября 2026");
+      return;
+    }
+    const nights = Math.round((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86400000);
+    if (nights < MIN_NIGHTS) {
+      setDateError(`Минимальный срок проживания — ${MIN_NIGHTS} ночи`);
       return;
     }
     setDateError("");
@@ -175,6 +189,7 @@ export default function Home() {
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
             <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября 2026 года</p>
+            <p className="text-sm text-muted-foreground text-center -mt-2 mb-1">Минимальный срок проживания — 3 ночи</p>
 
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
@@ -187,12 +202,11 @@ export default function Home() {
                     min={SEASON_START}
                     max={SEASON_END}
                     onChange={(e) => {
-                      setCheckIn(e.target.value);
+                      const val = e.target.value;
+                      setCheckIn(val);
                       setDateError("");
-                      if (e.target.value && checkOut <= e.target.value) {
-                        const d = new Date(e.target.value);
-                        d.setDate(d.getDate() + 1);
-                        setCheckOut(d.toISOString().split("T")[0]);
+                      if (val && (!checkOut || checkOut < addDays(val, MIN_NIGHTS))) {
+                        setCheckOut(addDays(val, MIN_NIGHTS));
                       }
                     }}
                     className={`h-12 bg-secondary/30 border-primary/20 w-full ${!checkIn ? "text-transparent" : ""}`}
@@ -206,7 +220,7 @@ export default function Home() {
                     data-testid="input-checkout"
                     type="date"
                     value={checkOut}
-                    min={checkIn || SEASON_START}
+                    min={minCheckOut}
                     max={SEASON_END}
                     onChange={(e) => { setCheckOut(e.target.value); setDateError(""); }}
                     className={`h-12 bg-secondary/30 border-primary/20 w-full ${!checkOut ? "text-transparent" : ""}`}
