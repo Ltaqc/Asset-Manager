@@ -145,49 +145,56 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Promo Banner */}
-      <section className="py-6 md:py-8 bg-white" data-testid="section-promo">
-        <div className="container mx-auto px-4">
-          <div
-            className="rounded-2xl px-6 py-8 md:px-12 md:py-10 text-center"
-            style={{
-              background: "linear-gradient(135deg, #0F3F3D 0%, #135E5A 50%, #1A6F6A 100%)",
-              boxShadow: "0 12px 30px rgba(0,0,0,0.15)",
-            }}
-          >
-            <p className="text-2xl md:text-3xl font-display font-bold text-white tracking-tight">
-              Раннее бронирование — скидка 10%
-            </p>
-            <p className="text-sm md:text-base mt-3 max-w-lg mx-auto" style={{ color: "rgba(255,255,255,0.85)" }}>
-              Забронируйте отдых заранее и зафиксируйте лучшую цену сезона
-            </p>
-            <p className="text-xs mt-2" style={{ color: "rgba(255,255,255,0.55)" }}>
-              Акция действует до 28 февраля 2026 года
-            </p>
-            <button
-              className="mt-6 inline-flex items-center justify-center rounded-xl text-white font-semibold text-base min-h-[48px] px-8 py-3 w-full sm:w-auto transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
+      {/* Promo Banner — sticky on mobile */}
+      <div
+        className="sticky top-16 z-30 md:relative md:top-auto md:z-auto"
+        data-testid="section-promo"
+      >
+        <div className="px-3 py-2 md:py-5 md:px-4 bg-white/80 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none">
+          <div className="container mx-auto md:px-4">
+            <div
+              className="rounded-[14px] md:rounded-2xl px-4 py-3 md:px-10 md:py-6 flex flex-col sm:flex-row items-center gap-2 sm:gap-5 md:gap-8"
               style={{
-                background: "#1FC7B6",
-                boxShadow: "0 0 20px rgba(31,199,182,0.35), 0 4px 12px rgba(0,0,0,0.15)",
-              }}
-              data-testid="button-promo"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById("calculator");
-                if (el) {
-                  const navHeight = 64;
-                  const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
-                  window.scrollTo({ top, behavior: "smooth" });
-                  el.classList.add("calculator-highlight");
-                  setTimeout(() => el.classList.remove("calculator-highlight"), 2000);
-                }
+                background: "linear-gradient(135deg, #E6F7F5 0%, #EAF9F7 50%, #F0FBFA 100%)",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
               }}
             >
-              Рассчитать стоимость
-            </button>
+              <div className="flex-1 min-w-0 text-center sm:text-left">
+                <p className="text-sm md:text-lg font-display font-bold text-gray-800 tracking-tight leading-tight">
+                  Раннее бронирование — скидка 10%
+                </p>
+                <p className="hidden md:block text-sm text-gray-500 mt-1">
+                  Забронируйте отдых заранее и зафиксируйте лучшую цену сезона
+                </p>
+                <p className="text-[11px] md:text-xs text-gray-400 mt-0.5">
+                  До 28 февраля 2026
+                </p>
+              </div>
+              <button
+                type="button"
+                className="shrink-0 rounded-xl text-white font-semibold text-sm md:text-base min-h-[40px] md:min-h-[44px] px-5 md:px-7 py-2 md:py-2.5 w-full sm:w-auto transition-all duration-200 hover:brightness-110 active:scale-[0.97] cursor-pointer relative z-10"
+                style={{
+                  background: "#1FC7B6",
+                  boxShadow: "0 0 12px rgba(31,199,182,0.3), 0 2px 8px rgba(0,0,0,0.1)",
+                }}
+                data-testid="button-promo"
+                onClick={() => {
+                  const el = document.getElementById("calculator");
+                  if (el) {
+                    const navHeight = 64;
+                    const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+                    window.scrollTo({ top, behavior: "smooth" });
+                    el.classList.add("calculator-highlight");
+                    setTimeout(() => el.classList.remove("calculator-highlight"), 2000);
+                  }
+                }}
+              >
+                Рассчитать стоимость
+              </button>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* 2. Calculator */}
       <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-white scroll-mt-16 transition-shadow duration-500" data-testid="section-search-form">
