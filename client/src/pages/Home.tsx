@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SeasonCalendar } from "@/components/SeasonCalendar";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -218,41 +218,36 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
-                <div className="date-field-wrapper" onClick={(e) => { const input = (e.currentTarget as HTMLElement).querySelector('input'); input?.showPicker?.(); input?.focus(); }}>
-                  <Input
-                    data-testid="input-checkin"
-                    type="date"
-                    value={checkIn}
-                    min={minCheckIn}
-                    max={SEASON_END}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setCheckIn(val);
-                      setDateError("");
-                      if (val && checkOut && checkOut < addDays(val, MIN_NIGHTS)) {
-                        setCheckOut(addDays(val, MIN_NIGHTS));
-                      }
-                    }}
-                    className={`h-12 bg-secondary/30 border-primary/20 w-full cursor-pointer ${!checkIn ? "text-transparent" : ""}`}
-                  />
-                  {!checkIn && <span className="date-placeholder">Выберите даты</span>}
-                </div>
+                <SeasonCalendar
+                  testId="input-checkin"
+                  value={checkIn}
+                  onChange={(val) => {
+                    setCheckIn(val);
+                    setDateError("");
+                    if (val && checkOut && checkOut < addDays(val, MIN_NIGHTS)) {
+                      setCheckOut("");
+                    }
+                  }}
+                  minDate={minCheckIn}
+                  maxDate={SEASON_END}
+                  seasonStart={SEASON_START}
+                  seasonEnd={SEASON_END}
+                  placeholder="Выберите даты"
+                />
               </div>
               <div className="min-w-0 space-y-2">
                 <Label>Дата выезда</Label>
-                <div className="date-field-wrapper" onClick={(e) => { if (checkIn) { const input = (e.currentTarget as HTMLElement).querySelector('input'); input?.showPicker?.(); input?.focus(); } }}>
-                  <Input
-                    data-testid="input-checkout"
-                    type="date"
-                    value={checkOut}
-                    min={minCheckOut}
-                    max={SEASON_END}
-                    disabled={!checkIn}
-                    onChange={(e) => { setCheckOut(e.target.value); setDateError(""); }}
-                    className={`h-12 bg-secondary/30 border-primary/20 w-full cursor-pointer ${!checkOut ? "text-transparent" : ""}`}
-                  />
-                  {!checkOut && <span className="date-placeholder">Выберите даты</span>}
-                </div>
+                <SeasonCalendar
+                  testId="input-checkout"
+                  value={checkOut}
+                  onChange={(val) => { setCheckOut(val); setDateError(""); }}
+                  minDate={minCheckOut}
+                  maxDate={SEASON_END}
+                  seasonStart={SEASON_START}
+                  seasonEnd={SEASON_END}
+                  placeholder="Выберите даты"
+                  disabled={!checkIn}
+                />
               </div>
             </div>
 
