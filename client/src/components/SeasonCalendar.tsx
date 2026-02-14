@@ -174,11 +174,8 @@ export function SeasonCalendar({
 
       {open && (
         <>
-          <div className="fixed inset-0 z-[55] md:bg-transparent bg-black/40" onPointerDown={() => setOpen(false)} />
-          <div
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-white rounded-2xl shadow-2xl border border-border/60 p-5 w-[320px] max-w-[95vw] md:absolute md:top-full md:left-0 md:translate-x-0 md:translate-y-0 md:mt-1 md:rounded-xl md:shadow-xl md:w-[300px]"
-            data-testid={testId ? `${testId}-dropdown` : undefined}
-          >
+          <div className="fixed inset-0 z-[55]" onPointerDown={() => setOpen(false)} />
+          <div className="absolute top-full left-0 mt-1 z-[60] bg-white rounded-xl shadow-xl border border-border/60 p-4 w-[300px] max-w-[calc(100vw-2rem)]" data-testid={testId ? `${testId}-dropdown` : undefined}>
             <div className="flex items-center justify-between mb-3">
               <button
                 type="button"
