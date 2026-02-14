@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RoomImageCarousel } from "@/components/RoomImageCarousel";
-import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp } from "lucide-react";
+import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp, CheckCircle2 } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import {
@@ -71,6 +71,7 @@ export default function SearchPage() {
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [showAllRooms, setShowAllRooms] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   const createBooking = useCreateBooking();
 
@@ -120,6 +121,7 @@ export default function SearchPage() {
         setSelectedCombo(null);
         setContactName("");
         setContactPhone("");
+        setBookingSuccess(true);
       }
     });
   };
@@ -651,6 +653,35 @@ export default function SearchPage() {
                 </Button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {bookingSuccess && (
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center"
+          onClick={() => setBookingSuccess(false)}
+          data-testid="modal-success-overlay"
+        >
+          <div
+            className="bg-white rounded-t-2xl md:rounded-2xl max-w-md w-full p-8 text-center space-y-4"
+            onClick={(e) => e.stopPropagation()}
+            data-testid="modal-success"
+          >
+            <div className="flex justify-center">
+              <CheckCircle2 className="w-16 h-16 text-primary" />
+            </div>
+            <h3 className="text-xl font-display font-bold text-foreground">Заявка отправлена!</h3>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Спасибо за ваш интерес к AL MARE! Мы свяжемся с вами в ближайшее время для подтверждения бронирования.
+            </p>
+            <Button
+              className="w-full mt-2"
+              onClick={() => setBookingSuccess(false)}
+              data-testid="button-success-close"
+            >
+              Отлично
+            </Button>
           </div>
         </div>
       )}
