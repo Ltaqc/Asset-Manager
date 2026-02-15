@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -129,18 +129,20 @@ export default function Home() {
   const [children, setChildren] = useState(0);
   const [toddlers, setToddlers] = useState(0);
   const [dateError, setDateError] = useState("");
+  const [toast, setToast] = useState<string | null>(null);
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2800);
+  }, []);
 
   const minCheckIn = todayStr > SEASON_START && todayStr <= SEASON_END ? todayStr : SEASON_START;
   const minCheckOut = checkIn ? addDays(checkIn, MIN_NIGHTS) : addDays(SEASON_START, MIN_NIGHTS);
 
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!checkIn) {
-      setDateError("Пожалуйста, выберите дату заезда");
-      return;
-    }
-    if (!checkOut) {
-      setDateError("Пожалуйста, выберите дату выезда");
+    if (!checkIn || !checkOut) {
+      showToast("Выберите даты проживания");
       return;
     }
     if (checkIn < SEASON_START || checkIn > SEASON_END) {
@@ -261,15 +263,14 @@ export default function Home() {
                 <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="input-adults" />
                 <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="input-teens" />
                 <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="input-children" />
-                <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={1} data-testid="input-toddlers" />
+                <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={4} data-testid="input-toddlers" />
               </div>
             </div>
 
             <Button
               data-testid="button-calculate"
               type="submit"
-              disabled={!checkIn || !checkOut}
-              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed relative z-[1] cursor-pointer touch-manipulation select-none"
+              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl relative z-[1] cursor-pointer touch-manipulation select-none"
             >
               <span className="pointer-events-none">Рассчитать стоимость проживания</span>
             </Button>
@@ -631,6 +632,17 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Toast notification */}
+      <div
+        data-testid="toast-dates"
+        className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[9999] px-6 py-3.5 rounded-2xl text-white text-base font-medium shadow-xl backdrop-blur-sm pointer-events-none transition-all duration-400 ease-in-out ${
+          toast ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+        }`}
+        style={{ background: "rgba(0, 0, 0, 0.85)" }}
+      >
+        {toast}
+      </div>
     </>
   );
 }
