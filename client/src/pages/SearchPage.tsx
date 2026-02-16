@@ -629,19 +629,30 @@ export default function SearchPage() {
                 </p>
                 <p className="text-sm text-muted-foreground">{guestParts}</p>
 
-                <div className="border-t border-border/50 pt-3 mt-1">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-sm text-muted-foreground">Итого:</span>
-                    <span className="text-2xl font-bold text-primary" data-testid="modal-total-price">
-                      {formatPrice(finalPrice(selectedCombo.totalPrice))}
-                    </span>
-                  </div>
-                  {earlyBooking && (
-                    <div className="flex items-center justify-between gap-2 mt-1">
-                      <span className="text-xs font-medium text-green-600">Скидка раннего бронирования</span>
-                      <span className="text-sm text-muted-foreground line-through">{formatPrice(selectedCombo.totalPrice)}</span>
+                <div className="border-t border-border/50 pt-3 mt-1 space-y-3">
+                  <div>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="text-sm text-muted-foreground">Итого:</span>
+                      <span className="text-2xl font-bold text-primary" data-testid="modal-total-price">
+                        {formatPrice(finalPrice(selectedCombo.totalPrice))}
+                      </span>
                     </div>
-                  )}
+                    {earlyBooking && (
+                      <div className="flex items-center justify-between gap-2 mt-1">
+                        <span className="text-xs font-medium text-green-600">Скидка раннего бронирования</span>
+                        <span className="text-sm text-muted-foreground line-through">{formatPrice(selectedCombo.totalPrice)}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="border-t border-border/30 pt-3">
+                    <p className="text-xs text-muted-foreground mb-1">Предоплата для фиксации бронирования:</p>
+                    <p className="text-lg font-bold text-foreground" data-testid="modal-prepayment">
+                      {formatPrice(Math.round(finalPrice(selectedCombo.totalPrice) / selectedCombo.nights))}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground mt-1">Достаточно оплаты за первую ночь проживания</p>
+                    <p className="text-[11px] text-muted-foreground/70 mt-0.5">Номер фиксируется за вами после подтверждения менеджером</p>
+                  </div>
                 </div>
               </div>
 
