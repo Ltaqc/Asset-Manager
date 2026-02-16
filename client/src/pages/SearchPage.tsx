@@ -176,7 +176,7 @@ export default function SearchPage() {
               <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="search-adults" />
               <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="search-teens" />
               <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="search-children" />
-              <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={1} data-testid="search-toddlers" />
+              <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={4} data-testid="search-toddlers" />
             </div>
           </div>
         </div>
@@ -573,89 +573,137 @@ export default function SearchPage() {
         );
       })()}
 
-      {selectedCombo && (
-        <div
-          className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center"
-          onClick={() => setSelectedCombo(null)}
-          data-testid="modal-overlay"
-        >
-          <div
-            className="bg-white rounded-t-2xl md:rounded-2xl max-w-md w-full p-6 space-y-4 max-h-[85vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-            data-testid="modal-booking"
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="text-xl font-display font-bold text-primary">Оставить заявку</h3>
-              <button
-                onClick={() => setSelectedCombo(null)}
-                className="w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground active:bg-secondary/50"
-                aria-label="Закрыть"
-                data-testid="modal-close"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
+      {selectedCombo && (() => {
+        const guestParts = [
+          adults > 0 && `${adults} ${adults === 1 ? "взрослый" : "взрослых"}`,
+          teens > 0 && `${teens} ${teens === 1 ? "подросток" : teens < 5 ? "подростка" : "подростков"}`,
+          children > 0 && `${children} ${children === 1 ? "ребёнок" : children < 5 ? "ребёнка" : "детей"}`,
+          toddlers > 0 && `${toddlers} ${toddlers === 1 ? "малыш" : toddlers < 5 ? "малыша" : "малышей"}`,
+        ].filter(Boolean).join(", ");
 
-            <div className="space-y-3 text-sm">
-              <p className="font-medium text-foreground" data-testid="modal-room-label">
-                {selectedCombo.rooms.length === 1
-                  ? selectedCombo.rooms[0].category
-                  : selectedCombo.label}
-              </p>
-              <p className="text-muted-foreground text-xs">
-                {checkIn} — {checkOut} · {selectedCombo.nights} {nightsLabel(selectedCombo.nights)}
-              </p>
-              <div className="bg-secondary/30 rounded-lg p-3 space-y-1.5 text-sm">
+        const formatDateShort = (d: string) => {
+          const date = new Date(d + "T00:00:00");
+          return date.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
+        };
+
+        return (
+          <div
+            className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center"
+            onClick={() => setSelectedCombo(null)}
+            data-testid="modal-overlay"
+          >
+            <div
+              className="bg-white rounded-t-2xl md:rounded-2xl max-w-md w-full p-6 space-y-5 max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+              data-testid="modal-booking"
+            >
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-display font-bold text-foreground">Забронировать номер</h3>
+                <button
+                  onClick={() => setSelectedCombo(null)}
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground active:bg-secondary/50"
+                  aria-label="Закрыть"
+                  data-testid="modal-close"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="bg-secondary/20 border border-border/50 rounded-xl p-4 space-y-3">
+                <p className="text-base font-bold text-foreground leading-snug" data-testid="modal-room-label">
+                  {selectedCombo.rooms.length === 1
+                    ? selectedCombo.rooms[0].category
+                    : selectedCombo.label}
+                </p>
                 {selectedCombo.rooms.length > 1 && (
-                  <div className="space-y-1 pb-1.5 border-b border-border/50">
+                  <div className="space-y-0.5">
                     {selectedCombo.rooms.map((r, i) => (
-                      <div key={i} className="text-xs text-muted-foreground">
-                        {ROOM_DATA[r.category].shortTitle}
-                      </div>
+                      <p key={i} className="text-xs text-muted-foreground">{ROOM_DATA[r.category].shortTitle}</p>
                     ))}
                   </div>
                 )}
-                <div className="flex flex-col gap-0.5">
-                  {earlyBooking && (
-                    <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
-                      <span></span>
-                      <span className="line-through">{formatPrice(selectedCombo.totalPrice)}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between gap-2 font-bold text-foreground">
-                    <span>Итого:</span>
-                    <span className="text-primary text-lg" data-testid="modal-total-price">
+                <p className="text-sm text-muted-foreground">
+                  {formatDateShort(checkIn)} — {formatDateShort(checkOut)} · {selectedCombo.nights} {nightsLabel(selectedCombo.nights)}
+                </p>
+                <p className="text-sm text-muted-foreground">{guestParts}</p>
+
+                <div className="border-t border-border/50 pt-3 mt-1">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-sm text-muted-foreground">Итого:</span>
+                    <span className="text-2xl font-bold text-primary" data-testid="modal-total-price">
                       {formatPrice(finalPrice(selectedCombo.totalPrice))}
                     </span>
                   </div>
                   {earlyBooking && (
-                    <div className="text-xs text-green-600 text-right">Скидка раннего бронирования</div>
+                    <div className="flex items-center justify-between gap-2 mt-1">
+                      <span className="text-xs font-medium text-green-600">Скидка раннего бронирования</span>
+                      <span className="text-sm text-muted-foreground line-through">{formatPrice(selectedCombo.totalPrice)}</span>
+                    </div>
                   )}
                 </div>
               </div>
-            </div>
 
-            <form onSubmit={handleSubmitBooking} className="space-y-4">
-              <div className="space-y-2">
-                <Label>Ваше имя</Label>
-                <Input data-testid="booking-name" placeholder="Иван Иванов" value={contactName} onChange={(e) => setContactName(e.target.value)} className="h-12" />
-              </div>
-              <div className="space-y-2">
-                <Label>Телефон</Label>
-                <Input data-testid="booking-phone" placeholder="+7 900 123 45 67" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} className="h-12" inputMode="tel" />
-              </div>
-              <div className="flex gap-3 pt-2">
-                <Button type="button" variant="outline" className="flex-1" onClick={() => setSelectedCombo(null)}>Отмена</Button>
-                <Button type="submit" className="flex-1" disabled={createBooking.isPending} data-testid="button-submit-booking">
-                  {createBooking.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Отправить"}
-                </Button>
-              </div>
-            </form>
+              <form onSubmit={handleSubmitBooking} className="space-y-4">
+                <div className="space-y-1.5">
+                  <Label>Имя</Label>
+                  <Input data-testid="booking-name" placeholder="Как к вам обращаться" value={contactName} onChange={(e) => setContactName(e.target.value)} className="h-12 text-base" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>Телефон</Label>
+                  <Input
+                    data-testid="booking-phone"
+                    type="tel"
+                    inputMode="tel"
+                    placeholder="+7 900 123 45 67"
+                    value={contactPhone}
+                    onChange={(e) => {
+                      let raw = e.target.value.replace(/[^\d+]/g, "");
+                      if (raw === "8") raw = "+7";
+                      if (raw.startsWith("8") && raw.length > 1) raw = "+7" + raw.slice(1);
+                      if (raw.length > 0 && !raw.startsWith("+")) raw = "+7" + raw;
+                      const digits = raw.replace(/\D/g, "");
+                      if (digits.length === 0) { setContactPhone(""); return; }
+                      let formatted = "+7";
+                      const d = digits.slice(1);
+                      if (d.length > 0) formatted += " " + d.slice(0, 3);
+                      if (d.length > 3) formatted += " " + d.slice(3, 6);
+                      if (d.length > 6) formatted += " " + d.slice(6, 8);
+                      if (d.length > 8) formatted += " " + d.slice(8, 10);
+                      setContactPhone(formatted);
+                    }}
+                    onFocus={(e) => { if (!e.target.value) setContactPhone("+7 "); }}
+                    onBlur={() => { if (contactPhone.trim() === "+7") setContactPhone(""); }}
+                    className="h-12 text-base"
+                  />
+                </div>
+                <div className="space-y-3 pt-1">
+                  <Button
+                    type="submit"
+                    className="w-full h-14 text-base font-bold rounded-xl shadow-lg shadow-primary/20 cursor-pointer touch-manipulation select-none"
+                    disabled={createBooking.isPending}
+                    data-testid="button-submit-booking"
+                  >
+                    <span className="pointer-events-none">
+                      {createBooking.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : "Забронировать номер"}
+                    </span>
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full h-11 text-sm rounded-xl"
+                    onClick={() => setSelectedCombo(null)}
+                  >
+                    Отмена
+                  </Button>
+                  <p className="text-xs text-muted-foreground text-center">Мы свяжемся с вами для подтверждения бронирования</p>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {bookingSuccess && (
         <div
