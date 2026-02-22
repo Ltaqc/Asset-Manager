@@ -204,35 +204,15 @@ export default function Home() {
             Ultra All Inclusive Resort
           </p>
         </div>
+        <div className="absolute bottom-4 md:bottom-5 left-1/2 -translate-x-1/2 z-10">
+          <span className="inline-block px-5 py-2.5 md:px-6 md:py-3 rounded-full text-xs md:text-[15px] font-semibold text-white whitespace-nowrap" style={{ background: "rgba(46,196,182,0.85)", backdropFilter: "blur(6px)", boxShadow: "0 4px 16px rgba(0,0,0,0.2)" }} data-testid="badge-hero-promo">
+            Выгода до 30% при раннем бронировании
+          </span>
+        </div>
       </header>
 
       {/* 2. UAI Intro */}
       <section className="relative py-12 md:py-20 bg-white">
-        {/* Desktop: badge centered absolutely */}
-        <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[2]">
-          <span className="inline-block px-6 py-3 rounded-full text-[17px] font-semibold text-white whitespace-nowrap" style={{ background: "#2EC4B6", boxShadow: "0 6px 18px rgba(0,0,0,0.15)" }} data-testid="badge-early-booking">
-            Выгода до 30% при раннем бронировании
-          </span>
-        </div>
-        {/* Mobile: badge + contact button on one line */}
-        <div className="flex md:hidden items-center justify-between gap-3 px-4 -mt-5 mb-4 relative z-[2]">
-          <span className="inline-block px-4 py-2 rounded-full text-xs font-semibold text-white whitespace-nowrap" style={{ background: "#2EC4B6", boxShadow: "0 4px 14px rgba(0,0,0,0.12)" }} data-testid="badge-early-booking-mobile">
-            Выгода до 30% при раннем бронировании
-          </span>
-          <button
-            type="button"
-            onClick={() => {
-              const el = document.querySelector('[data-testid="floating-toggle"]') as HTMLButtonElement;
-              if (el) el.click();
-            }}
-            className="w-11 h-11 rounded-full flex items-center justify-center text-white shrink-0 shadow-lg active:scale-95 transition-transform cursor-pointer"
-            style={{ background: "#2EC4B6" }}
-            aria-label="Связаться с нами"
-            data-testid="mobile-contact-btn"
-          >
-            <MessageCircle className="w-5 h-5" />
-          </button>
-        </div>
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center pt-2 md:pt-4">
             <h2 className="text-2xl md:text-4xl font-display font-bold text-foreground leading-tight" data-testid="text-uai-intro-title">
