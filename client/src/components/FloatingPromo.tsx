@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { X, Gift } from "lucide-react";
+import { X, Gift, CheckCircle2 } from "lucide-react";
+import promoFamilyImg from "@assets/ChatGPT_Image_22_февр._2026_г.,_14_31_35_1771760030225.png";
 
 function scrollToCalculator() {
   const section = document.getElementById("calculator");
@@ -11,6 +12,14 @@ function scrollToCalculator() {
     setTimeout(() => section.classList.remove("calculator-highlight"), 2000);
   }
 }
+
+const benefits = [
+  "питание по меню в ресторане",
+  "собственный песчаный пляж",
+  "аквапарк и развлечения на пляже",
+  "анимация и вечерние программы",
+  "напитки в течение дня",
+];
 
 export function FloatingPromo() {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -81,43 +90,68 @@ export function FloatingPromo() {
 
       {popupVisible && (
         <div
-          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center"
+          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4"
           onClick={handleOverlayClick}
           data-testid="promo-overlay"
         >
+          <div className="absolute inset-0 bg-black/30" style={{ pointerEvents: "none" }} />
+
           <div
-            className="absolute inset-0 bg-black/30"
-            style={{ pointerEvents: "none" }}
-          />
-          <div
-            className="relative w-full sm:max-w-[400px] mx-4 sm:mx-auto bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden transition-all duration-300 ease-out"
+            className="relative w-full sm:max-w-[720px] bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden transition-all duration-300 ease-out flex flex-col sm:flex-row"
             style={{
-              boxShadow: "0 8px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.06)",
+              boxShadow: "0 12px 48px rgba(0,0,0,0.18), 0 2px 10px rgba(0,0,0,0.06)",
               opacity: animating ? 1 : 0,
-              transform: animating ? "translateY(0)" : "translateY(20px)",
-              maxHeight: "85vh",
+              transform: animating ? "translateY(0) scale(1)" : "translateY(24px) scale(0.98)",
+              maxHeight: "90vh",
             }}
             data-testid="promo-popup"
           >
             <button
               type="button"
               onClick={closePopup}
-              className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-gray-400 hover:bg-black/10 hover:text-gray-600 transition-colors cursor-pointer"
+              className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:bg-white hover:text-gray-600 transition-colors cursor-pointer"
               aria-label="Закрыть"
               data-testid="promo-popup-close"
             >
               <X className="w-4 h-4 pointer-events-none" />
             </button>
 
-            <div className="px-5 md:px-6 pt-6 pb-5">
-              <p className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-8">
-                Получите лучшее предложение на отдых Ultra All&nbsp;Inclusive
-              </p>
+            <div className="hidden sm:block sm:w-[280px] shrink-0">
+              <img
+                src={promoFamilyImg}
+                alt="Семейный отдых на пляже"
+                className="w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
 
-              <p className="mt-3 text-sm text-gray-500 leading-relaxed">
-                Подберём оптимальные даты, номера и варианты размещения
+            <div className="sm:hidden w-full h-[160px] overflow-hidden">
+              <img
+                src={promoFamilyImg}
+                alt="Семейный отдых на пляже"
+                className="w-full h-full object-cover object-top"
+                loading="eager"
+              />
+            </div>
+
+            <div className="flex-1 px-5 md:px-7 pt-5 md:pt-6 pb-5 flex flex-col justify-center">
+              <h3 className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-6">
+                Семейный отдых Ultra All&nbsp;Inclusive без забот
+              </h3>
+
+              <p className="mt-2.5 text-sm text-gray-500 leading-relaxed">
+                Подберём лучшие даты и номера
                 с максимальной выгодой до 30% для вашей семьи
               </p>
+
+              <div className="mt-4 space-y-2">
+                {benefits.map((text, i) => (
+                  <div key={i} className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-[18px] h-[18px] text-[#2EC4B6] shrink-0" />
+                    <span className="text-[13px] md:text-sm text-gray-700">{text}</span>
+                  </div>
+                ))}
+              </div>
 
               <button
                 type="button"
@@ -125,7 +159,7 @@ export function FloatingPromo() {
                 className="mt-5 w-full h-12 rounded-xl text-white font-semibold text-sm cursor-pointer transition-all duration-[250ms] ease-in-out hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center"
                 style={{
                   background: "#2EC4B6",
-                  boxShadow: "0 6px 18px rgba(0,0,0,0.15)",
+                  boxShadow: "0 6px 18px rgba(46,196,182,0.3)",
                 }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#23B1A5"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
@@ -133,6 +167,10 @@ export function FloatingPromo() {
               >
                 <span className="pointer-events-none">Подобрать идеальный отдых</span>
               </button>
+
+              <p className="mt-2.5 text-center text-[11px] md:text-xs text-gray-400">
+                Ответ менеджера в течение 5–10 минут
+              </p>
             </div>
           </div>
         </div>
