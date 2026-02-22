@@ -460,7 +460,7 @@ export default function Home() {
                 <p className="text-base font-semibold text-foreground">Доступно в течение дня:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: Utensils, label: "Завтрак, обед и ужин — три смены по меню" },
+                    { icon: Utensils, label: "Завтрак, обед и ужин — ресторанное обслуживание по меню" },
                     { icon: GlassIcon, label: "Напитки и коктейли без ограничений" },
                     { icon: ChickenWingIcon, label: "Вечерняя зона барбекю на открытом воздухе" },
                     { icon: PopsicleIcon, label: "Мороженое и десерты на территории" },
