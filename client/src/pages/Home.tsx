@@ -207,12 +207,14 @@ export default function Home() {
       </header>
 
       {/* 2. UAI Intro */}
-      <section className="py-12 md:py-20 bg-white">
+      <section className="relative py-12 md:py-20 bg-white">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[2]">
+          <span className="inline-block px-5 py-2 rounded-full text-xs md:text-sm font-semibold text-white whitespace-nowrap" style={{ background: "#2EC4B6", boxShadow: "0 4px 16px rgba(46,196,182,0.3)" }} data-testid="badge-early-booking">
+            Выгода до 30% при раннем бронировании
+          </span>
+        </div>
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold text-white mb-4 md:mb-5" style={{ background: "#2EC4B6" }} data-testid="badge-early-booking">
-              Выгода до 30% при раннем бронировании
-            </span>
+          <div className="max-w-4xl mx-auto text-center pt-2 md:pt-4">
             <h2 className="text-2xl md:text-4xl font-display font-bold text-foreground leading-tight" data-testid="text-uai-intro-title">
               Ultra All Inclusive на Азовском море
             </h2>
