@@ -129,8 +129,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div className="space-y-6 md:space-y-8">
               <h2 className="text-3xl md:text-4xl font-display font-bold text-primary">AL MARE</h2>
               <p className="text-slate-300 max-w-md leading-relaxed text-sm md:text-base">
-                Камерный курорт в станице Голубицкая на Азовском побережье.
-                Всё включено: от ресторана и пляжа до вечерних программ и детской анимации.
+                Уютный семейный курорт на Азовском побережье в станице Голубицкая.
+                Всё включено: питание, пляж, развлечения и вечерние программы.
               </p>
               <div className="space-y-4 md:space-y-5 pt-2">
                 <a href="https://yandex.ru/maps/?rtext=~45.326978,37.290373&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors" data-testid="link-address-footer">
