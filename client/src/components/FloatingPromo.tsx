@@ -126,12 +126,12 @@ export function FloatingPromo() {
               />
             </div>
 
-            <div className="sm:hidden w-full h-[180px] overflow-hidden">
+            <div className="sm:hidden w-full h-[200px] overflow-hidden">
               <img
                 src={promoFamilyImg}
                 alt="Семейный отдых на пляже"
                 className="w-full h-full object-cover"
-                style={{ objectPosition: "left center" }}
+                style={{ objectPosition: "20% 15%" }}
                 loading="eager"
               />
             </div>
