@@ -35,17 +35,36 @@ async function sendEmailNotification(booking: {
   if (booking.children > 0) guests.push(`Дети: ${booking.children}`);
   if (booking.toddlers > 0) guests.push(`Малыши: ${booking.toddlers}`);
 
+  const checkInDate = new Date(booking.checkIn);
+  const checkOutDate = new Date(booking.checkOut);
+  const nights = Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+  const prepayment = nights > 0 ? Math.round(booking.totalPrice / nights) : booking.totalPrice;
+  const now = new Date();
+  const requestDate = now.toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" });
+  const requestTime = now.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Moscow" });
+
+  const rowStyle = `style="border-bottom:1px solid #f0f0f0;"`;
+  const labelStyle = `style="padding:10px 12px;color:#888;font-size:14px;white-space:nowrap;vertical-align:top;"`;
+  const valueStyle = `style="padding:10px 12px;font-weight:600;font-size:14px;"`;
+
   const html = `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-      <h2 style="color:#2EC4B6;margin-bottom:20px;">Новая заявка на бронирование</h2>
-      <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:8px 0;color:#666;">Гость:</td><td style="padding:8px 0;font-weight:600;">${booking.contactName || "Не указано"}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Телефон:</td><td style="padding:8px 0;font-weight:600;">${booking.contactPhone || "Не указан"}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Номер:</td><td style="padding:8px 0;font-weight:600;">${booking.roomCategory}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Даты:</td><td style="padding:8px 0;font-weight:600;">${formatDate(booking.checkIn)} — ${formatDate(booking.checkOut)}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Гости:</td><td style="padding:8px 0;font-weight:600;">${guests.join(", ")}</td></tr>
-        <tr><td style="padding:8px 0;color:#666;">Итого:</td><td style="padding:8px 0;font-weight:600;color:#2EC4B6;font-size:18px;">${booking.totalPrice.toLocaleString("ru-RU")} ₽</td></tr>
-      </table>
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#ffffff;">
+      <div style="background:#2EC4B6;padding:24px 20px;border-radius:8px 8px 0 0;">
+        <h2 style="color:#ffffff;margin:0;font-size:20px;">Новая заявка на бронирование</h2>
+        <p style="color:rgba(255,255,255,0.85);margin:4px 0 0;font-size:13px;">Сайт AL MARE — ${requestDate}, ${requestTime} (МСК)</p>
+      </div>
+      <div style="padding:4px 0;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr ${rowStyle}><td ${labelStyle}>Гость</td><td ${valueStyle}>${booking.contactName || "Не указано"}</td></tr>
+          <tr ${rowStyle}><td ${labelStyle}>Телефон</td><td ${valueStyle}>${booking.contactPhone || "Не указан"}</td></tr>
+          <tr ${rowStyle}><td ${labelStyle}>Тип номера</td><td ${valueStyle}>${booking.roomCategory}</td></tr>
+          <tr ${rowStyle}><td ${labelStyle}>Даты</td><td ${valueStyle}>${formatDate(booking.checkIn)} — ${formatDate(booking.checkOut)}</td></tr>
+          <tr ${rowStyle}><td ${labelStyle}>Ночей</td><td ${valueStyle}>${nights}</td></tr>
+          <tr ${rowStyle}><td ${labelStyle}>Гости</td><td ${valueStyle}>${guests.join(", ")}</td></tr>
+          <tr ${rowStyle}><td ${labelStyle}>Итого</td><td style="padding:10px 12px;font-weight:700;font-size:18px;color:#2EC4B6;">${booking.totalPrice.toLocaleString("ru-RU")} ₽</td></tr>
+          <tr><td ${labelStyle}>Предоплата (1 ночь)</td><td ${valueStyle}>${prepayment.toLocaleString("ru-RU")} ₽</td></tr>
+        </table>
+      </div>
     </div>
   `;
 
@@ -60,7 +79,7 @@ async function sendEmailNotification(booking: {
     await transporter.sendMail({
       from: `"AL MARE" <no-reply@hotelalmare.ru>`,
       to: "almare@hotelalmare.ru",
-      subject: `Бронирование: ${booking.contactName || "Гость"} — ${booking.roomCategory}`,
+      subject: `Новая заявка на бронирование с сайта AL MARE`,
       html,
     });
     console.log("Email notification sent");
