@@ -210,11 +210,14 @@ export default function Home() {
       <section className="py-12 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold text-white mb-4 md:mb-5" style={{ background: "#2EC4B6" }} data-testid="badge-early-booking">
+              Выгода до 30% при раннем бронировании
+            </span>
             <h2 className="text-2xl md:text-4xl font-display font-bold text-foreground leading-tight" data-testid="text-uai-intro-title">
-              Ultra All Inclusive на Азовском море — отдых без забот для всей семьи
+              Ultra All Inclusive на Азовском море
             </h2>
             <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              Все включено: питание, напитки, собственный пляж, аквапарк и развлечения на территории
+              Без доплат: питание, напитки, пляж и развлечения включены
             </p>
           </div>
 
@@ -222,10 +225,10 @@ export default function Home() {
             {[
               { icon: Waves, label: "Собственный песчаный пляж бесплатно" },
               { icon: UtensilsCrossed, label: "Шведский стол весь день" },
-              { icon: Wine, label: "Безлимитные напитки и алкоголь" },
+              { icon: Wine, label: "Напитки для детей и взрослых" },
               { icon: Droplets, label: "Детский аквапарк на территории" },
-              { icon: Sparkles, label: "Анимация для детей и взрослых" },
-              { icon: Target, label: "Все развлечения включены в стоимость" },
+              { icon: Sparkles, label: "Анимация каждый день" },
+              { icon: Target, label: "Все развлечения без доплат" },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center text-center gap-2.5 p-4 md:p-5 rounded-xl bg-secondary/30">
                 <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary">
