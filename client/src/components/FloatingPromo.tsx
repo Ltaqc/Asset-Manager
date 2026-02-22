@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { X, CheckCircle2 } from "lucide-react";
-
-const STORAGE_KEY = "almare_promo_dismissed";
 
 function scrollToCalculator() {
   const section = document.getElementById("calculator");
@@ -17,21 +15,28 @@ function scrollToCalculator() {
 export function FloatingPromo() {
   const [visible, setVisible] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const show = useCallback(() => {
+    setVisible(true);
+    requestAnimationFrame(() => setAnimating(true));
+  }, []);
+
+  const scheduleShow = useCallback((delay: number) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(show, delay);
+  }, [show]);
 
   useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY)) return;
-    const timer = setTimeout(() => {
-      setVisible(true);
-      requestAnimationFrame(() => setAnimating(true));
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, []);
+    scheduleShow(10000);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [scheduleShow]);
 
   const dismiss = () => {
     setAnimating(false);
     setTimeout(() => {
       setVisible(false);
-      localStorage.setItem(STORAGE_KEY, "1");
+      scheduleShow(30000);
     }, 300);
   };
 
