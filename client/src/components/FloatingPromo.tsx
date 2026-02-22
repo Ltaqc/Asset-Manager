@@ -105,7 +105,7 @@ export function FloatingPromo() {
             onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
             data-testid="promo-popup-cta"
           >
-            <span className="pointer-events-none">Рассчитать стоимость проживания</span>
+            <span className="pointer-events-none">Забронировать номер</span>
           </button>
         </div>
       </div>
