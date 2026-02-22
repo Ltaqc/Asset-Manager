@@ -576,13 +576,13 @@ export default function Home() {
       <section id="infrastructure" className="py-14 md:py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
-            title="Территория и досуг"
+            title="Территория и отдых"
             subtitle="Всё, чем можно заняться между морем и номером"
           />
 
           <div className="max-w-6xl mx-auto space-y-10">
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
-              Зелёный ухоженный комплекс с бассейном, игровыми площадками и тихими зонами в тени деревьев. Для каждого найдётся занятие по настроению — от партии в бильярд до вечернего барбекю.
+              Бассейн, детские площадки и тихие уголки для отдыха среди зелени.
             </p>
 
             <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-start">
