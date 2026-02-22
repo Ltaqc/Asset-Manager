@@ -204,11 +204,7 @@ export default function Home() {
             Ultra All Inclusive Resort
           </p>
         </div>
-        <div className="absolute bottom-4 md:bottom-5 left-1/2 -translate-x-1/2 z-10">
-          <span className="inline-block px-5 py-2.5 md:px-6 md:py-3 rounded-full text-xs md:text-[15px] font-semibold text-white whitespace-nowrap" style={{ background: "rgba(46,196,182,0.85)", backdropFilter: "blur(6px)", boxShadow: "0 4px 16px rgba(0,0,0,0.2)" }} data-testid="badge-hero-promo">
-            Выгода до 30% при раннем бронировании
-          </span>
-        </div>
+
       </header>
 
       {/* 2. UAI Intro */}
