@@ -201,7 +201,7 @@ export default function Home() {
             AL MARE
           </h1>
           <p className="relative text-[10px] md:text-sm text-white/85 mt-2 md:mt-3 font-light tracking-[0.25em] md:tracking-[0.3em] uppercase" data-testid="text-hero-subtitle">
-            Ultra All Inclusive Resort
+            Семейный курорт у моря
           </p>
         </div>
 
