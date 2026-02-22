@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Gift, X, CheckCircle2 } from "lucide-react";
-import heroImage from "@assets/optimized/hero_main_1770643186337.webp";
+import { useState, useEffect } from "react";
+import { X, CheckCircle2 } from "lucide-react";
+
+const STORAGE_KEY = "almare_promo_dismissed";
 
 function scrollToCalculator() {
   const section = document.getElementById("calculator");
@@ -14,145 +15,93 @@ function scrollToCalculator() {
 }
 
 export function FloatingPromo() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [animating, setAnimating] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem(STORAGE_KEY)) return;
+    const timer = setTimeout(() => {
+      setVisible(true);
+      requestAnimationFrame(() => setAnimating(true));
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const dismiss = () => {
+    setAnimating(false);
+    setTimeout(() => {
+      setVisible(false);
+      localStorage.setItem(STORAGE_KEY, "1");
+    }, 300);
+  };
+
+  if (!visible) return null;
 
   return (
-    <>
-      {/* Promo block — left side, bottom corner */}
+    <div
+      className="fixed left-4 md:left-6 z-50 w-[calc(100%-2rem)] sm:w-[360px] md:w-[380px] transition-all duration-300 ease-out"
+      style={{
+        bottom: "80px",
+        opacity: animating ? 1 : 0,
+        transform: animating ? "translateY(0)" : "translateY(20px)",
+      }}
+      data-testid="promo-popup"
+    >
       <div
-        className="fixed left-4 md:left-6 z-50 flex items-center gap-2.5"
-        style={{ bottom: "16px" }}
-        data-testid="promo-gift-area"
+        className="bg-white rounded-2xl overflow-hidden"
+        style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}
       >
         <button
           type="button"
-          onClick={() => setModalOpen(true)}
-          className="w-12 h-12 rounded-full flex items-center justify-center text-white cursor-pointer transition-all duration-200 active:scale-95 hover:brightness-110"
-          style={{
-            background: "linear-gradient(135deg, #C4894D, #B07840)",
-            boxShadow: "0 4px 16px rgba(196,137,77,0.4)",
-          }}
-          aria-label="Подробнее об акции"
-          data-testid="promo-gift-button"
+          onClick={dismiss}
+          className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-gray-400 hover:bg-black/10 hover:text-gray-600 transition-colors cursor-pointer"
+          aria-label="Закрыть"
+          data-testid="promo-popup-close"
         >
-          <Gift className="w-5 h-5 pointer-events-none" />
+          <X className="w-4 h-4 pointer-events-none" />
         </button>
-        <button
-          type="button"
-          onClick={() => setModalOpen(true)}
-          className="text-white text-[11px] md:text-xs font-bold tracking-wide cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
-          style={{
-            background: "linear-gradient(135deg, #C4894D, #B07840)",
-            boxShadow: "0 2px 12px rgba(196,137,77,0.35)",
-            borderRadius: "20px",
-            padding: "6px 14px",
-          }}
-          data-testid="promo-badge"
-        >
-          <span className="pointer-events-none">ВЫГОДНОЕ ПРЕДЛОЖЕНИЕ</span>
-        </button>
-      </div>
 
-      {/* Modal */}
-      {modalOpen && (
-        <div
-          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center"
-          data-testid="promo-modal-overlay"
-        >
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setModalOpen(false)}
-          />
-          <div
-            className="relative w-full sm:max-w-md md:max-w-lg mx-auto bg-white rounded-t-2xl sm:rounded-2xl overflow-hidden"
-            style={{ boxShadow: "0 -8px 40px rgba(0,0,0,0.15)", maxHeight: "90vh" }}
-            data-testid="promo-modal"
-          >
-            <button
-              type="button"
-              onClick={() => setModalOpen(false)}
-              className="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/50 transition-colors cursor-pointer"
-              aria-label="Закрыть"
-              data-testid="promo-modal-close"
-            >
-              <X className="w-5 h-5 pointer-events-none" />
-            </button>
+        <div className="px-5 pt-5 pb-4">
+          <p className="text-base font-display font-bold text-foreground leading-snug pr-8">
+            🎁 Специальное предложение для гостей сайта
+          </p>
 
-            <div className="relative h-40 md:h-48 overflow-hidden">
-              <img
-                src={heroImage}
-                alt="AL MARE Resort"
-                className="w-full h-full object-cover object-center"
-              />
-              <div
-                className="absolute inset-0"
-                style={{ background: "linear-gradient(to bottom, transparent 30%, rgba(12,60,57,0.9) 100%)" }}
-              />
-              <div className="absolute bottom-4 left-5 right-5">
-                <p className="text-xl md:text-2xl font-display font-bold text-white tracking-tight leading-tight">
-                  Раннее бронирование — скидка 10%
-                </p>
-              </div>
+          <p className="mt-2.5 text-sm text-gray-600 leading-relaxed">
+            Получите персональную выгоду до 30%<br />на отдых в AL MARE
+          </p>
+
+          <div className="mt-3.5 space-y-2">
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+              <span className="text-[13px] text-gray-600">Скидки за длительное проживание</span>
             </div>
-
-            <div className="px-5 md:px-7 py-5 md:py-6 overflow-y-auto" style={{ maxHeight: "calc(90vh - 12rem)" }}>
-              <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                Забронируйте отдых заранее и зафиксируйте лучшую цену сезона
-              </p>
-
-              <div className="mt-4 space-y-2.5">
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">Самые востребованные даты лета</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">Полный пакет Ultra All Inclusive</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">Собственный пляж и детский аквапарк</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">Верёвочный парк, мини-гольф, бильярд и другие развлечения включены</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-[18px] h-[18px] text-emerald-500 shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-700">Ограниченное количество номеров</span>
-                </div>
-              </div>
-
-              <p className="mt-4 text-xs text-gray-400">
-                Акция действует до 28 февраля 2026 года
-              </p>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setModalOpen(false);
-                  setTimeout(() => scrollToCalculator(), 300);
-                }}
-                className="mt-5 w-full rounded-xl text-white font-semibold text-base cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.97]"
-                style={{
-                  background: "linear-gradient(135deg, #0C3C39, #0F4F4A)",
-                  boxShadow: "0 4px 16px rgba(12,60,57,0.3)",
-                  height: "52px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  pointerEvents: "auto",
-                  position: "relative",
-                  zIndex: 10,
-                }}
-                data-testid="promo-modal-cta"
-              >
-                <span className="pointer-events-none">Рассчитать стоимость проживания</span>
-              </button>
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+              <span className="text-[13px] text-gray-600">Бонусы за раннее бронирование</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+              <span className="text-[13px] text-gray-600">Дополнительные привилегии при наличии свободных номеров</span>
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              dismiss();
+              setTimeout(() => scrollToCalculator(), 350);
+            }}
+            className="mt-4 w-full h-12 rounded-xl text-white font-semibold text-sm cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.98] flex items-center justify-center"
+            style={{
+              background: "linear-gradient(135deg, #0C3C39, #0F4F4A)",
+              boxShadow: "0 4px 16px rgba(12,60,57,0.25)",
+            }}
+            data-testid="promo-popup-cta"
+          >
+            <span className="pointer-events-none">Рассчитать стоимость проживания</span>
+          </button>
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }
