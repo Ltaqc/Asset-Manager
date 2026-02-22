@@ -75,9 +75,8 @@ export function FloatingPromo() {
         <button
           type="button"
           onClick={handleGiftClick}
-          className="fixed left-4 md:left-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full text-white text-xs md:text-sm font-semibold cursor-pointer transition-all duration-[250ms] ease-in-out hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.97]"
+          className="fixed left-4 md:left-6 bottom-6 md:bottom-20 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full text-white text-xs md:text-sm font-semibold cursor-pointer transition-all duration-[250ms] ease-in-out hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.97]"
           style={{
-            bottom: "80px",
             background: "#2EC4B6",
             boxShadow: "0 6px 20px rgba(46,196,182,0.35)",
           }}
