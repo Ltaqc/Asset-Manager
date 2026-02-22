@@ -217,7 +217,7 @@ export default function Home() {
               Ultra All Inclusive на Азовском море
             </h2>
             <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              Без доплат: питание, напитки, пляж и развлечения включены
+              Питание, напитки, пляж и развлечения включены в стоимость
             </p>
           </div>
 
