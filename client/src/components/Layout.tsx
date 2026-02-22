@@ -123,7 +123,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </>
       )}
 
-      <footer className="bg-slate-900 text-white py-16 md:py-20" data-testid="section-footer">
+      <footer className="bg-slate-900 text-white py-16 md:py-20 relative z-50" data-testid="section-footer">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 md:gap-16">
             <div className="space-y-6 md:space-y-8">
@@ -152,13 +152,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <h3 className="text-lg md:text-xl font-display font-bold text-primary mb-4 md:mb-6">Разделы сайта</h3>
               <div className="grid grid-cols-2 gap-x-8 gap-y-3 md:gap-y-4">
                 {NAV_ITEMS.map((item) => (
-                  <button
+                  <a
                     key={item.anchor}
-                    onClick={() => handleNavClick(item.anchor)}
-                    className="text-slate-300 hover:text-primary transition-colors text-sm md:text-base leading-relaxed text-left py-1"
+                    href={`#${item.anchor}`}
+                    onClick={(e) => { e.preventDefault(); handleNavClick(item.anchor); }}
+                    className="text-slate-300 hover:text-primary transition-colors text-sm md:text-base leading-relaxed text-left py-2 cursor-pointer block relative z-[1]"
                   >
                     {item.label}
-                  </button>
+                  </a>
                 ))}
               </div>
             </div>
