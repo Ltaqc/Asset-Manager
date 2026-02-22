@@ -329,8 +329,8 @@ export default function Home() {
       <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-secondary/20 scroll-mt-20 transition-shadow duration-500" data-testid="section-search-form">
         <div className="container mx-auto px-4">
           <SectionHeading
-            title="Проверьте наличие и стоимость отдыха"
-            subtitle="Выберите даты проживания и состав гостей"
+            title="Подберите отдых Ultra All Inclusive"
+            subtitle="Выберите даты проживания и количество гостей"
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
