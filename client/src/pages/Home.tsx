@@ -239,18 +239,18 @@ export default function Home() {
               Ultra All Inclusive на Азовском море
             </h2>
             <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              Всё включено на территории и пляже: питание, напитки, развлечения и ежедневная программа отдыха
+              Питание, напитки, пляж, развлечения и ежедневная программа — уже в стоимости проживания
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto mt-8 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             {[
-              { icon: Waves, title: "Собственный песчаный пляж", lines: ["Лежаки и зонты включены", "Питание и напитки на пляже"] },
-              { icon: UtensilsCrossed, title: "Питание по меню в ресторане", lines: ["Полноценное ресторанное питание", "Свободный выбор блюд"] },
-              { icon: Wine, title: "Напитки весь день", lines: ["На территории и на пляже", "Барная зона включена"] },
-              { icon: Droplets, title: "Аквапарк и верёвочный парк на пляже", lines: ["Активности для детей", "Вход включён в стоимость"] },
-              { icon: Trophy, title: "Активные игры на пляже", lines: ["Петанк, кубб, волейбол", "Спортивные зоны отдыха"] },
-              { icon: PartyPopper, title: "Развлекательная программа", lines: ["Анимация для детей", "Ежедневные вечеринки для взрослых"] },
+              { icon: Waves, title: "Песчаный пляж и шезлонги", lines: ["Зонты и лежаки уже ждут вас", "Еда и напитки прямо у моря"] },
+              { icon: UtensilsCrossed, title: "Ресторан с обслуживанием по меню", lines: ["Блюда готовятся индивидуально", "Широкий выбор блюд на каждый приём"] },
+              { icon: Wine, title: "Напитки в течение дня", lines: ["У бассейна, в баре и на побережье", "Без ограничений и доплат"] },
+              { icon: Droplets, title: "Аквапарк и верёвочный парк", lines: ["Горки, бассейны, полоса препятствий", "Вход включён в стоимость"] },
+              { icon: Trophy, title: "Петанк, кубб и волейбол", lines: ["Оборудованные площадки на побережье", "Весь инвентарь уже на месте"] },
+              { icon: PartyPopper, title: "Вечерние и детские программы", lines: ["Анимация днём, живая музыка вечером", "Новые форматы в течение всего сезона"] },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center text-center gap-2.5 p-5 md:p-6 rounded-xl bg-secondary/30 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                 <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -284,7 +284,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Наши номера"
-            subtitle="Элегантность и комфорт в каждой детали. Выберите подходящий вариант размещения для идеального отдыха."
+            subtitle="Восемь категорий — от уютных стандартов до просторных апартаментов с видом на бассейн"
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -339,17 +339,17 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Об отеле"
-            subtitle="Современный курортный отель для комфортного отдыха у моря"
+            subtitle="Курорт на побережье Азовского моря для тех, кто ценит тишину и заботу"
           />
           <div className="max-w-4xl mx-auto space-y-6 text-lg text-muted-foreground leading-relaxed">
             <p>
-              AL MARE — это современный курортный отель у моря, созданный для спокойного, комфортного и продуманного отдыха.
+              AL MARE — камерный курортный отель в станице Голубицкая, созданный для спокойного и продуманного отдыха у моря.
             </p>
             <p>
-              Мы делаем акцент на уютной атмосфере, внимательном сервисе и формате отдыха, где всё уже включено в стоимость проживания.
+              Внимательное обслуживание, ухоженная территория и формат «всё включено» позволяют забыть о мелочах и сосредоточиться на главном — настоящем отпуске.
             </p>
             <p>
-              Отель подойдёт для пар, семей и гостей, которые ценят комфорт, тишину и качественный сервис.
+              Мы принимаем пары, семьи с детьми и небольшие компании, которым важна приватная атмосфера и высокий уровень сервиса.
             </p>
           </div>
         </div>
@@ -433,26 +433,26 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Ultra All Inclusive в AL MARE"
-            subtitle="Отдых без лишних доплат и постоянных расчётов"
+            subtitle="Единая стоимость — без доплат, чеков и неожиданностей"
           />
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="text-lg text-muted-foreground leading-relaxed space-y-4">
               <p>
-                Формат Ultra All Inclusive в AL MARE — это отдых без лишних доплат и постоянных расчётов.
-                Вы отдыхаете, а мы заранее позаботились обо всём необходимом.
+                Вы оплачиваете проживание один раз — всё остальное уже включено.
+                Питание, напитки, пляж, развлечения и вся инфраструктура входят в стоимость.
               </p>
             </div>
             <div className="space-y-3">
-              <p className="text-base font-semibold text-foreground">В стоимость проживания включено:</p>
+              <p className="text-base font-semibold text-foreground">Что входит в стоимость:</p>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
                   "Проживание в выбранной категории номера",
-                  "Трёхразовое питание по меню (завтрак, обед, ужин)",
-                  "Напитки в течение дня",
-                  "Пользование пляжем и шезлонгами",
-                  "Доступ к инфраструктуре отеля",
-                  "Верёвочный парк для гостей отеля",
-                  "Развлечения и активности для гостей",
+                  "Завтрак, обед и ужин по меню в ресторане",
+                  "Напитки без ограничений в течение дня",
+                  "Песчаный пляж, шезлонги и зонты",
+                  "Бассейн, бильярд, мини-гольф и зоны отдыха",
+                  "Верёвочный парк и надувной аквапарк",
+                  "Анимация, вечерние программы и спортивные площадки",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3 text-muted-foreground">
                     <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -470,24 +470,24 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Питание в AL MARE"
-            subtitle="Индивидуальное обслуживание по меню — свежесть и качество в каждом блюде"
+            subtitle="Ресторанный формат вместо шведского стола — каждое блюдо готовится для вас"
           />
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
             <div className="order-2 md:order-1 space-y-5 md:space-y-6">
               <div className="text-base md:text-lg text-muted-foreground leading-relaxed space-y-4">
                 <p>
-                  В AL MARE питание организовано в формате обслуживания по меню.
-                  Гости выбирают блюда, а мы готовим их индивидуально — это позволяет сохранить высокое качество, свежесть и красивую подачу.
+                  Вы выбираете блюда из меню, а кухня готовит их персонально.
+                  Никаких линий раздачи — только свежая подача, порционное оформление и внимание к деталям.
                 </p>
               </div>
               <div className="space-y-3">
-                <p className="text-base font-semibold text-foreground">В течение дня для гостей доступны:</p>
+                <p className="text-base font-semibold text-foreground">Доступно в течение дня:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: Utensils, label: "Завтрак, обед и ужин по меню" },
-                    { icon: GlassIcon, label: "Напитки без ограничений в течение дня" },
-                    { icon: ChickenWingIcon, label: "Зона барбекю для уютных вечеров" },
-                    { icon: PopsicleIcon, label: "Мороженое для взрослых и детей" },
+                    { icon: Utensils, label: "Завтрак, обед и ужин — три смены по меню" },
+                    { icon: GlassIcon, label: "Напитки и коктейли без ограничений" },
+                    { icon: ChickenWingIcon, label: "Вечерняя зона барбекю на открытом воздухе" },
+                    { icon: PopsicleIcon, label: "Мороженое и десерты на территории" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
@@ -514,26 +514,25 @@ export default function Home() {
       <section id="beach" className="py-14 md:py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
-            title="Пляж и отдых у моря"
-            subtitle="Комфортный отдых на пляже для гостей AL MARE"
+            title="Пляж и побережье"
+            subtitle="Собственная береговая линия с полной инфраструктурой — всё по браслету"
           />
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
             <div className="order-2 md:order-1 space-y-5 md:space-y-6">
               <div className="text-base md:text-lg text-muted-foreground leading-relaxed space-y-4">
                 <p>
-                  Для гостей AL MARE пляж — это часть общего формата отдыха.
-                  Мы создали пространство, где можно спокойно проводить время у моря,
-                  отдыхать с семьёй и пользоваться всей инфраструктурой пляжа.
+                  Песчаный берег в пешей доступности — с оборудованными зонами для взрослых и детей.
+                  Лежаки, навесы, кафе, аквапарк и спортивные площадки работают по системе браслетов без доплат.
                 </p>
               </div>
               <div className="space-y-3">
-                <p className="text-base font-semibold text-foreground">Включено для гостей отеля по браслетам:</p>
+                <p className="text-base font-semibold text-foreground">Включено по браслету:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: SunloungerIcon, label: "Шезлонги на пляже" },
-                    { icon: RopeParkIcon, label: "Верёвочный парк для детей и взрослых" },
-                    { icon: AquaparkIcon, label: "Надувной аквапарк с бассейнами, горками и игровыми элементами" },
-                    { icon: BeachCafeIcon, label: "Питание и напитки в пляжных кафе" },
+                    { icon: SunloungerIcon, label: "Шезлонги и теневые навесы на песке" },
+                    { icon: RopeParkIcon, label: "Верёвочный парк с маршрутами разной сложности" },
+                    { icon: AquaparkIcon, label: "Надувной аквапарк: горки, бассейны и игровые модули" },
+                    { icon: BeachCafeIcon, label: "Кафе у воды — еда и напитки без доплат" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
@@ -545,12 +544,12 @@ export default function Home() {
                 </div>
               </div>
               <div className="space-y-3">
-                <p className="text-base font-semibold text-foreground">Игры и активный отдых на песке:</p>
+                <p className="text-base font-semibold text-foreground">Спортивные площадки на песке:</p>
                 <div className="space-y-3">
                   {[
-                    { icon: CircleDot, label: "Петанк — игра с металлическими шарами" },
-                    { icon: RectangleVertical, label: "Кубб — игра с деревянными брусками" },
-                    { icon: VolleyballIcon, label: "Пляжный волейбол — командная игра на песке" },
+                    { icon: CircleDot, label: "Петанк — точность и стратегия с металлическими шарами" },
+                    { icon: RectangleVertical, label: "Кубб — скандинавская игра с деревянными фигурами" },
+                    { icon: VolleyballIcon, label: "Волейбольная площадка — сетка и мяч всегда наготове" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
                       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
@@ -577,26 +576,26 @@ export default function Home() {
       <section id="infrastructure" className="py-14 md:py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
-            title="Инфраструктура и развлечения"
-            subtitle="Развлечения для спокойного и активного отдыха"
+            title="Территория и досуг"
+            subtitle="Всё, чем можно заняться между морем и номером"
           />
 
           <div className="max-w-6xl mx-auto space-y-10">
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
-              На территории отеля предусмотрена продуманная инфраструктура для комфортного отдыха всей семьи — от расслабляющих зон до активных развлечений на свежем воздухе.
+              Зелёный ухоженный комплекс с бассейном, игровыми площадками и тихими зонами в тени деревьев. Для каждого найдётся занятие по настроению — от партии в бильярд до вечернего барбекю.
             </p>
 
             <div className="grid md:grid-cols-2 gap-8 md:gap-10 items-start">
               <div className="order-2 md:order-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 {[
-                  { icon: BilliardIcon, label: "Бильярд", desc: "Спокойный отдых в уютной атмосфере" },
-                  { icon: MiniGolfIcon, label: "Мини-гольф", desc: "Увлекательное развлечение для всей семьи" },
-                  { icon: RopeParkIcon, label: "Верёвочный парк", desc: "Яркие эмоции для детей и взрослых" },
-                  { icon: LoungeChairIcon, label: "Зоны отдыха", desc: "Комфортные пространства для расслабления" },
-                  { icon: TreeLeafIcon, label: "Ухоженная территория", desc: "Зелёная и аккуратная территория отеля" },
-                  { icon: PoolIcon, label: "Бассейн", desc: "Подогреваемый бассейн для отдыха взрослых и детей" },
-                  { icon: KidsRoomIcon, label: "Детская комната", desc: "Игровое пространство для детей с безопасной средой" },
-                  { icon: KidsAnimationIcon, label: "Анимация для детей", desc: "Развлекательные программы и мероприятия для детей" },
+                  { icon: BilliardIcon, label: "Бильярд", desc: "Партия в тишине и прохладе" },
+                  { icon: MiniGolfIcon, label: "Мини-гольф", desc: "Лунки на свежем воздухе для всей семьи" },
+                  { icon: RopeParkIcon, label: "Верёвочный парк", desc: "Маршруты для разного возраста и подготовки" },
+                  { icon: LoungeChairIcon, label: "Лаунж-зоны", desc: "Тень, кресла и тишина среди зелени" },
+                  { icon: TreeLeafIcon, label: "Зелёный двор", desc: "Газоны, дорожки и аккуратный ландшафт" },
+                  { icon: PoolIcon, label: "Подогреваемый бассейн", desc: "Чистая вода и комфортная температура каждый день" },
+                  { icon: KidsRoomIcon, label: "Детская комната", desc: "Безопасное игровое пространство в помещении" },
+                  { icon: KidsAnimationIcon, label: "Ежедневная анимация", desc: "Мастер-классы, квесты и подвижные игры" },
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col items-center text-center space-y-2.5 p-4 rounded-2xl" data-testid={`infra-icon-${i}`}>
                     <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center text-primary">
