@@ -136,7 +136,7 @@ export function FloatingPromo() {
 
             <div className="flex-1 px-5 md:px-7 pt-5 md:pt-6 pb-5 flex flex-col justify-center">
               <h3 className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-6">
-                Семейный отдых Ultra All&nbsp;Inclusive без забот
+                Семейный отдых Ultra All&nbsp;Inclusive
               </h3>
 
               <p className="mt-2.5 text-sm text-gray-500 leading-relaxed">
@@ -165,12 +165,9 @@ export function FloatingPromo() {
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
                 data-testid="promo-popup-cta"
               >
-                <span className="pointer-events-none">Подобрать идеальный отдых</span>
+                <span className="pointer-events-none">Подобрать выгодный вариант</span>
               </button>
 
-              <p className="mt-2.5 text-center text-[11px] md:text-xs text-gray-400">
-                Ответ менеджера в течение 5–10 минут
-              </p>
             </div>
           </div>
         </div>
