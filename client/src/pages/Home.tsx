@@ -14,6 +14,7 @@ import {
   RectangleVertical,
   Phone, Mail, MapPin, Navigation, Send,
   CheckCircle2, CircleDot,
+  Waves, UtensilsCrossed, Droplets, Sparkles, Heart, BedDouble,
 } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
 import {
@@ -205,80 +206,50 @@ export default function Home() {
         </div>
       </header>
 
-      {/* 2. Calculator */}
-      <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-white scroll-mt-20 transition-shadow duration-500" data-testid="section-search-form">
+      {/* 2. UAI Intro */}
+      <section className="py-12 md:py-20 bg-white">
         <div className="container mx-auto px-4">
-          <SectionHeading
-            title="Рассчитайте стоимость проживания"
-            subtitle="Выберите даты проживания и состав гостей"
-          />
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl md:text-4xl font-display font-bold text-foreground leading-tight" data-testid="text-uai-intro-title">
+              Отдых Ultra All Inclusive на Азовском море
+            </h2>
+            <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+              Все включено: питание, собственный пляж, детский аквапарк и развлечения для всей семьи
+            </p>
+          </div>
 
-          <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября</p>
-            <p className="text-sm text-muted-foreground text-center -mt-2 mb-1">Минимальный срок проживания — 3 ночи</p>
-
-            <div className="grid grid-cols-2 gap-4 w-full">
-              <div className="min-w-0 space-y-2">
-                <Label>Дата заезда</Label>
-                <SeasonCalendar
-                  testId="input-checkin"
-                  value={checkIn}
-                  onChange={(val) => {
-                    setCheckIn(val);
-                    setDateError("");
-                    if (val && checkOut && checkOut < addDays(val, MIN_NIGHTS)) {
-                      setCheckOut("");
-                    }
-                  }}
-                  minDate={minCheckIn}
-                  maxDate={SEASON_END}
-                  seasonStart={SEASON_START}
-                  seasonEnd={SEASON_END}
-                  placeholder="Выберите даты"
-                />
+          <div className="max-w-3xl mx-auto mt-8 md:mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            {[
+              { icon: Waves, label: "Собственный песчаный пляж" },
+              { icon: UtensilsCrossed, label: "Питание Ultra All Inclusive" },
+              { icon: Droplets, label: "Детский аквапарк" },
+              { icon: Sparkles, label: "Развлечения включены" },
+              { icon: Heart, label: "Семейный формат отдыха" },
+              { icon: BedDouble, label: "Просторные номера" },
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col items-center text-center gap-2.5 p-4 md:p-5 rounded-xl bg-secondary/30">
+                <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                  <item.icon className="w-5 h-5" />
+                </div>
+                <span className="text-sm md:text-base text-foreground/80 font-medium leading-snug">{item.label}</span>
               </div>
-              <div className="min-w-0 space-y-2">
-                <Label>Дата выезда</Label>
-                <SeasonCalendar
-                  testId="input-checkout"
-                  value={checkOut}
-                  onChange={(val) => { setCheckOut(val); setDateError(""); }}
-                  minDate={minCheckOut}
-                  maxDate={SEASON_END}
-                  seasonStart={SEASON_START}
-                  seasonEnd={SEASON_END}
-                  placeholder="Выберите даты"
-                  disabled={!checkIn}
-                />
-              </div>
-            </div>
+            ))}
+          </div>
 
-            {dateError && (
-              <p className="text-sm text-red-500 text-center" data-testid="date-error">{dateError}</p>
-            )}
-
-            <div className="space-y-3">
-              <Label className="text-primary font-semibold">Состав гостей</Label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="input-adults" />
-                <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="input-teens" />
-                <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="input-children" />
-                <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={4} data-testid="input-toddlers" />
-              </div>
-            </div>
-
+          <div className="mt-8 md:mt-10 text-center">
             <Button
-              data-testid="button-calculate"
-              type="submit"
-              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl relative z-[1] cursor-pointer touch-manipulation select-none"
+              type="button"
+              onClick={scrollToCalculator}
+              className="h-13 px-8 text-base font-semibold rounded-xl shadow-lg shadow-primary/20 cursor-pointer touch-manipulation select-none"
+              data-testid="button-uai-cta"
             >
-              <span className="pointer-events-none">Рассчитать стоимость проживания</span>
+              <span className="pointer-events-none">Подобрать даты отдыха</span>
             </Button>
-          </form>
+          </div>
         </div>
       </section>
 
-      {/* 3. Rooms (moved up) */}
+      {/* 3. Rooms */}
       <section id="rooms" className="py-14 md:py-24 bg-secondary/20 scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
@@ -354,8 +325,81 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Calculator */}
+      <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-secondary/20 scroll-mt-20 transition-shadow duration-500" data-testid="section-search-form">
+        <div className="container mx-auto px-4">
+          <SectionHeading
+            title="Проверьте наличие и стоимость отдыха"
+            subtitle="Выберите даты проживания и состав гостей"
+          />
+
+          <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
+            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября</p>
+            <p className="text-sm text-muted-foreground text-center -mt-2 mb-1">Минимальный срок проживания — 3 ночи</p>
+
+            <div className="grid grid-cols-2 gap-4 w-full">
+              <div className="min-w-0 space-y-2">
+                <Label>Дата заезда</Label>
+                <SeasonCalendar
+                  testId="input-checkin"
+                  value={checkIn}
+                  onChange={(val) => {
+                    setCheckIn(val);
+                    setDateError("");
+                    if (val && checkOut && checkOut < addDays(val, MIN_NIGHTS)) {
+                      setCheckOut("");
+                    }
+                  }}
+                  minDate={minCheckIn}
+                  maxDate={SEASON_END}
+                  seasonStart={SEASON_START}
+                  seasonEnd={SEASON_END}
+                  placeholder="Выберите даты"
+                />
+              </div>
+              <div className="min-w-0 space-y-2">
+                <Label>Дата выезда</Label>
+                <SeasonCalendar
+                  testId="input-checkout"
+                  value={checkOut}
+                  onChange={(val) => { setCheckOut(val); setDateError(""); }}
+                  minDate={minCheckOut}
+                  maxDate={SEASON_END}
+                  seasonStart={SEASON_START}
+                  seasonEnd={SEASON_END}
+                  placeholder="Выберите даты"
+                  disabled={!checkIn}
+                />
+              </div>
+            </div>
+
+            {dateError && (
+              <p className="text-sm text-red-500 text-center" data-testid="date-error">{dateError}</p>
+            )}
+
+            <div className="space-y-3">
+              <Label className="text-primary font-semibold">Состав гостей</Label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <GuestCounter label="Взрослые (18+)" value={adults} onChange={setAdults} min={1} max={6} data-testid="input-adults" />
+                <GuestCounter label="Подростки (13-18)" value={teens} onChange={setTeens} min={0} max={6} data-testid="input-teens" />
+                <GuestCounter label="Дети (2-13)" value={children} onChange={setChildren} min={0} max={6} data-testid="input-children" />
+                <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={4} data-testid="input-toddlers" />
+              </div>
+            </div>
+
+            <Button
+              data-testid="button-calculate"
+              type="submit"
+              className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl relative z-[1] cursor-pointer touch-manipulation select-none"
+            >
+              <span className="pointer-events-none">Рассчитать стоимость проживания</span>
+            </Button>
+          </form>
+        </div>
+      </section>
+
       {/* 5. Ultra All Inclusive */}
-      <section id="uai" className="py-14 md:py-24 bg-secondary/20 scroll-mt-16">
+      <section id="uai" className="py-14 md:py-24 bg-white scroll-mt-16">
         <div className="container mx-auto px-4">
           <SectionHeading
             title="Ultra All Inclusive в AL MARE"
