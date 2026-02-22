@@ -14,7 +14,7 @@ import {
   RectangleVertical,
   Phone, Mail, MapPin, Navigation, Send,
   CheckCircle2, CircleDot,
-  Waves, UtensilsCrossed, Droplets, Sparkles, Heart, BedDouble,
+  Waves, UtensilsCrossed, Droplets, Sparkles, Wine, Target,
 } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
 import {
@@ -211,21 +211,21 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl md:text-4xl font-display font-bold text-foreground leading-tight" data-testid="text-uai-intro-title">
-              Отдых Ultra All Inclusive на Азовском море
+              Ultra All Inclusive на Азовском море — отдых без забот для всей семьи
             </h2>
             <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              Все включено: питание, собственный пляж, детский аквапарк и развлечения для всей семьи
+              Все включено: питание, напитки, собственный пляж, аквапарк и развлечения на территории
             </p>
           </div>
 
           <div className="max-w-3xl mx-auto mt-8 md:mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {[
-              { icon: Waves, label: "Собственный песчаный пляж" },
-              { icon: UtensilsCrossed, label: "Питание Ultra All Inclusive" },
-              { icon: Droplets, label: "Детский аквапарк" },
-              { icon: Sparkles, label: "Развлечения включены" },
-              { icon: Heart, label: "Семейный формат отдыха" },
-              { icon: BedDouble, label: "Просторные номера" },
+              { icon: Waves, label: "Собственный песчаный пляж бесплатно" },
+              { icon: UtensilsCrossed, label: "Шведский стол весь день" },
+              { icon: Wine, label: "Безлимитные напитки и алкоголь" },
+              { icon: Droplets, label: "Детский аквапарк на территории" },
+              { icon: Sparkles, label: "Анимация для детей и взрослых" },
+              { icon: Target, label: "Все развлечения включены в стоимость" },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center text-center gap-2.5 p-4 md:p-5 rounded-xl bg-secondary/30">
                 <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary">
@@ -243,7 +243,7 @@ export default function Home() {
               className="h-13 px-8 text-base font-semibold rounded-xl shadow-lg shadow-primary/20 cursor-pointer touch-manipulation select-none"
               data-testid="button-uai-cta"
             >
-              <span className="pointer-events-none">Подобрать даты отдыха</span>
+              <span className="pointer-events-none">Проверить наличие номеров</span>
             </Button>
           </div>
         </div>
