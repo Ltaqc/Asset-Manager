@@ -156,7 +156,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     key={item.anchor}
                     href={`#${item.anchor}`}
                     onClick={(e) => { e.preventDefault(); handleNavClick(item.anchor); }}
-                    className="text-slate-300 hover:text-primary transition-colors text-sm md:text-base leading-relaxed text-left py-2 cursor-pointer block relative z-[1]"
+                    className="text-slate-300 hover:text-primary transition-colors text-sm md:text-base leading-relaxed text-left py-2 cursor-pointer block w-full relative z-[1]"
+                    style={{ WebkitTapHighlightColor: "rgba(46,196,182,0.15)" }}
                   >
                     {item.label}
                   </a>
