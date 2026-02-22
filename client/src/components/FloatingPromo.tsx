@@ -15,13 +15,9 @@ function scrollToCalculator() {
 export function FloatingPromo() {
   const [popupVisible, setPopupVisible] = useState(false);
   const [animating, setAnimating] = useState(false);
-  const [dismissCount, setDismissCount] = useState(0);
+  const [autoShown, setAutoShown] = useState(false);
   const [showGiftButton, setShowGiftButton] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const clearTimer = useCallback(() => {
-    if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
-  }, []);
 
   const openPopup = useCallback(() => {
     setPopupVisible(true);
@@ -29,40 +25,32 @@ export function FloatingPromo() {
   }, []);
 
   useEffect(() => {
-    timerRef.current = setTimeout(openPopup, 10000);
-    return clearTimer;
-  }, [openPopup, clearTimer]);
+    if (!autoShown) {
+      timerRef.current = setTimeout(() => {
+        setAutoShown(true);
+        openPopup();
+      }, 15000);
+      return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    }
+  }, [autoShown, openPopup]);
 
-  const dismiss = () => {
+  const closePopup = useCallback(() => {
     setAnimating(false);
-    const newCount = dismissCount + 1;
     setTimeout(() => {
       setPopupVisible(false);
-      setDismissCount(newCount);
-      if (newCount === 1) {
-        clearTimer();
-        timerRef.current = setTimeout(openPopup, 30000);
-      } else {
-        clearTimer();
-        setShowGiftButton(true);
-      }
+      setShowGiftButton(true);
     }, 300);
-  };
+  }, []);
 
   const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) dismiss();
+    if (e.target === e.currentTarget) closePopup();
   };
 
   const handleCtaClick = () => {
     setAnimating(false);
-    const newCount = dismissCount + 1;
     setTimeout(() => {
       setPopupVisible(false);
-      setDismissCount(newCount);
-      if (newCount >= 2) {
-        clearTimer();
-        setShowGiftButton(true);
-      }
+      setShowGiftButton(true);
       setTimeout(() => scrollToCalculator(), 100);
     }, 300);
   };
@@ -113,7 +101,7 @@ export function FloatingPromo() {
           >
             <button
               type="button"
-              onClick={dismiss}
+              onClick={closePopup}
               className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-gray-400 hover:bg-black/10 hover:text-gray-600 transition-colors cursor-pointer"
               aria-label="Закрыть"
               data-testid="promo-popup-close"
@@ -123,11 +111,12 @@ export function FloatingPromo() {
 
             <div className="px-5 md:px-6 pt-6 pb-5">
               <p className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-8">
-                Выгода до 30% на отдых Ultra All&nbsp;Inclusive
+                Получите лучшее предложение на отдых Ultra All&nbsp;Inclusive
               </p>
 
               <p className="mt-3 text-sm text-gray-500 leading-relaxed">
-                Специальные условия проживания при раннем бронировании и длительном отдыхе
+                Подберём оптимальные даты, номера и варианты размещения
+                с максимальной выгодой до 30% для вашей семьи
               </p>
 
               <button
@@ -142,7 +131,7 @@ export function FloatingPromo() {
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
                 data-testid="promo-popup-cta"
               >
-                <span className="pointer-events-none">Подобрать выгодный вариант</span>
+                <span className="pointer-events-none">Подобрать идеальный отдых</span>
               </button>
             </div>
           </div>
