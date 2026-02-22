@@ -14,7 +14,7 @@ import {
   RectangleVertical,
   Phone, Mail, MapPin, Navigation, Send,
   CheckCircle2, CircleDot,
-  Waves, UtensilsCrossed, Droplets, Sparkles, Wine, Target,
+  Waves, UtensilsCrossed, Droplets, Sparkles, Wine, Trophy, PartyPopper,
 } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
 import {
@@ -217,24 +217,29 @@ export default function Home() {
               Ultra All Inclusive на Азовском море
             </h2>
             <p className="mt-3 md:mt-4 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              Питание, напитки, пляж и развлечения включены в стоимость
+              Всё включено на территории и пляже: питание, напитки, развлечения и ежедневная программа отдыха
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto mt-8 md:mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="max-w-4xl mx-auto mt-8 md:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
             {[
-              { icon: Waves, label: "Собственный песчаный пляж бесплатно" },
-              { icon: UtensilsCrossed, label: "Ресторанное питание по меню" },
-              { icon: Target, label: "BBQ-зоны для отдыха" },
-              { icon: Wine, label: "Напитки в течение дня" },
-              { icon: Droplets, label: "Детский аквапарк на территории" },
-              { icon: Sparkles, label: "Анимация для детей и взрослых" },
+              { icon: Waves, title: "Собственный песчаный пляж", lines: ["Лежаки и зонты включены", "Питание и напитки на пляже"] },
+              { icon: UtensilsCrossed, title: "Питание по меню в ресторане", lines: ["Полноценное ресторанное питание", "Свободный выбор блюд"] },
+              { icon: Wine, title: "Напитки весь день", lines: ["На территории и на пляже", "Барная зона включена"] },
+              { icon: Droplets, title: "Аквапарк и верёвочный парк на пляже", lines: ["Активности для детей", "Вход включён в стоимость"] },
+              { icon: Trophy, title: "Активные игры на пляже", lines: ["Петанк, кубб, волейбол", "Спортивные зоны отдыха"] },
+              { icon: PartyPopper, title: "Развлекательная программа", lines: ["Анимация для детей", "Ежедневные вечеринки для взрослых"] },
             ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center text-center gap-2.5 p-4 md:p-5 rounded-xl bg-secondary/30">
+              <div key={i} className="flex flex-col items-center text-center gap-2.5 p-5 md:p-6 rounded-xl bg-secondary/30 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                 <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                   <item.icon className="w-5 h-5" />
                 </div>
-                <span className="text-sm md:text-base text-foreground/80 font-medium leading-snug">{item.label}</span>
+                <span className="text-sm md:text-base text-foreground font-semibold leading-snug">{item.title}</span>
+                <div className="space-y-0.5">
+                  {item.lines.map((line, j) => (
+                    <p key={j} className="text-xs md:text-sm text-muted-foreground leading-relaxed">{line}</p>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
