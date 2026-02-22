@@ -224,11 +224,11 @@ export default function Home() {
           <div className="max-w-3xl mx-auto mt-8 md:mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {[
               { icon: Waves, label: "Собственный песчаный пляж бесплатно" },
-              { icon: UtensilsCrossed, label: "Шведский стол весь день" },
-              { icon: Wine, label: "Напитки для детей и взрослых" },
+              { icon: UtensilsCrossed, label: "Ресторанное питание по меню" },
+              { icon: Target, label: "BBQ-зоны для отдыха" },
+              { icon: Wine, label: "Напитки в течение дня" },
               { icon: Droplets, label: "Детский аквапарк на территории" },
-              { icon: Sparkles, label: "Анимация каждый день" },
-              { icon: Target, label: "Все развлечения без доплат" },
+              { icon: Sparkles, label: "Анимация для детей и взрослых" },
             ].map((item, i) => (
               <div key={i} className="flex flex-col items-center text-center gap-2.5 p-4 md:p-5 rounded-xl bg-secondary/30">
                 <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary">
