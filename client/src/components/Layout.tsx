@@ -89,11 +89,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </a>
               <button
                 onClick={handleBookClick}
-                className="px-5 py-2.5 rounded-xl text-sm font-bold text-white cursor-pointer touch-manipulation select-none transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 active:scale-[0.98]"
+                className="px-5 py-2.5 rounded-xl text-sm font-bold text-white cursor-pointer touch-manipulation select-none transition-all duration-[250ms] ease-in-out hover:scale-[1.03] active:scale-[0.98]"
                 style={{
-                  background: "linear-gradient(135deg, #0C3C39, #0F4F4A)",
-                  boxShadow: "0 4px 14px rgba(12,60,57,0.3)",
+                  background: "#2EC4B6",
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.15)",
                 }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#23B1A5"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
                 data-testid="button-header-book"
               >
                 <span className="pointer-events-none">Забронировать номер</span>
@@ -239,10 +241,10 @@ function MobileMenu({ onNavClick, onBookClick }: { onNavClick: (anchor: string) 
                   onBookClick();
                   close();
                 }}
-                className="w-full py-3 rounded-xl text-white font-bold text-sm cursor-pointer touch-manipulation select-none transition-all duration-200 active:scale-[0.97]"
+                className="w-full py-3 rounded-xl text-white font-bold text-sm cursor-pointer touch-manipulation select-none transition-all duration-[250ms] ease-in-out active:scale-[0.97]"
                 style={{
-                  background: "linear-gradient(135deg, #0C3C39, #0F4F4A)",
-                  boxShadow: "0 4px 14px rgba(12,60,57,0.3)",
+                  background: "#2EC4B6",
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.15)",
                 }}
                 data-testid="button-mobile-book"
               >

@@ -96,11 +96,13 @@ export function FloatingPromo() {
               dismiss();
               setTimeout(() => scrollToCalculator(), 350);
             }}
-            className="mt-4 w-full h-12 rounded-xl text-white font-semibold text-sm cursor-pointer transition-all duration-200 hover:brightness-110 active:scale-[0.98] flex items-center justify-center"
+            className="mt-4 w-full h-12 rounded-xl text-white font-semibold text-sm cursor-pointer transition-all duration-[250ms] ease-in-out hover:scale-[1.03] active:scale-[0.98] flex items-center justify-center"
             style={{
-              background: "linear-gradient(135deg, #0C3C39, #0F4F4A)",
-              boxShadow: "0 4px 16px rgba(12,60,57,0.25)",
+              background: "#2EC4B6",
+              boxShadow: "0 6px 18px rgba(0,0,0,0.15)",
             }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#23B1A5"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
             data-testid="promo-popup-cta"
           >
             <span className="pointer-events-none">Рассчитать стоимость проживания</span>
