@@ -100,31 +100,6 @@ function createSmtpTransporter() {
   });
 }
 
-export async function sendTestEmail() {
-  const user = process.env.SMTP_USER;
-  const transporter = createSmtpTransporter();
-  if (!transporter || !user) {
-    console.log("SMTP not configured, skipping test email");
-    return;
-  }
-
-  console.log(`SMTP config: host=${process.env.SMTP_HOST}, port=${process.env.SMTP_PORT}, user=${user}`);
-
-  try {
-    await transporter.verify();
-    console.log("SMTP connection verified successfully");
-
-    await transporter.sendMail({
-      from: `"AL MARE" <${user}>`,
-      to: "almare@hotelalmare.ru",
-      subject: "Тестовое письмо — AL MARE",
-      html: `<div style="font-family:Arial,sans-serif;padding:20px;"><h2 style="color:#2EC4B6;">AL MARE</h2><p>Отправка email работает корректно.</p><p style="color:#888;font-size:12px;">${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })} (МСК)</p></div>`,
-    });
-    console.log("Test email sent successfully to almare@hotelalmare.ru");
-  } catch (err) {
-    console.error("SMTP test failed:", err);
-  }
-}
 
 async function sendTelegramNotification(booking: {
   roomCategory: string;
