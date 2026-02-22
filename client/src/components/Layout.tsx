@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
-import { Phone, Mail, MapPin, Send, X, Menu } from "lucide-react";
+import { Phone, Mail, MapPin, X, Menu } from "lucide-react";
 import { FloatingContact } from "@/components/FloatingContact";
 import { FloatingPromo } from "@/components/FloatingPromo";
 
@@ -15,20 +15,6 @@ const NAV_ITEMS = [
   { label: "Контакты", anchor: "contacts" },
 ];
 
-function MaxIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M12 2C6.48 2 2 6.04 2 11c0 2.8 1.5 5.28 3.84 6.88L4.5 22l4.2-2.12C9.76 20.28 10.86 20.5 12 20.5c5.52 0 10-4.04 10-9S17.52 2 12 2z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    </svg>
-  );
-}
-
 function scrollToSection(anchor: string) {
   if (anchor === "hero") {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -39,6 +25,17 @@ function scrollToSection(anchor: string) {
     const navHeight = 64;
     const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
     window.scrollTo({ top, behavior: "smooth" });
+  }
+}
+
+function scrollToCalculator() {
+  const el = document.getElementById("calculator");
+  if (el) {
+    const navHeight = 64;
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+    window.scrollTo({ top, behavior: "smooth" });
+    el.classList.add("calculator-highlight");
+    setTimeout(() => el.classList.remove("calculator-highlight"), 2000);
   }
 }
 
@@ -54,11 +51,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const handleBookClick = () => {
+    if (location !== "/") {
+      setLocation("/");
+      setTimeout(() => scrollToCalculator(), 100);
+    } else {
+      scrollToCalculator();
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-lg border-b border-border/30 shadow-sm">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16 gap-4">
+          <div className="flex items-center justify-between h-16 gap-3">
             <button onClick={() => handleNavClick("hero")} className="text-2xl font-display font-bold text-primary tracking-tight shrink-0" data-testid="link-logo">
               AL MARE
             </button>
@@ -76,31 +82,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
               ))}
             </div>
 
-            <div className="hidden xl:flex items-center gap-4 text-sm text-muted-foreground shrink-0">
-              <a href="tel:+79184710374" className="flex items-center gap-1.5 hover:text-primary transition-colors" data-testid="link-phone">
+            <div className="hidden md:flex items-center gap-4 shrink-0">
+              <a href="tel:+79184710374" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors" data-testid="link-phone">
                 <Phone className="w-3.5 h-3.5" />
                 <span>+7 (918) 471-03-74</span>
               </a>
-              <a href="mailto:almare@hotelalmare.ru" className="flex items-center gap-1.5 hover:text-primary transition-colors" data-testid="link-email">
-                <Mail className="w-3.5 h-3.5" />
-                <span>almare@hotelalmare.ru</span>
-              </a>
-              <div className="flex items-center gap-2">
-                <a href="https://t.me/Al_Mare_komplex" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-telegram" title="Telegram" aria-label="Написать в Telegram">
-                  <Send className="w-4 h-4" />
-                </a>
-                <a href="https://max.ru/u/f9LHodD0cOKyZuixF6xW4bLAnYDSqIQ-54OcR3omDgRgkRs2Ji9F1hlf6Rk" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" data-testid="link-max" title="MAX" aria-label="Написать в MAX">
-                  <MaxIcon className="w-4 h-4" />
-                </a>
-              </div>
-              <a href="https://yandex.ru/maps/?rtext=~45.326978,37.290373&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs hover:text-primary transition-colors" data-testid="link-address-header">
-                <MapPin className="w-3.5 h-3.5" />
-                ст. Голубицкая, ул. Набережная, д. 7
-              </a>
+              <button
+                onClick={handleBookClick}
+                className="px-5 py-2.5 rounded-xl text-sm font-bold text-white cursor-pointer touch-manipulation select-none transition-all duration-200 hover:scale-105 hover:-translate-y-0.5 active:scale-[0.98]"
+                style={{
+                  background: "linear-gradient(135deg, #0C3C39, #0F4F4A)",
+                  boxShadow: "0 4px 14px rgba(12,60,57,0.3)",
+                }}
+                data-testid="button-header-book"
+              >
+                <span className="pointer-events-none">Забронировать номер</span>
+              </button>
             </div>
 
-            <div className="lg:hidden">
-              <MobileMenu onNavClick={handleNavClick} />
+            <div className="flex md:hidden items-center gap-2 shrink-0">
+              <a href="tel:+79184710374" className="w-10 h-10 rounded-full flex items-center justify-center text-primary" data-testid="link-phone-mobile" aria-label="Позвонить">
+                <Phone className="w-5 h-5" />
+              </a>
+              <MobileMenu onNavClick={handleNavClick} onBookClick={handleBookClick} />
             </div>
           </div>
         </div>
@@ -167,7 +171,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function MobileMenu({ onNavClick }: { onNavClick: (anchor: string) => void }) {
+function MobileMenu({ onNavClick, onBookClick }: { onNavClick: (anchor: string) => void; onBookClick: () => void }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -230,11 +234,22 @@ function MobileMenu({ onNavClick }: { onNavClick: (anchor: string) => void }) {
               </button>
             ))}
             <div className="border-t border-border/30 mt-2 pt-3 px-5 space-y-3 pb-2">
+              <button
+                onClick={() => {
+                  onBookClick();
+                  close();
+                }}
+                className="w-full py-3 rounded-xl text-white font-bold text-sm cursor-pointer touch-manipulation select-none transition-all duration-200 active:scale-[0.97]"
+                style={{
+                  background: "linear-gradient(135deg, #0C3C39, #0F4F4A)",
+                  boxShadow: "0 4px 14px rgba(12,60,57,0.3)",
+                }}
+                data-testid="button-mobile-book"
+              >
+                <span className="pointer-events-none">Забронировать номер</span>
+              </button>
               <a href="tel:+79184710374" className="flex items-center gap-3 text-sm text-muted-foreground py-2 min-h-[44px]">
                 <Phone className="w-4 h-4 shrink-0" /> +7 (918) 471-03-74
-              </a>
-              <a href="mailto:almare@hotelalmare.ru" className="flex items-center gap-3 text-sm text-muted-foreground py-2 min-h-[44px]">
-                <Mail className="w-4 h-4 shrink-0" /> almare@hotelalmare.ru
               </a>
             </div>
           </div>
