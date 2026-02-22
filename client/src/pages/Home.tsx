@@ -548,7 +548,7 @@ export default function Home() {
                 <div className="space-y-3">
                   {[
                     { icon: CircleDot, label: "Петанк — точность и стратегия с металлическими шарами" },
-                    { icon: RectangleVertical, label: "Кубб — скандинавская игра с деревянными фигурами" },
+                    { icon: RectangleVertical, label: "Кубб — игра с деревянными фигурами" },
                     { icon: VolleyballIcon, label: "Волейбольная площадка — сетка и мяч всегда наготове" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
