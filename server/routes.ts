@@ -68,16 +68,12 @@ async function sendEmailNotification(booking: {
     </div>
   `;
 
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-  });
+  const transporter = createSmtpTransporter();
+  if (!transporter) return;
 
   try {
     await transporter.sendMail({
-      from: `"AL MARE" <no-reply@hotelalmare.ru>`,
+      from: `"AL MARE" <${user}>`,
       to: "almare@hotelalmare.ru",
       subject: `Новая заявка на бронирование с сайта AL MARE`,
       html,
@@ -85,6 +81,48 @@ async function sendEmailNotification(booking: {
     console.log("Email notification sent");
   } catch (err) {
     console.error("Email notification failed:", err);
+  }
+}
+
+function createSmtpTransporter() {
+  const host = process.env.SMTP_HOST;
+  const port = Number(process.env.SMTP_PORT || "465");
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  if (!host || !user || !pass) return null;
+
+  return nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: { user, pass },
+    tls: { rejectUnauthorized: false },
+  });
+}
+
+export async function sendTestEmail() {
+  const user = process.env.SMTP_USER;
+  const transporter = createSmtpTransporter();
+  if (!transporter || !user) {
+    console.log("SMTP not configured, skipping test email");
+    return;
+  }
+
+  console.log(`SMTP config: host=${process.env.SMTP_HOST}, port=${process.env.SMTP_PORT}, user=${user}`);
+
+  try {
+    await transporter.verify();
+    console.log("SMTP connection verified successfully");
+
+    await transporter.sendMail({
+      from: `"AL MARE" <${user}>`,
+      to: "almare@hotelalmare.ru",
+      subject: "Тестовое письмо — AL MARE",
+      html: `<div style="font-family:Arial,sans-serif;padding:20px;"><h2 style="color:#2EC4B6;">AL MARE</h2><p>Отправка email работает корректно.</p><p style="color:#888;font-size:12px;">${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })} (МСК)</p></div>`,
+    });
+    console.log("Test email sent successfully to almare@hotelalmare.ru");
+  } catch (err) {
+    console.error("SMTP test failed:", err);
   }
 }
 
