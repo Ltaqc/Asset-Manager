@@ -209,7 +209,7 @@ export default function Home() {
       {/* 2. UAI Intro */}
       <section className="relative py-12 md:py-20 bg-white">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[2]">
-          <span className="inline-block px-5 py-2 rounded-full text-xs md:text-sm font-semibold text-white whitespace-nowrap" style={{ background: "#2EC4B6", boxShadow: "0 4px 16px rgba(46,196,182,0.3)" }} data-testid="badge-early-booking">
+          <span className="inline-block px-5 py-2.5 md:px-6 md:py-3 rounded-full text-sm md:text-[17px] font-semibold text-white whitespace-nowrap" style={{ background: "#2EC4B6", boxShadow: "0 6px 18px rgba(0,0,0,0.15)" }} data-testid="badge-early-booking">
             Выгода до 30% при раннем бронировании
           </span>
         </div>
