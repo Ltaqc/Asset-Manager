@@ -73,9 +73,9 @@ async function sendEmailNotification(booking: {
 
   try {
     await transporter.sendMail({
-      from: `"AL MARE" <${user}>`,
+      from: `"AL MARE — заявки с сайта" <${user}>`,
       to: "almare@hotelalmare.ru",
-      subject: `Новая заявка на бронирование с сайта AL MARE`,
+      subject: `🔔 Новая заявка на бронирование — AL MARE`,
       html,
     });
     console.log("Email notification sent");
