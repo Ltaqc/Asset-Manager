@@ -103,7 +103,31 @@ export default function SearchPage() {
       ? selectedCombo.rooms[0].category
       : selectedCombo.rooms.map(r => ROOM_DATA[r.category].shortTitle).join(" + ");
 
-    const finalPrice = earlyBooking ? applyEarlyDiscount(selectedCombo.totalPrice) : selectedCombo.totalPrice;
+    const displayTotal = finalPrice(selectedCombo.totalPrice);
+    const discountAmount = earlyBooking ? selectedCombo.totalPrice - displayTotal : 0;
+    const prepaymentAmount = Math.round(displayTotal / selectedCombo.nights);
+
+    let roomBreakdown: { category: string; shortTitle: string; capacity: number; maxToddlers: number; roomCost: number }[] | undefined;
+    if (selectedCombo.rooms.length > 1) {
+      const totalAccom = selectedCombo.rooms.reduce((s, r) => s + r.roomCost, 0);
+      let remainingTotal = selectedCombo.totalPrice;
+      roomBreakdown = selectedCombo.rooms.map((r, i) => {
+        let share: number;
+        if (i === selectedCombo.rooms.length - 1) {
+          share = remainingTotal;
+        } else {
+          share = Math.round(selectedCombo.totalPrice * r.roomCost / totalAccom);
+          remainingTotal -= share;
+        }
+        return {
+          category: r.category,
+          shortTitle: ROOM_DATA[r.category].shortTitle,
+          capacity: ROOM_DATA[r.category].cap,
+          maxToddlers: ROOM_DATA[r.category].maxToddlers,
+          roomCost: share,
+        };
+      });
+    }
 
     createBooking.mutate({
       roomCategory: roomLabel,
@@ -113,9 +137,12 @@ export default function SearchPage() {
       teens,
       children,
       toddlers,
-      totalPrice: finalPrice,
+      totalPrice: displayTotal,
       contactName: contactName || null,
       contactPhone: contactPhone || null,
+      roomBreakdown,
+      discountAmount: discountAmount > 0 ? discountAmount : undefined,
+      prepayment: prepaymentAmount,
     }, {
       onSuccess: () => {
         setSelectedCombo(null);
@@ -473,27 +500,26 @@ export default function SearchPage() {
       {confirmingCombo && (() => {
         const combo = confirmingCombo;
         const numRooms = combo.rooms.length;
-        const displayTotal = finalPrice(combo.totalPrice);
+        const confirmDisplayTotal = finalPrice(combo.totalPrice);
+        const confirmDiscountAmount = earlyBooking ? combo.totalPrice - confirmDisplayTotal : 0;
+        const confirmPrepayment = Math.round(confirmDisplayTotal / combo.nights);
 
-        const grouped: Array<{ category: RoomCategory; count: number; cap: number; totalRoomCost: number }> = [];
-        for (const r of combo.rooms) {
-          const existing = grouped.find(g => g.category === r.category);
-          if (existing) {
-            existing.count++;
-            existing.totalRoomCost += r.roomCost;
+        const formatDateShortConfirm = (d: string) => {
+          const date = new Date(d + "T00:00:00");
+          return date.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
+        };
+
+        const confirmPerRoomPrices: number[] = [];
+        const totalAccomConfirm = combo.rooms.reduce((s, r) => s + r.roomCost, 0);
+        let remainingConfirm = combo.totalPrice;
+        for (let i = 0; i < combo.rooms.length; i++) {
+          if (i === combo.rooms.length - 1) {
+            confirmPerRoomPrices.push(remainingConfirm);
           } else {
-            grouped.push({ category: r.category, count: 1, cap: ROOM_DATA[r.category].cap, totalRoomCost: r.roomCost });
+            const share = Math.round(combo.totalPrice * combo.rooms[i].roomCost / totalAccomConfirm);
+            confirmPerRoomPrices.push(share);
+            remainingConfirm -= share;
           }
-        }
-
-        const rawTotal = combo.totalPrice;
-        const groupRawPrices = grouped.map(g => Math.round(rawTotal * g.totalRoomCost / combo.rooms.reduce((s, r) => s + r.roomCost, 0)));
-        const rawSum = groupRawPrices.reduce((s, p) => s + p, 0);
-        groupRawPrices[groupRawPrices.length - 1] += rawTotal - rawSum;
-        const groupDisplayPrices = groupRawPrices.map(p => earlyBooking ? applyEarlyDiscount(p) : p);
-        const displaySum = groupDisplayPrices.reduce((s, p) => s + p, 0);
-        if (displaySum !== displayTotal) {
-          groupDisplayPrices[groupDisplayPrices.length - 1] += displayTotal - displaySum;
         }
 
         return (
@@ -521,47 +547,79 @@ export default function SearchPage() {
                 </button>
               </div>
 
-              <div className="space-y-3" data-testid="confirm-rooms-list">
-                {grouped.map((g, i) => {
-                  const info = ROOM_DATA[g.category];
-                  return (
-                    <div key={i} className="flex gap-3 items-start bg-secondary/20 rounded-lg p-3" data-testid={`confirm-room-${i}`}>
-                      <div className="w-16 h-12 rounded-md overflow-hidden bg-secondary shrink-0">
-                        <img src={info.image} alt={g.category} className="w-full h-full object-cover" loading="lazy" decoding="async" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-foreground text-sm" data-testid={`confirm-room-name-${i}`}>
-                          {g.count > 1 ? `${g.count}× ${info.shortTitle}` : g.category}
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          до {g.cap} гостей{g.count > 1 ? ` × ${g.count} номера` : ""}
-                        </p>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <p className="font-bold text-primary text-sm" data-testid={`confirm-room-price-${i}`}>{formatPrice(groupDisplayPrices[i])}</p>
-                        <p className="text-xs text-muted-foreground">за {combo.nights} {nightsLabel(combo.nights)}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              {numRooms > 1 ? (
+                <div className="space-y-4">
+                  <p className="text-sm font-semibold text-foreground">Размещение:</p>
 
-              <div className="bg-primary/5 rounded-xl p-4 space-y-1.5">
-                <p className="text-sm text-muted-foreground">
-                  {combo.nights} {nightsLabel(combo.nights)}
-                  {numRooms > 1 && ` · ${numRooms} ${numRooms === 2 ? "номера" : numRooms <= 4 ? "номера" : "номеров"}`}
-                </p>
-                {earlyBooking && (
-                  <p className="text-sm text-muted-foreground line-through" data-testid="confirm-old-price">{formatPrice(combo.totalPrice)}</p>
-                )}
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-bold text-foreground">Итоговая стоимость:</span>
-                  <span className="text-2xl font-bold font-display text-primary" data-testid="confirm-total-price">{formatPrice(displayTotal)}</span>
+                  <div className="space-y-3" data-testid="confirm-rooms-list">
+                    {combo.rooms.map((r, i) => {
+                      const info = ROOM_DATA[r.category];
+                      const guestLine = info.maxToddlers > 0
+                        ? `до ${info.cap} ${info.cap < 5 ? "гостя" : "гостей"}${toddlers > 0 ? `, ${Math.min(toddlers, info.maxToddlers)} ${Math.min(toddlers, info.maxToddlers) === 1 ? "малыш" : "малыша"}` : ""}`
+                        : `до ${info.cap} ${info.cap < 5 ? "гостя" : "гостей"}`;
+                      return (
+                        <div key={i} className="bg-secondary/20 border border-border/40 rounded-xl p-4" data-testid={`confirm-room-${i}`}>
+                          <p className="font-bold text-foreground text-[15px] leading-snug" data-testid={`confirm-room-name-${i}`}>{r.category}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{guestLine}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {formatDateShortConfirm(checkIn)} — {formatDateShortConfirm(checkOut)} · {combo.nights} {nightsLabel(combo.nights)}
+                          </p>
+                          <p className="text-sm font-bold text-primary mt-2" data-testid={`confirm-room-price-${i}`}>
+                            {formatPrice(confirmPerRoomPrices[i])}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="border-t border-border/50 pt-3 space-y-2">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="text-sm text-muted-foreground">Итого за проживание:</span>
+                      <span className="text-lg font-bold text-foreground">{formatPrice(combo.totalPrice)}</span>
+                    </div>
+                    {earlyBooking && (
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="text-sm font-medium text-green-600">Скидка раннего бронирования:</span>
+                        <span className="text-sm font-bold text-green-600">−{formatPrice(confirmDiscountAmount)}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="bg-primary/5 rounded-xl p-4">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-bold text-foreground">{earlyBooking ? "К оплате:" : "Итого:"}</span>
+                      <span className="text-2xl font-bold font-display text-primary" data-testid="confirm-total-price">{formatPrice(confirmDisplayTotal)}</span>
+                    </div>
+                  </div>
+
+                  <div className="border-t border-border/30 pt-3">
+                    <p className="text-xs text-muted-foreground mb-1">К оплате сейчас (предоплата):</p>
+                    <p className="text-lg font-bold text-foreground">{formatPrice(confirmPrepayment)}</p>
+                    <p className="text-[11px] text-muted-foreground mt-1">Достаточно оплаты за первую ночь проживания</p>
+                  </div>
                 </div>
-                {earlyBooking && (
-                  <p className="text-xs font-medium text-green-600">Скидка раннего бронирования</p>
-                )}
-              </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="bg-secondary/20 border border-border/40 rounded-xl p-4">
+                    <p className="font-bold text-foreground text-[15px]">{combo.rooms[0].category}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {formatDateShortConfirm(checkIn)} — {formatDateShortConfirm(checkOut)} · {combo.nights} {nightsLabel(combo.nights)}
+                    </p>
+                  </div>
+                  <div className="bg-primary/5 rounded-xl p-4">
+                    {earlyBooking && (
+                      <p className="text-sm text-muted-foreground line-through mb-1" data-testid="confirm-old-price">{formatPrice(combo.totalPrice)}</p>
+                    )}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-bold text-foreground">Итого:</span>
+                      <span className="text-2xl font-bold font-display text-primary" data-testid="confirm-total-price">{formatPrice(confirmDisplayTotal)}</span>
+                    </div>
+                    {earlyBooking && (
+                      <p className="text-xs font-medium text-green-600 mt-1">Скидка раннего бронирования</p>
+                    )}
+                  </div>
+                </div>
+              )}
 
               <p className="text-xs text-muted-foreground italic">* Расчёт является предварительным</p>
 
@@ -586,6 +644,26 @@ export default function SearchPage() {
           const date = new Date(d + "T00:00:00");
           return date.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
         };
+
+        const isMultiRoom = selectedCombo.rooms.length > 1;
+        const comboDisplayTotal = finalPrice(selectedCombo.totalPrice);
+        const comboDiscountAmount = earlyBooking ? selectedCombo.totalPrice - comboDisplayTotal : 0;
+        const comboPrepayment = Math.round(comboDisplayTotal / selectedCombo.nights);
+
+        const perRoomPrices: number[] = [];
+        if (isMultiRoom) {
+          const totalAccom = selectedCombo.rooms.reduce((s, r) => s + r.roomCost, 0);
+          let remaining = selectedCombo.totalPrice;
+          for (let i = 0; i < selectedCombo.rooms.length; i++) {
+            if (i === selectedCombo.rooms.length - 1) {
+              perRoomPrices.push(remaining);
+            } else {
+              const share = Math.round(selectedCombo.totalPrice * selectedCombo.rooms[i].roomCost / totalAccom);
+              perRoomPrices.push(share);
+              remaining -= share;
+            }
+          }
+        }
 
         return (
           <div
@@ -612,50 +690,107 @@ export default function SearchPage() {
                 </button>
               </div>
 
-              <div className="bg-secondary/20 border border-border/50 rounded-xl p-4 space-y-3">
-                <p className="text-base font-bold text-foreground leading-snug" data-testid="modal-room-label">
-                  {selectedCombo.rooms.length === 1
-                    ? selectedCombo.rooms[0].category
-                    : selectedCombo.label}
-                </p>
-                {selectedCombo.rooms.length > 1 && (
-                  <div className="space-y-0.5">
-                    {selectedCombo.rooms.map((r, i) => (
-                      <p key={i} className="text-xs text-muted-foreground">{ROOM_DATA[r.category].shortTitle}</p>
-                    ))}
-                  </div>
-                )}
-                <p className="text-sm text-muted-foreground">
-                  {formatDateShort(checkIn)} — {formatDateShort(checkOut)} · {selectedCombo.nights} {nightsLabel(selectedCombo.nights)}
-                </p>
-                <p className="text-sm text-muted-foreground">{guestParts}</p>
+              {isMultiRoom ? (
+                <div className="space-y-4">
+                  <p className="text-sm font-semibold text-foreground" data-testid="modal-room-label">Размещение:</p>
 
-                <div className="border-t border-border/50 pt-3 mt-1 space-y-3">
-                  <div>
+                  <div className="space-y-3">
+                    {selectedCombo.rooms.map((r, i) => {
+                      const info = ROOM_DATA[r.category];
+                      const guestLine = info.maxToddlers > 0
+                        ? `${info.cap} ${info.cap === 1 ? "гость" : info.cap < 5 ? "гостя" : "гостей"}${toddlers > 0 ? `, ${Math.min(toddlers, info.maxToddlers)} ${Math.min(toddlers, info.maxToddlers) === 1 ? "малыш" : "малыша"}` : ""}`
+                        : `${info.cap} ${info.cap === 1 ? "гость" : info.cap < 5 ? "гостя" : "гостей"}`;
+                      return (
+                        <div key={i} className="bg-secondary/20 border border-border/40 rounded-xl p-4" data-testid={`modal-room-${i}`}>
+                          <p className="font-bold text-foreground text-[15px] leading-snug">{r.category}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{guestLine}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {formatDateShort(checkIn)} — {formatDateShort(checkOut)} · {selectedCombo.nights} {nightsLabel(selectedCombo.nights)}
+                          </p>
+                          <p className="text-sm font-bold text-primary mt-2" data-testid={`modal-room-price-${i}`}>
+                            {formatPrice(perRoomPrices[i])}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="border-t border-border/50 pt-3 space-y-2">
                     <div className="flex items-baseline justify-between gap-2">
-                      <span className="text-sm text-muted-foreground">Итого:</span>
-                      <span className="text-2xl font-bold text-primary" data-testid="modal-total-price">
-                        {formatPrice(finalPrice(selectedCombo.totalPrice))}
+                      <span className="text-sm text-muted-foreground">Итого за проживание:</span>
+                      <span className="text-lg font-bold text-foreground" data-testid="modal-raw-total">
+                        {formatPrice(selectedCombo.totalPrice)}
                       </span>
                     </div>
                     {earlyBooking && (
-                      <div className="flex items-center justify-between gap-2 mt-1">
-                        <span className="text-xs font-medium text-green-600">Скидка раннего бронирования</span>
-                        <span className="text-sm text-muted-foreground line-through">{formatPrice(selectedCombo.totalPrice)}</span>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="text-sm font-medium text-green-600">Скидка раннего бронирования:</span>
+                        <span className="text-sm font-bold text-green-600" data-testid="modal-discount">
+                          −{formatPrice(comboDiscountAmount)}
+                        </span>
                       </div>
                     )}
                   </div>
 
+                  {earlyBooking && (
+                    <div className="bg-primary/5 rounded-xl p-4">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="font-bold text-foreground">К оплате:</span>
+                        <span className="text-2xl font-bold text-primary" data-testid="modal-total-price">
+                          {formatPrice(comboDisplayTotal)}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="border-t border-border/30 pt-3">
-                    <p className="text-xs text-muted-foreground mb-1">Предоплата для фиксации бронирования:</p>
+                    <p className="text-xs text-muted-foreground mb-1">К оплате сейчас (предоплата):</p>
                     <p className="text-lg font-bold text-foreground" data-testid="modal-prepayment">
-                      {formatPrice(Math.round(finalPrice(selectedCombo.totalPrice) / selectedCombo.nights))}
+                      {formatPrice(comboPrepayment)}
                     </p>
                     <p className="text-[11px] text-muted-foreground mt-1">Достаточно оплаты за первую ночь проживания</p>
                     <p className="text-[11px] text-muted-foreground/70 mt-0.5">Номер фиксируется за вами после подтверждения менеджером</p>
                   </div>
+
+                  <p className="text-xs text-muted-foreground italic">* Расчёт является предварительным</p>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-secondary/20 border border-border/50 rounded-xl p-4 space-y-3">
+                  <p className="text-base font-bold text-foreground leading-snug" data-testid="modal-room-label">
+                    {selectedCombo.rooms[0].category}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {formatDateShort(checkIn)} — {formatDateShort(checkOut)} · {selectedCombo.nights} {nightsLabel(selectedCombo.nights)}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{guestParts}</p>
+
+                  <div className="border-t border-border/50 pt-3 mt-1 space-y-3">
+                    <div>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="text-sm text-muted-foreground">Итого:</span>
+                        <span className="text-2xl font-bold text-primary" data-testid="modal-total-price">
+                          {formatPrice(comboDisplayTotal)}
+                        </span>
+                      </div>
+                      {earlyBooking && (
+                        <div className="flex items-center justify-between gap-2 mt-1">
+                          <span className="text-xs font-medium text-green-600">Скидка раннего бронирования</span>
+                          <span className="text-sm text-muted-foreground line-through">{formatPrice(selectedCombo.totalPrice)}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="border-t border-border/30 pt-3">
+                      <p className="text-xs text-muted-foreground mb-1">Предоплата для фиксации бронирования:</p>
+                      <p className="text-lg font-bold text-foreground" data-testid="modal-prepayment">
+                        {formatPrice(comboPrepayment)}
+                      </p>
+                      <p className="text-[11px] text-muted-foreground mt-1">Достаточно оплаты за первую ночь проживания</p>
+                      <p className="text-[11px] text-muted-foreground/70 mt-0.5">Номер фиксируется за вами после подтверждения менеджером</p>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <form onSubmit={handleSubmitBooking} className="space-y-4">
                 <div className="space-y-1.5">

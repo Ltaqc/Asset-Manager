@@ -6,7 +6,15 @@ import { api } from "@shared/routes";
 import { z } from "zod";
 import nodemailer from "nodemailer";
 
-async function sendEmailNotification(booking: {
+interface RoomBreakdownItem {
+  category: string;
+  shortTitle: string;
+  capacity: number;
+  maxToddlers: number;
+  roomCost: number;
+}
+
+interface NotificationData {
   roomCategory: string;
   checkIn: string;
   checkOut: string;
@@ -17,17 +25,27 @@ async function sendEmailNotification(booking: {
   totalPrice: number;
   contactName: string | null;
   contactPhone: string | null;
-}) {
+  roomBreakdown?: RoomBreakdownItem[];
+  discountAmount?: number;
+  prepayment?: number;
+}
+
+function formatDate(d: string) {
+  const [y, m, day] = d.split("-");
+  return `${day}.${m}.${y}`;
+}
+
+function formatDateLong(d: string) {
+  const date = new Date(d + "T00:00:00");
+  return date.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
+}
+
+async function sendEmailNotification(booking: NotificationData) {
   const host = process.env.SMTP_HOST;
   const port = Number(process.env.SMTP_PORT || "465");
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
   if (!host || !user || !pass) return;
-
-  const formatDate = (d: string) => {
-    const [y, m, day] = d.split("-");
-    return `${day}.${m}.${y}`;
-  };
 
   const guests: string[] = [];
   if (booking.adults > 0) guests.push(`Взрослые: ${booking.adults}`);
@@ -38,7 +56,7 @@ async function sendEmailNotification(booking: {
   const checkInDate = new Date(booking.checkIn);
   const checkOutDate = new Date(booking.checkOut);
   const nights = Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
-  const prepayment = nights > 0 ? Math.round(booking.totalPrice / nights) : booking.totalPrice;
+  const prepayment = booking.prepayment || (nights > 0 ? Math.round(booking.totalPrice / nights) : booking.totalPrice);
   const now = new Date();
   const requestDate = now.toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric" });
   const requestTime = now.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Moscow" });
@@ -46,6 +64,34 @@ async function sendEmailNotification(booking: {
   const rowStyle = `style="border-bottom:1px solid #f0f0f0;"`;
   const labelStyle = `style="padding:10px 12px;color:#888;font-size:14px;white-space:nowrap;vertical-align:top;"`;
   const valueStyle = `style="padding:10px 12px;font-weight:600;font-size:14px;"`;
+
+  let roomBreakdownHtml = "";
+  if (booking.roomBreakdown && booking.roomBreakdown.length > 1) {
+    const roomRows = booking.roomBreakdown.map(r => {
+      const guestInfo = r.maxToddlers > 0
+        ? `до ${r.capacity} гостей + ${r.maxToddlers} ${r.maxToddlers === 1 ? "малыш" : "малыша"}`
+        : `до ${r.capacity} гостей`;
+      return `
+        <tr ${rowStyle}>
+          <td ${labelStyle}>${r.shortTitle}</td>
+          <td ${valueStyle}>
+            ${r.category}<br/>
+            <span style="color:#888;font-weight:400;font-size:13px;">${guestInfo}</span><br/>
+            <span style="color:#888;font-weight:400;font-size:13px;">${formatDateLong(booking.checkIn)} — ${formatDateLong(booking.checkOut)} · ${nights} ${nights === 1 ? "ночь" : nights < 5 ? "ночи" : "ночей"}</span><br/>
+            <span style="color:#2EC4B6;font-weight:700;">${r.roomCost.toLocaleString("ru-RU")} ₽</span>
+          </td>
+        </tr>`;
+    }).join("");
+
+    roomBreakdownHtml = `
+      <tr><td colspan="2" style="padding:14px 12px 6px;font-weight:700;font-size:15px;color:#333;border-bottom:2px solid #2EC4B6;">Размещение по номерам</td></tr>
+      ${roomRows}`;
+  }
+
+  let discountRow = "";
+  if (booking.discountAmount && booking.discountAmount > 0) {
+    discountRow = `<tr ${rowStyle}><td ${labelStyle}>Скидка раннего бронирования</td><td style="padding:10px 12px;font-weight:600;font-size:14px;color:#16a34a;">−${booking.discountAmount.toLocaleString("ru-RU")} ₽</td></tr>`;
+  }
 
   const html = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#ffffff;">
@@ -61,6 +107,8 @@ async function sendEmailNotification(booking: {
           <tr ${rowStyle}><td ${labelStyle}>Даты</td><td ${valueStyle}>${formatDate(booking.checkIn)} — ${formatDate(booking.checkOut)}</td></tr>
           <tr ${rowStyle}><td ${labelStyle}>Ночей</td><td ${valueStyle}>${nights}</td></tr>
           <tr ${rowStyle}><td ${labelStyle}>Гости</td><td ${valueStyle}>${guests.join(", ")}</td></tr>
+          ${roomBreakdownHtml}
+          ${discountRow}
           <tr ${rowStyle}><td ${labelStyle}>Итого</td><td style="padding:10px 12px;font-weight:700;font-size:18px;color:#2EC4B6;">${booking.totalPrice.toLocaleString("ru-RU")} ₽</td></tr>
           <tr><td ${labelStyle}>Предоплата (1 ночь)</td><td ${valueStyle}>${prepayment.toLocaleString("ru-RU")} ₽</td></tr>
         </table>
@@ -101,26 +149,10 @@ function createSmtpTransporter() {
 }
 
 
-async function sendTelegramNotification(booking: {
-  roomCategory: string;
-  checkIn: string;
-  checkOut: string;
-  adults: number;
-  teens: number;
-  children: number;
-  toddlers: number;
-  totalPrice: number;
-  contactName: string | null;
-  contactPhone: string | null;
-}) {
+async function sendTelegramNotification(booking: NotificationData) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) return;
-
-  const formatDate = (d: string) => {
-    const [y, m, day] = d.split("-");
-    return `${day}.${m}.${y}`;
-  };
 
   const guests: string[] = [];
   if (booking.adults > 0) guests.push(`Взрослые: ${booking.adults}`);
@@ -131,6 +163,11 @@ async function sendTelegramNotification(booking: {
   const rawPhone = booking.contactPhone || "";
   const phoneDisplay = rawPhone || "Не указан";
 
+  const checkInDate = new Date(booking.checkIn);
+  const checkOutDate = new Date(booking.checkOut);
+  const nights = Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+  const nightsWord = nights === 1 ? "ночь" : nights < 5 ? "ночи" : "ночей";
+
   const lines = [
     `🏨 *Новая заявка на бронирование*`,
     ``,
@@ -138,10 +175,27 @@ async function sendTelegramNotification(booking: {
     `📱 *Телефон:* ${phoneDisplay}`,
     ``,
     `🏠 *Номер:* ${booking.roomCategory}`,
-    `📅 *Даты:* ${formatDate(booking.checkIn)} — ${formatDate(booking.checkOut)}`,
+    `📅 *Даты:* ${formatDate(booking.checkIn)} — ${formatDate(booking.checkOut)} (${nights} ${nightsWord})`,
     `👥 *Гости:* ${guests.join(", ")}`,
-    `💰 *Итого:* ${booking.totalPrice.toLocaleString("ru-RU")} ₽`,
   ];
+
+  if (booking.roomBreakdown && booking.roomBreakdown.length > 1) {
+    lines.push(``);
+    lines.push(`📋 *Разбивка по номерам:*`);
+    for (const r of booking.roomBreakdown) {
+      lines.push(`  • ${r.category} — ${r.roomCost.toLocaleString("ru-RU")} ₽`);
+    }
+  }
+
+  if (booking.discountAmount && booking.discountAmount > 0) {
+    lines.push(`🏷 *Скидка:* −${booking.discountAmount.toLocaleString("ru-RU")} ₽`);
+  }
+
+  lines.push(`💰 *Итого:* ${booking.totalPrice.toLocaleString("ru-RU")} ₽`);
+
+  if (booking.prepayment) {
+    lines.push(`💳 *Предоплата:* ${booking.prepayment.toLocaleString("ru-RU")} ₽`);
+  }
 
   const text = lines.join("\n");
 
@@ -173,13 +227,17 @@ export async function registerRoutes(
   
   app.post(api.bookings.create.path, async (req, res) => {
     try {
-      const input = api.bookings.create.input.parse(req.body);
+      const { roomBreakdown, discountAmount, prepayment, ...bookingFields } = req.body;
+      const input = api.bookings.create.input.parse(bookingFields);
       const booking = await storage.createBooking(input);
 
-      const notificationData = {
+      const notificationData: NotificationData = {
         ...input,
         contactName: input.contactName ?? null,
         contactPhone: input.contactPhone ?? null,
+        roomBreakdown: Array.isArray(roomBreakdown) ? roomBreakdown : undefined,
+        discountAmount: typeof discountAmount === "number" ? discountAmount : undefined,
+        prepayment: typeof prepayment === "number" ? prepayment : undefined,
       };
       sendTelegramNotification(notificationData).catch(() => {});
       sendEmailNotification(notificationData).catch(() => {});

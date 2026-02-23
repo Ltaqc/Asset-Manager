@@ -2,18 +2,33 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, type InsertBooking } from "@shared/routes";
 import { useToast } from "@/hooks/use-toast";
 
+export interface RoomBreakdownItem {
+  category: string;
+  shortTitle: string;
+  capacity: number;
+  maxToddlers: number;
+  roomCost: number;
+}
+
+export interface BookingPayload extends InsertBooking {
+  roomBreakdown?: RoomBreakdownItem[];
+  discountAmount?: number;
+  prepayment?: number;
+}
+
 export function useCreateBooking() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (data: InsertBooking) => {
-      const validated = api.bookings.create.input.parse(data);
-      
+    mutationFn: async (data: BookingPayload) => {
+      const { roomBreakdown, discountAmount, prepayment, ...bookingData } = data;
+      const validated = api.bookings.create.input.parse(bookingData);
+
       const res = await fetch(api.bookings.create.path, {
         method: api.bookings.create.method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(validated),
+        body: JSON.stringify({ ...validated, roomBreakdown, discountAmount, prepayment }),
       });
 
       if (!res.ok) {
