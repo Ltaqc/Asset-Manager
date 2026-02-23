@@ -7,13 +7,15 @@ import { Label } from "@/components/ui/label";
 import { GuestCounter } from "@/components/GuestCounter";
 import { roomCategories } from "@shared/schema";
 import { useCreateBooking } from "@/hooks/use-bookings";
-import { Loader2, Calculator as CalcIcon } from "lucide-react";
+import { Loader2, Calculator as CalcIcon, AlertCircle } from "lucide-react";
 import {
   RoomCategory,
   calculateRoomTotalPrice,
   formatPrice,
   getDefaultCheckIn,
   getDefaultCheckOut,
+  isRoomSuitable,
+  ROOM_DATA,
 } from "@/lib/roomData";
 
 type _RoomCategory = RoomCategory;
@@ -32,10 +34,22 @@ export function Calculator() {
 
   const createBooking = useCreateBooking();
 
+  const suitable = useMemo(() => isRoomSuitable(roomCategory, adults, teens, children, toddlers), [roomCategory, adults, teens, children, toddlers]);
+
+  const capacityWarning = useMemo(() => {
+    if (suitable) return null;
+    const info = ROOM_DATA[roomCategory];
+    const mainGuests = adults + teens + children;
+    if (mainGuests > info.cap) return `Этот номер вмещает до ${info.cap} гостей (без учёта малышей). Выберите номер большей вместимости или перейдите в подбор номеров.`;
+    if (toddlers > info.maxToddlers) return `В этом номере можно разместить не более ${info.maxToddlers} ${info.maxToddlers === 1 ? "малыша" : "малышей"}. Выберите другой номер или перейдите в подбор номеров.`;
+    return null;
+  }, [suitable, roomCategory, adults, teens, children, toddlers]);
+
   const result = useMemo(() => {
+    if (!suitable) return null;
     if (!checkIn || !checkOut || !roomCategory) return null;
     return calculateRoomTotalPrice(roomCategory, checkIn, checkOut, adults, teens, children, toddlers);
-  }, [roomCategory, checkIn, checkOut, adults, teens, children, toddlers]);
+  }, [suitable, roomCategory, checkIn, checkOut, adults, teens, children, toddlers]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -163,7 +177,7 @@ export function Calculator() {
               data-testid="button-submit-booking"
               type="submit"
               className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl mt-4"
-              disabled={createBooking.isPending || !validResult}
+              disabled={createBooking.isPending || !validResult || !suitable}
             >
               {createBooking.isPending ? (
                 <>
@@ -183,7 +197,12 @@ export function Calculator() {
               Расчёт стоимости
             </h4>
 
-            {errorMsg ? (
+            {capacityWarning ? (
+              <div className="flex flex-col items-center justify-center text-primary-foreground/70 py-12">
+                <AlertCircle className="w-16 h-16 mb-4 opacity-50" />
+                <p className="text-base text-center leading-relaxed">{capacityWarning}</p>
+              </div>
+            ) : errorMsg ? (
               <div className="flex flex-col items-center justify-center text-primary-foreground/70 py-12">
                 <CalcIcon className="w-16 h-16 mb-4 opacity-50" />
                 <p className="text-lg text-center">{errorMsg}</p>

@@ -16,7 +16,7 @@ import {
   isEarlyBooking, applyEarlyDiscount,
   generateRecommendations, RoomCombo,
   calculateRoomTotalPrice, calculateFoodCost,
-  calculateAccommodationCost,
+  calculateAccommodationCost, isRoomSuitable,
 } from "@/lib/roomData";
 
 function ComboRoomCards({ combo }: { combo: RoomCombo }) {
@@ -438,6 +438,7 @@ export default function SearchPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                     {Object.entries(ROOM_DATA).map(([category, info]) => {
                       const cat = category as RoomCategory;
+                      if (!isRoomSuitable(cat, adults, teens, children, toddlers)) return null;
                       const calcResult = calculateRoomTotalPrice(cat, checkIn, checkOut, adults, teens, children, toddlers);
                       if (!calcResult || "error" in calcResult) return null;
                       const rc = { cost: calcResult.total, nights: calcResult.nights };
