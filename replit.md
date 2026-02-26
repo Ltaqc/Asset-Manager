@@ -30,7 +30,7 @@ Preferred communication style: Simple, everyday language.
   4. Ultra All Inclusive (#uai) — checklist of what's included
   5. Food (по меню format, not buffet)
   6. Beach (with petanque and kubb games)
-  7. Infrastructure (billiards, mini-golf, rest zones)
+  7. Territory (billiards, mini-golf, pool, kids room, animation, lounge zones, green yard — 7 activities, no rope park)
   8. Rooms (8 room categories with cards)
   9. Contacts (with Yandex Map)
 - `/search` — Filters rooms by capacity, shows pricing cards with cross-month calculation, booking modal

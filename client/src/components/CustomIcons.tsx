@@ -48,18 +48,7 @@ export function SunloungerIcon({ className }: IconProps) {
   );
 }
 
-export function RopeParkIcon({ className }: IconProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="3" y1="22" x2="3" y2="3" />
-      <line x1="21" y1="22" x2="21" y2="3" />
-      <line x1="3" y1="5" x2="21" y2="5" />
-      <path d="M3 5c3 4 6 5 9 5s6-1 9-5" />
-      <line x1="3" y1="13" x2="21" y2="13" />
-      <path d="M3 13c3 3 6 4 9 4s6-1 9-4" />
-    </svg>
-  );
-}
+
 
 export function BilliardIcon({ className }: IconProps) {
   return (

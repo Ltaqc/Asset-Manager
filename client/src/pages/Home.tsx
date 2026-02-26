@@ -19,7 +19,7 @@ import {
 import { GuestCounter } from "@/components/GuestCounter";
 import {
   GlassIcon, ChickenWingIcon, PopsicleIcon,
-  SunloungerIcon, RopeParkIcon, BilliardIcon, MiniGolfIcon,
+  SunloungerIcon, BilliardIcon, MiniGolfIcon,
   LoungeChairIcon, TreeLeafIcon, PoolIcon, KidsRoomIcon, KidsAnimationIcon,
   AquaparkIcon, BeachCafeIcon, VolleyballIcon,
 } from "@/components/CustomIcons";
@@ -45,7 +45,6 @@ import foodPhoto3 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_16
 import foodPhoto4 from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_15_58_53_1770563622551.webp";
 import beachPetanque from "@assets/optimized/beach_petanque_wide_1770566998764.webp";
 import beachKubb from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_19_09_28_1770566998766.webp";
-import beachRopePark from "@assets/optimized/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770566998762.webp";
 import beachLoungeMain from "@assets/optimized/beach_lounge_main_1770570903453.webp";
 import beachLoungeAlt from "@assets/optimized/beach_lounge_alt_1770570903455.webp";
 import beachSeaSparkling from "@assets/optimized/beach_sea_sparkling_1770571117379.webp";
@@ -61,7 +60,6 @@ const BEACH_GALLERY = [
   beachLoungeAlt,
   beachPetanque,
   beachKubb,
-  beachRopePark,
 ];
 
 import infraMain from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_12_38_02_1770569019465.webp";
@@ -72,7 +70,6 @@ import infraPool from "@assets/optimized/ChatGPT_Image_8_февр._2026_г.,_19_
 import infraBbq from "@assets/optimized/infra_bbq_1770569019471.webp";
 import infraLounge from "@assets/optimized/WhatsApp_Image_2019-05-16_at_20.39.10_1770569019472.webp";
 import infraTerrace from "@assets/optimized/WhatsApp_Image_2019-05-16_at_20.43.38_1770569019472.webp";
-import infraRopePark from "@assets/optimized/ChatGPT_Image_5_февр._2026_г.,_13_40_37_1770569019473.webp";
 import infraHotel from "@assets/optimized/ChatGPT_Image_7_февр._2026_г.,_13_52_16_1770569019474.webp";
 
 const TERRITORY_GALLERY = [
@@ -81,7 +78,6 @@ const TERRITORY_GALLERY = [
   infraPool,
   infraBilliard,
   infraMiniGolf,
-  infraRopePark,
   infraKidsRoom,
   infraLounge,
   infraTerrace,
@@ -224,7 +220,7 @@ export default function Home() {
               { icon: Waves, title: "Песчаный пляж и шезлонги", lines: ["Зонты и лежаки уже ждут вас", "Еда и напитки прямо у моря"] },
               { icon: UtensilsCrossed, title: "Ресторан с обслуживанием по меню", lines: ["Блюда готовятся индивидуально", "Широкий выбор блюд на каждый приём"] },
               { icon: Wine, title: "Напитки в течение дня", lines: ["У бассейна, в баре и на побережье", "Без ограничений и доплат"] },
-              { icon: Droplets, title: "Аквапарк и верёвочный парк", lines: ["Горки, бассейны, полоса препятствий", "Вход включён в стоимость"] },
+              { icon: Droplets, title: "Аквапарк и бассейн", lines: ["Горки, бассейны и водные развлечения", "Вход включён в стоимость"] },
               { icon: Trophy, title: "Петанк, кубб и волейбол", lines: ["Оборудованные площадки на побережье", "Весь инвентарь уже на месте"] },
               { icon: PartyPopper, title: "Вечерние и детские программы", lines: ["Анимация днём, живая музыка вечером", "Новые форматы в течение всего сезона"] },
             ].map((item, i) => (
@@ -427,7 +423,7 @@ export default function Home() {
                   "Напитки без ограничений в течение дня",
                   "Песчаный пляж, шезлонги и зонты",
                   "Бассейн, бильярд, мини-гольф и зоны отдыха",
-                  "Верёвочный парк и надувной аквапарк",
+                  "Надувной аквапарк и подогреваемый бассейн",
                   "Анимация, вечерние программы и спортивные площадки",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3 text-muted-foreground">
@@ -506,8 +502,8 @@ export default function Home() {
                 <div className="space-y-3">
                   {[
                     { icon: SunloungerIcon, label: "Шезлонги и теневые навесы на песке" },
-                    { icon: RopeParkIcon, label: "Верёвочный парк с маршрутами разной сложности" },
                     { icon: AquaparkIcon, label: "Надувной аквапарк: горки, бассейны и игровые модули" },
+                    { icon: VolleyballIcon, label: "Волейбольная площадка и спортивные игры на песке" },
                     { icon: BeachCafeIcon, label: "Кафе у воды — еда и напитки без доплат" },
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-foreground/80">
@@ -566,7 +562,6 @@ export default function Home() {
                 {[
                   { icon: BilliardIcon, label: "Бильярд", desc: "Партия в тишине и прохладе" },
                   { icon: MiniGolfIcon, label: "Мини-гольф", desc: "Лунки на свежем воздухе для всей семьи" },
-                  { icon: RopeParkIcon, label: "Верёвочный парк", desc: "Маршруты для разного возраста и подготовки" },
                   { icon: LoungeChairIcon, label: "Лаунж-зоны", desc: "Тень, кресла и тишина среди зелени" },
                   { icon: TreeLeafIcon, label: "Зелёный двор", desc: "Газоны, дорожки и аккуратный ландшафт" },
                   { icon: PoolIcon, label: "Подогреваемый бассейн", desc: "Чистая вода и комфортная температура каждый день" },
