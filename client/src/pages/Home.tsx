@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useLocation } from "wouter";
+import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { SeasonCalendar } from "@/components/SeasonCalendar";
@@ -156,6 +157,8 @@ export default function Home() {
       return;
     }
     setDateError("");
+    metrikaGoal("calc_open");
+    metrikaHit("/calc/open");
     const params = new URLSearchParams({
       checkIn, checkOut,
       adults: String(adults),

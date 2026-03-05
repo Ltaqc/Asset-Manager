@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useSearch } from "wouter";
+import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -82,6 +83,8 @@ export default function SearchPage() {
   }, [checkIn, checkOut, adults, teens, children, toddlers]);
 
   const handleBook = (combo: RoomCombo) => {
+    metrikaGoal("booking_open");
+    metrikaHit("/booking/open");
     setSelectedCombo(combo);
   };
 
@@ -91,6 +94,8 @@ export default function SearchPage() {
 
   const handleProceedToBooking = () => {
     if (!confirmingCombo) return;
+    metrikaGoal("booking_open");
+    metrikaHit("/booking/open");
     setSelectedCombo(confirmingCombo);
     setConfirmingCombo(null);
   };

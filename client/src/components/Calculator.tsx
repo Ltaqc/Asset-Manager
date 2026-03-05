@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,8 @@ export function Calculator() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!result || "error" in result) return;
+    metrikaGoal("booking_open");
+    metrikaHit("/booking/open");
 
     createBooking.mutate({
       roomCategory,

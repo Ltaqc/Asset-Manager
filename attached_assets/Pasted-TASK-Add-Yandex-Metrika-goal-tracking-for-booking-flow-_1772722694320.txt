@@ -1,0 +1,80 @@
+TASK: Add Yandex Metrika goal tracking for booking flow on my website (SPA / modal, URL does not change).
+
+COUNTER ID:
+107159929
+
+CURRENT PROBLEM:
+When a guest clicks “Рассчитать стоимость” or “Забронировать номер”, the URL does NOT change and no existing JS events are sent. I need Metrika goals to track these actions. I accept either:
+A) JavaScript goal events (preferred), and/or
+B) Virtual pageviews (ym hit) with artificial URLs.
+
+REQUIREMENTS:
+1) Ensure Yandex Metrika counter is installed globally on all pages, before </head>. If already installed, do not duplicate it.
+2) Implement goal tracking using ym(107159929,'reachGoal',...) for these events:
+   - "calc_open"  -> when user clicks "Рассчитать стоимость" / “подбор/расчет” button
+   - "booking_open" -> when user clicks "Забронировать номер" (open booking modal / start booking)
+   - "booking_submit" -> ONLY when the booking form is successfully submitted (after validation, after network request success / after success UI state)
+3) Additionally, send virtual pageviews (optional but recommended) so we can create URL-based goals too:
+   - On booking modal open: ym(107159929,'hit','/booking/open')
+   - On successful submit: ym(107159929,'hit','/booking/success')
+
+IMPORTANT:
+- This site uses modal dialogs / dynamic content. There is no page reload. Use event delegation or MutationObserver if needed.
+- Do not break existing UX. No visual changes.
+- The "booking_submit" goal must NOT fire on button click if the form has errors. Fire it only on confirmed success.
+- If the submit is via fetch/XHR/AJAX, hook into the promise success or detect success message/state.
+- If the submit is a normal form submit (POST + navigation), fire goal before submit (but only when form is valid) and use navigator.sendBeacon or small timeout safely.
+
+IMPLEMENTATION PLAN (DO THIS IN CODE):
+A) Create a small utility function:
+   function metrikaGoal(name, params) {
+     if (typeof window.ym === 'function') {
+       window.ym(107159929, 'reachGoal', name, params || {});
+     }
+   }
+   function metrikaHit(path) {
+     if (typeof window.ym === 'function') {
+       window.ym(107159929, 'hit', path);
+     }
+   }
+
+B) Track clicks:
+   - Add a single document-level click listener (event delegation).
+   - Detect the buttons by:
+     1) exact text includes: "Рассчитать стоимость" or "Рассчитать" -> calc_open
+     2) exact text includes: "Забронировать номер" or "Забронировать" -> booking_open
+     3) also check common selectors if present: [data-action="calc"], [data-action="book"], .book-btn, .calc-btn, etc.
+   - When detected:
+     metrikaGoal('calc_open') / metrikaHit('/calc/open')
+     metrikaGoal('booking_open') / metrikaHit('/booking/open')
+
+C) Track successful submit (MOST IMPORTANT):
+   - Identify the booking form in the modal (inputs: name + phone, button "Забронировать номер").
+   - Add a submit listener to the form OR intercept the booking submit function.
+   - Validate: required name and phone not empty and phone has enough digits.
+   - If submit uses fetch/XHR:
+        - wrap the function that sends request OR monkeypatch window.fetch to detect the booking endpoint (only for this request),
+        - on HTTP 200 and success response (or success UI state), fire:
+            metrikaGoal('booking_submit', {source:'modal'})
+            metrikaHit('/booking/success')
+   - If success is shown as a UI message (e.g. “Мы свяжемся с вами…” / “Заявка отправлена”):
+        - also implement MutationObserver to detect when this success block appears, and fire booking_submit ONLY ONCE.
+
+D) Prevent duplicates:
+   - Use a flag like window.__metrika_booking_submit_fired = true for one submission, reset when modal is opened again.
+
+FILES:
+- Search the codebase for the booking modal component / booking logic.
+- Likely places: main JS file, booking.js, components/booking, modal code.
+- Implement in the best place so it runs on all pages (global entry script).
+
+DELIVERABLES:
+1) Code changes committed in the repo.
+2) After changes, output:
+   - Which file(s) were edited
+   - Which selectors/text rules used to detect buttons
+   - How booking submit success is detected
+   - Names of goals used: calc_open, booking_open, booking_submit
+
+NOTE:
+Do NOT require URL changes. If you add virtual pageviews (ym hit), keep them as described above.

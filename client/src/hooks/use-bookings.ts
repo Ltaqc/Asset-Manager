@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, type InsertBooking } from "@shared/routes";
 import { useToast } from "@/hooks/use-toast";
+import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 
 export interface RoomBreakdownItem {
   category: string;
@@ -42,6 +43,8 @@ export function useCreateBooking() {
       return api.bookings.create.responses[201].parse(await res.json());
     },
     onSuccess: () => {
+      metrikaGoal("booking_submit", { source: "modal" });
+      metrikaHit("/booking/success");
       toast({
         title: "Заявка отправлена",
         description: "Мы получили ваш расчёт и свяжемся с вами в ближайшее время.",
