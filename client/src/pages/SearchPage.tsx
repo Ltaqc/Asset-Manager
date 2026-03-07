@@ -737,6 +737,9 @@ export default function SearchPage() {
                         </span>
                       </div>
                     )}
+                    {earlyBooking && (
+                      <p className="text-[13px] text-green-600/80 mt-1.5">Дополнительные скидки при подтверждении бронирования — до 30%</p>
+                    )}
                   </div>
 
                   {earlyBooking && (
@@ -784,6 +787,9 @@ export default function SearchPage() {
                           <span className="text-xs font-medium text-green-600">Скидка раннего бронирования</span>
                           <span className="text-sm text-muted-foreground line-through">{formatPrice(selectedCombo.totalPrice)}</span>
                         </div>
+                      )}
+                      {earlyBooking && (
+                        <p className="text-[13px] text-green-600/80 mt-1.5">Дополнительные скидки при подтверждении бронирования — до 30%</p>
                       )}
                     </div>
 
