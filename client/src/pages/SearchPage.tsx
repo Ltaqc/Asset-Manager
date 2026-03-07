@@ -509,7 +509,7 @@ export default function SearchPage() {
         const numRooms = combo.rooms.length;
         const confirmDisplayTotal = finalPrice(combo.totalPrice);
         const confirmDiscountAmount = earlyBooking ? combo.totalPrice - confirmDisplayTotal : 0;
-        const confirmPrepayment = Math.round(confirmDisplayTotal / combo.nights);
+
 
         const formatDateShortConfirm = (d: string) => {
           const date = new Date(d + "T00:00:00");
@@ -599,11 +599,6 @@ export default function SearchPage() {
                     </div>
                   </div>
 
-                  <div className="border-t border-border/30 pt-3">
-                    <p className="text-xs text-muted-foreground mb-1">К оплате сейчас (предоплата):</p>
-                    <p className="text-lg font-bold text-foreground">{formatPrice(confirmPrepayment)}</p>
-                    <p className="text-[11px] text-muted-foreground mt-1">Достаточно оплаты за первую ночь проживания</p>
-                  </div>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -655,7 +650,7 @@ export default function SearchPage() {
         const isMultiRoom = selectedCombo.rooms.length > 1;
         const comboDisplayTotal = finalPrice(selectedCombo.totalPrice);
         const comboDiscountAmount = earlyBooking ? selectedCombo.totalPrice - comboDisplayTotal : 0;
-        const comboPrepayment = Math.round(comboDisplayTotal / selectedCombo.nights);
+
 
         const perRoomPrices: number[] = [];
         if (isMultiRoom) {
@@ -753,15 +748,6 @@ export default function SearchPage() {
                     </div>
                   )}
 
-                  <div className="border-t border-border/30 pt-3">
-                    <p className="text-xs text-muted-foreground mb-1">К оплате сейчас (предоплата):</p>
-                    <p className="text-lg font-bold text-foreground" data-testid="modal-prepayment">
-                      {formatPrice(comboPrepayment)}
-                    </p>
-                    <p className="text-[11px] text-muted-foreground mt-1">Достаточно оплаты за первую ночь проживания</p>
-                    <p className="text-[11px] text-muted-foreground/70 mt-0.5">Номер фиксируется за вами после подтверждения менеджером</p>
-                  </div>
-
                   <p className="text-xs text-muted-foreground italic">* Расчёт является предварительным</p>
                 </div>
               ) : (
@@ -793,14 +779,6 @@ export default function SearchPage() {
                       )}
                     </div>
 
-                    <div className="border-t border-border/30 pt-3">
-                      <p className="text-xs text-muted-foreground mb-1">Предоплата для фиксации бронирования:</p>
-                      <p className="text-lg font-bold text-foreground" data-testid="modal-prepayment">
-                        {formatPrice(comboPrepayment)}
-                      </p>
-                      <p className="text-[11px] text-muted-foreground mt-1">Достаточно оплаты за первую ночь проживания</p>
-                      <p className="text-[11px] text-muted-foreground/70 mt-0.5">Номер фиксируется за вами после подтверждения менеджером</p>
-                    </div>
                   </div>
                 </div>
               )}
