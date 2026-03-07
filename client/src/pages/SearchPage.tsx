@@ -346,6 +346,7 @@ export default function SearchPage() {
                               <div className="text-xs font-medium text-green-600" data-testid="discount-recommended">
                                 Скидка раннего бронирования
                               </div>
+                              <p className="text-[11px] text-muted-foreground leading-snug mt-1">Дополнительные скидки до 30% рассчитываются менеджером после проверки дат и доступности номеров</p>
                             </>
                           ) : (
                             <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
@@ -430,6 +431,7 @@ export default function SearchPage() {
                                     {formatPrice(finalPrice(combo.totalPrice))}
                                   </div>
                                   <div className="text-xs font-medium text-green-600">Скидка раннего бронирования</div>
+                                  <p className="text-[11px] text-muted-foreground leading-snug mt-1">Скидки до 30% — по запросу у менеджера</p>
                                 </>
                               ) : (
                                 <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
@@ -849,7 +851,7 @@ export default function SearchPage() {
                   >
                     Отмена
                   </Button>
-                  <p className="text-xs text-muted-foreground text-center">Мы свяжемся с вами для подтверждения бронирования</p>
+                  <p className="text-xs text-muted-foreground text-center">Оставьте заявку — менеджер проверит наличие номеров и рассчитает максимальную скидку по акции</p>
                 </div>
               </form>
             </div>
