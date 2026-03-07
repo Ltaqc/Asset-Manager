@@ -27,21 +27,54 @@ export function FloatingPromo() {
   const [autoShown, setAutoShown] = useState(false);
   const [showGiftButton, setShowGiftButton] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const interactedRef = useRef(false);
 
   const openPopup = useCallback(() => {
     setPopupVisible(true);
     requestAnimationFrame(() => setAnimating(true));
   }, []);
 
+  const cancelAutoPopup = useCallback(() => {
+    if (interactedRef.current) return;
+    interactedRef.current = true;
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    setAutoShown(true);
+    setShowGiftButton(true);
+  }, []);
+
   useEffect(() => {
     if (!autoShown) {
       timerRef.current = setTimeout(() => {
-        setAutoShown(true);
-        openPopup();
+        if (!interactedRef.current) {
+          setAutoShown(true);
+          openPopup();
+        }
       }, 15000);
       return () => { if (timerRef.current) clearTimeout(timerRef.current); };
     }
   }, [autoShown, openPopup]);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (!target) return;
+      const inCalc = target.closest("#calculator");
+      const inBookingModal = target.closest("[data-testid='modal-booking']");
+      const inConfirmModal = target.closest("[data-testid='modal-confirm']");
+      if (inCalc || inBookingModal || inConfirmModal) {
+        cancelAutoPopup();
+      }
+    };
+    document.addEventListener("click", handler, true);
+    document.addEventListener("focusin", handler, true);
+    return () => {
+      document.removeEventListener("click", handler, true);
+      document.removeEventListener("focusin", handler, true);
+    };
+  }, [cancelAutoPopup]);
 
   const closePopup = useCallback(() => {
     setAnimating(false);
