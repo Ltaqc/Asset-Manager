@@ -851,7 +851,7 @@ export default function SearchPage() {
                   >
                     Отмена
                   </Button>
-                  <p className="text-xs text-muted-foreground text-center">Оставьте заявку — менеджер проверит наличие номеров и рассчитает максимальную скидку по акции</p>
+                  <p className="text-xs text-muted-foreground text-center mt-1 leading-relaxed">Менеджер свяжется с вами для подтверждения бронирования и подберёт для вас максимальную скидку — до 30%</p>
                 </div>
               </form>
             </div>
