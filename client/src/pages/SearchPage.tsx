@@ -4,6 +4,7 @@ import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { SeasonCalendar } from "@/components/SeasonCalendar";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RoomImageCarousel } from "@/components/RoomImageCarousel";
@@ -62,6 +63,22 @@ export default function SearchPage() {
   const defaultIn = getDefaultCheckIn();
   const [checkIn, setCheckIn] = useState(params.get("checkIn") || defaultIn);
   const [checkOut, setCheckOut] = useState(params.get("checkOut") || getDefaultCheckOut(defaultIn));
+
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0];
+  const sYear = today.getFullYear();
+  const seasonStartDate = new Date(sYear, 5, 1);
+  const seasonEndDate = new Date(sYear, 8, 15);
+  const SEASON_START = today > seasonEndDate ? `${sYear + 1}-06-01` : `${sYear}-06-01`;
+  const SEASON_END = today > seasonEndDate ? `${sYear + 1}-09-15` : `${sYear}-09-15`;
+  const minCheckIn = todayStr > SEASON_START && todayStr <= SEASON_END ? todayStr : SEASON_START;
+  const addDays = (dateStr: string, days: number) => {
+    const d = new Date(dateStr);
+    d.setDate(d.getDate() + days);
+    return d.toISOString().split("T")[0];
+  };
+  const MIN_NIGHTS = 3;
+  const minCheckOut = checkIn ? addDays(checkIn, MIN_NIGHTS) : addDays(SEASON_START, MIN_NIGHTS);
   const [adults, setAdults] = useState(Number(params.get("adults")) || 2);
   const [teens, setTeens] = useState(Number(params.get("teens")) || 0);
   const [children, setChildren] = useState(Number(params.get("children")) || 0);
@@ -173,35 +190,35 @@ export default function SearchPage() {
             <div className="grid grid-cols-2 gap-2 md:gap-4 w-full md:w-auto md:shrink-0">
               <div className="min-w-0 space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата заезда</Label>
-                <div className="date-input-wrapper">
-                  <Input
-                    data-testid="search-checkin"
-                    type="date"
-                    value={checkIn}
-                    onChange={(e) => {
-                      setCheckIn(e.target.value);
-                      if (e.target.value && checkOut <= e.target.value) {
-                        const d = new Date(e.target.value);
-                        d.setDate(d.getDate() + 1);
-                        setCheckOut(d.toISOString().split("T")[0]);
-                      }
-                    }}
-                    className="h-12 bg-secondary/30 border-primary/20 w-full"
-                  />
-                </div>
+                <SeasonCalendar
+                  testId="search-checkin"
+                  value={checkIn}
+                  onChange={(val) => {
+                    setCheckIn(val);
+                    if (val && checkOut && checkOut < addDays(val, MIN_NIGHTS)) {
+                      setCheckOut("");
+                    }
+                  }}
+                  minDate={minCheckIn}
+                  maxDate={SEASON_END}
+                  seasonStart={SEASON_START}
+                  seasonEnd={SEASON_END}
+                  placeholder="Заезд"
+                />
               </div>
               <div className="min-w-0 space-y-1.5">
                 <Label className="text-xs text-muted-foreground">Дата выезда</Label>
-                <div className="date-input-wrapper">
-                  <Input
-                    data-testid="search-checkout"
-                    type="date"
-                    value={checkOut}
-                    min={checkIn}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                    className="h-12 bg-secondary/30 border-primary/20 w-full"
-                  />
-                </div>
+                <SeasonCalendar
+                  testId="search-checkout"
+                  value={checkOut}
+                  onChange={(val) => setCheckOut(val)}
+                  minDate={minCheckOut}
+                  maxDate={SEASON_END}
+                  seasonStart={SEASON_START}
+                  seasonEnd={SEASON_END}
+                  placeholder="Выезд"
+                  disabled={!checkIn}
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-4 w-full md:flex-1 md:min-w-0">
