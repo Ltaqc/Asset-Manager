@@ -247,10 +247,15 @@ export async function registerRoutes(
       if (err instanceof z.ZodError) {
         return res.status(400).json({
           message: err.errors[0].message,
-          field: err.errors[0].path.join('.'),
+          field: err.errors[0].path.join("."),
         });
       }
-      throw err;
+
+      console.error("Booking create failed:", err);
+
+      return res.status(503).json({
+        message: "Заявка временно не может быть отправлена. Попробуйте ещё раз чуть позже.",
+      });
     }
   });
 
