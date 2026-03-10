@@ -1,4 +1,4 @@
-import { db, hasDatabase } from "../db";
+import { db, hasDatabase } from "./db";
 import { bookings, type InsertBooking, type Booking } from "@shared/schema";
 
 export interface IStorage {
