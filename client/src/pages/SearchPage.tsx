@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback } from "react";
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { useSearch } from "wouter";
 import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { SeasonCalendar } from "@/components/SeasonCalendar";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RoomImageCarousel } from "@/components/RoomImageCarousel";
-import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp, CheckCircle2, X } from "lucide-react";
+import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp, CheckCircle2 } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import {
@@ -130,16 +130,22 @@ export default function SearchPage() {
     return digits.length === 11;
   }, []);
 
-  const closeValidationError = useCallback(() => {
-    setValidationError(null);
-    requestAnimationFrame(() => {
-      if (!contactName.trim()) {
-        nameInputRef.current?.focus();
-      } else if (!isPhoneValid(contactPhone)) {
-        phoneInputRef.current?.focus();
-      }
-    });
-  }, [contactName, contactPhone, isPhoneValid]);
+  const [toastFading, setToastFading] = useState(false);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!validationError) return;
+    setToastFading(false);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => {
+      setToastFading(true);
+      setTimeout(() => {
+        setValidationError(null);
+        setToastFading(false);
+      }, 300);
+    }, 2500);
+    return () => { if (toastTimerRef.current) clearTimeout(toastTimerRef.current); };
+  }, [validationError]);
 
   const handleSubmitBooking = (e: React.FormEvent) => {
     e.preventDefault();
@@ -150,13 +156,14 @@ export default function SearchPage() {
 
     if (nameMissing || phoneMissing) {
       setFieldErrors({ name: nameMissing, phone: phoneMissing });
-      if (nameMissing && phoneMissing) {
-        setValidationError("Введите имя и номер телефона");
-      } else if (nameMissing) {
-        setValidationError("Введите имя");
-      } else {
-        setValidationError("Введите номер телефона");
-      }
+      const msg = nameMissing && phoneMissing
+        ? "Введите имя и номер телефона"
+        : nameMissing ? "Введите имя" : "Введите номер телефона";
+      setValidationError((prev) => prev === msg ? msg + " " : msg);
+      requestAnimationFrame(() => {
+        if (nameMissing) nameInputRef.current?.focus();
+        else phoneInputRef.current?.focus();
+      });
       return;
     }
 
@@ -921,34 +928,15 @@ export default function SearchPage() {
 
       {validationError && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] flex items-center justify-center p-4 animate-in fade-in duration-200"
-          onClick={closeValidationError}
-          data-testid="modal-validation-overlay"
+          className="fixed inset-x-0 top-[40%] z-[60] flex justify-center pointer-events-none px-4"
+          data-testid="toast-validation"
         >
           <div
-            className="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl animate-in zoom-in-95 fade-in duration-200"
-            onClick={(e) => e.stopPropagation()}
-            data-testid="modal-validation"
+            className={`pointer-events-auto inline-flex items-center gap-2.5 bg-foreground/90 backdrop-blur-md text-white px-5 py-3 rounded-xl shadow-lg transition-all duration-300 ${toastFading ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0 animate-in fade-in slide-in-from-bottom-2 duration-300"}`}
+            data-testid="toast-validation-content"
           >
-            <button
-              className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-muted transition-colors"
-              onClick={closeValidationError}
-              data-testid="button-validation-close-x"
-              style={{ position: "relative", float: "right", marginTop: "-0.5rem" }}
-            >
-              <X className="w-5 h-5 text-muted-foreground" />
-            </button>
-            <div className="flex justify-center pt-2">
-              <AlertCircle className="w-14 h-14 text-primary" />
-            </div>
-            <p className="text-lg font-display font-semibold text-foreground" data-testid="text-validation-message">{validationError}</p>
-            <Button
-              className="w-full mt-2 h-12 rounded-xl"
-              onClick={closeValidationError}
-              data-testid="button-validation-close"
-            >
-              Понятно
-            </Button>
+            <AlertCircle className="w-5 h-5 shrink-0 text-white/80" />
+            <span className="text-sm font-medium" data-testid="text-validation-message">{validationError.trim()}</span>
           </div>
         </div>
       )}
