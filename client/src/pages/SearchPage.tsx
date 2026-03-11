@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useCallback } from "react";
 import { useSearch } from "wouter";
 import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { SeasonCalendar } from "@/components/SeasonCalendar";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RoomImageCarousel } from "@/components/RoomImageCarousel";
-import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp, CheckCircle2 } from "lucide-react";
+import { Users, AlertCircle, Loader2, Maximize2, Star, ArrowRightLeft, ChevronDown, ChevronUp, CheckCircle2, X } from "lucide-react";
 import { GuestCounter } from "@/components/GuestCounter";
 import { useCreateBooking } from "@/hooks/use-bookings";
 import {
@@ -90,6 +90,10 @@ export default function SearchPage() {
   const [contactPhone, setContactPhone] = useState("");
   const [showAllRooms, setShowAllRooms] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ name: boolean; phone: boolean }>({ name: false, phone: false });
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
 
   const createBooking = useCreateBooking();
 
@@ -102,6 +106,8 @@ export default function SearchPage() {
   const handleBook = (combo: RoomCombo) => {
     metrikaGoal("booking_open");
     metrikaHit("/booking/open");
+    setFieldErrors({ name: false, phone: false });
+    setValidationError(null);
     setSelectedCombo(combo);
   };
 
@@ -113,13 +119,46 @@ export default function SearchPage() {
     if (!confirmingCombo) return;
     metrikaGoal("booking_open");
     metrikaHit("/booking/open");
+    setFieldErrors({ name: false, phone: false });
+    setValidationError(null);
     setSelectedCombo(confirmingCombo);
     setConfirmingCombo(null);
   };
 
+  const isPhoneValid = useCallback((phone: string) => {
+    const digits = phone.replace(/\D/g, "");
+    return digits.length === 11;
+  }, []);
+
+  const closeValidationError = useCallback(() => {
+    setValidationError(null);
+    requestAnimationFrame(() => {
+      if (!contactName.trim()) {
+        nameInputRef.current?.focus();
+      } else if (!isPhoneValid(contactPhone)) {
+        phoneInputRef.current?.focus();
+      }
+    });
+  }, [contactName, contactPhone, isPhoneValid]);
+
   const handleSubmitBooking = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedCombo) return;
+    if (!selectedCombo || createBooking.isPending) return;
+
+    const nameMissing = !contactName.trim();
+    const phoneMissing = !isPhoneValid(contactPhone);
+
+    if (nameMissing || phoneMissing) {
+      setFieldErrors({ name: nameMissing, phone: phoneMissing });
+      if (nameMissing && phoneMissing) {
+        setValidationError("Введите имя и номер телефона");
+      } else if (nameMissing) {
+        setValidationError("Введите имя");
+      } else {
+        setValidationError("Введите номер телефона");
+      }
+      return;
+    }
 
     const roomLabel = selectedCombo.rooms.length === 1
       ? selectedCombo.rooms[0].category
@@ -809,15 +848,26 @@ export default function SearchPage() {
               <form onSubmit={handleSubmitBooking} className="space-y-4">
                 <div className="space-y-1.5">
                   <Label>Имя</Label>
-                  <Input data-testid="booking-name" placeholder="Как к вам обращаться" value={contactName} onChange={(e) => setContactName(e.target.value)} className="h-12 text-base" />
+                  <Input
+                    ref={nameInputRef}
+                    data-testid="booking-name"
+                    placeholder="Как к вам обращаться"
+                    value={contactName}
+                    onChange={(e) => {
+                      setContactName(e.target.value);
+                      if (fieldErrors.name && e.target.value.trim()) setFieldErrors(prev => ({ ...prev, name: false }));
+                    }}
+                    className={`h-12 text-base transition-colors ${fieldErrors.name ? "border-red-500 ring-1 ring-red-500" : ""}`}
+                  />
                 </div>
                 <div className="space-y-1.5">
                   <Label>Телефон</Label>
                   <Input
+                    ref={phoneInputRef}
                     data-testid="booking-phone"
                     type="tel"
                     inputMode="tel"
-                    placeholder="+7 900 123 45 67"
+                    placeholder="+7 (___) ___-__-__"
                     value={contactPhone}
                     onChange={(e) => {
                       let raw = e.target.value.replace(/[^\d+]/g, "");
@@ -827,16 +877,19 @@ export default function SearchPage() {
                       const digits = raw.replace(/\D/g, "");
                       if (digits.length === 0) { setContactPhone(""); return; }
                       let formatted = "+7";
-                      const d = digits.slice(1);
-                      if (d.length > 0) formatted += " " + d.slice(0, 3);
-                      if (d.length > 3) formatted += " " + d.slice(3, 6);
-                      if (d.length > 6) formatted += " " + d.slice(6, 8);
-                      if (d.length > 8) formatted += " " + d.slice(8, 10);
+                      const d = digits.slice(1).slice(0, 10);
+                      if (d.length > 0) formatted += " (" + d.slice(0, 3);
+                      if (d.length >= 3) formatted += ") ";
+                      else if (d.length > 0) formatted += "";
+                      if (d.length > 3) formatted += d.slice(3, 6);
+                      if (d.length > 6) formatted += "-" + d.slice(6, 8);
+                      if (d.length > 8) formatted += "-" + d.slice(8, 10);
                       setContactPhone(formatted);
+                      if (fieldErrors.phone && digits.length === 11) setFieldErrors(prev => ({ ...prev, phone: false }));
                     }}
-                    onFocus={(e) => { if (!e.target.value) setContactPhone("+7 "); }}
-                    onBlur={() => { if (contactPhone.trim() === "+7") setContactPhone(""); }}
-                    className="h-12 text-base"
+                    onFocus={(e) => { if (!e.target.value) setContactPhone("+7 ("); }}
+                    onBlur={() => { if (contactPhone.replace(/\D/g, "").length <= 1) setContactPhone(""); }}
+                    className={`h-12 text-base transition-colors ${fieldErrors.phone ? "border-red-500 ring-1 ring-red-500" : ""}`}
                   />
                 </div>
                 <div className="space-y-3 pt-1">
@@ -865,6 +918,40 @@ export default function SearchPage() {
           </div>
         );
       })()}
+
+      {validationError && (
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={closeValidationError}
+          data-testid="modal-validation-overlay"
+        >
+          <div
+            className="bg-white rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl animate-in zoom-in-95 fade-in duration-200"
+            onClick={(e) => e.stopPropagation()}
+            data-testid="modal-validation"
+          >
+            <button
+              className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-muted transition-colors"
+              onClick={closeValidationError}
+              data-testid="button-validation-close-x"
+              style={{ position: "relative", float: "right", marginTop: "-0.5rem" }}
+            >
+              <X className="w-5 h-5 text-muted-foreground" />
+            </button>
+            <div className="flex justify-center pt-2">
+              <AlertCircle className="w-14 h-14 text-primary" />
+            </div>
+            <p className="text-lg font-display font-semibold text-foreground" data-testid="text-validation-message">{validationError}</p>
+            <Button
+              className="w-full mt-2 h-12 rounded-xl"
+              onClick={closeValidationError}
+              data-testid="button-validation-close"
+            >
+              Понятно
+            </Button>
+          </div>
+        </div>
+      )}
 
       {bookingSuccess && (
         <div
