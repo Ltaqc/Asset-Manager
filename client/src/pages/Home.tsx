@@ -87,7 +87,7 @@ const TERRITORY_GALLERY = [
 
 export default function Home() {
   const [, navigate] = useLocation();
-  const MIN_NIGHTS = 3;
+  const MIN_NIGHTS = 1;
 
   const addDays = (dateStr: string, days: number) => {
     const d = new Date(dateStr);
@@ -149,11 +149,6 @@ export default function Home() {
     }
     if (checkOut <= checkIn || checkOut > SEASON_END) {
       setDateError("Дата выезда должна быть в пределах сезона");
-      return;
-    }
-    const nights = Math.round((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86400000);
-    if (nights < MIN_NIGHTS) {
-      setDateError(`Минимальный срок проживания — ${MIN_NIGHTS} ночи`);
       return;
     }
     setDateError("");
@@ -340,8 +335,6 @@ export default function Home() {
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
             <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября</p>
-            <p className="text-sm text-muted-foreground text-center -mt-2 mb-1">Минимальный срок проживания — 3 ночи</p>
-
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>

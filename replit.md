@@ -77,6 +77,7 @@ The `bookings` table stores:
 - ONE atomic function `calculateRoomTotalPrice(category, checkIn, checkOut, adults, teens, children, toddlers)` is the single source of truth
 - Accommodation pricing varies by room category and month (June through September)
 - Food pricing: adult 4500/night, teen 4500/night, child 3000/night, toddler free
+- Minimum stay: 1 night (no minimum night restriction enforced)
 - Cross-month stays are calculated night-by-night using the rate for each night's month
 - Single room: TotalPrice = accommodation + food (via atomic function)
 - Multi-room: TotalPrice = sum(each room's accommodation) + food once for all guests

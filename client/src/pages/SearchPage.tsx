@@ -77,7 +77,7 @@ export default function SearchPage() {
     d.setDate(d.getDate() + days);
     return d.toISOString().split("T")[0];
   };
-  const MIN_NIGHTS = 3;
+  const MIN_NIGHTS = 1;
   const minCheckOut = checkIn ? addDays(checkIn, MIN_NIGHTS) : addDays(SEASON_START, MIN_NIGHTS);
   const [adults, setAdults] = useState(Number(params.get("adults")) || 2);
   const [teens, setTeens] = useState(Number(params.get("teens")) || 0);
