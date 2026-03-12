@@ -116,7 +116,7 @@ export function FloatingPromo() {
           data-testid="promo-gift-button"
         >
           <Gift className="w-4 h-4 pointer-events-none" />
-          <span className="pointer-events-none">Выгода до 30%</span>
+          <span className="pointer-events-none">Выгода до 25%</span>
         </button>
       )}
 
@@ -176,7 +176,7 @@ export function FloatingPromo() {
               <p className="mt-2.5 text-sm text-gray-500 leading-relaxed">
                 Подберём лучшие даты и номера
                 с максимальной выгодой до{" "}
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[15px] md:text-base font-bold" style={{ background: "rgba(46,196,182,0.12)", color: "#1FA99D" }}>30%</span>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[15px] md:text-base font-bold" style={{ background: "rgba(46,196,182,0.12)", color: "#1FA99D" }}>25%</span>
                 {" "}для вашей семьи
               </p>
 

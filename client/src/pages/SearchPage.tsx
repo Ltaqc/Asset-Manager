@@ -409,7 +409,7 @@ export default function SearchPage() {
                               <div className="text-xs font-medium text-green-600" data-testid="discount-recommended">
                                 Скидка раннего бронирования — 10%
                               </div>
-                              <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 30%</p>
+                              <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                             </>
                           ) : (
                             <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
@@ -494,7 +494,7 @@ export default function SearchPage() {
                                     {formatPrice(finalPrice(combo.totalPrice))}
                                   </div>
                                   <div className="text-xs font-medium text-green-600">Скидка раннего бронирования — 10%</div>
-                                  <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 30%</p>
+                                  <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                                 </>
                               ) : (
                                 <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
@@ -654,7 +654,7 @@ export default function SearchPage() {
                       </div>
                     )}
                     {earlyBooking && (
-                      <p className="text-sm font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 30%</p>
+                      <p className="text-sm font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                     )}
                   </div>
 
@@ -685,7 +685,7 @@ export default function SearchPage() {
                     {earlyBooking && (
                       <>
                         <p className="text-xs font-medium text-green-600 mt-1">Скидка раннего бронирования — 10%</p>
-                        <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 30%</p>
+                        <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                       </>
                     )}
                   </div>
@@ -802,7 +802,7 @@ export default function SearchPage() {
                       </div>
                     )}
                     {earlyBooking && (
-                      <p className="text-sm font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 30%</p>
+                      <p className="text-sm font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                     )}
                   </div>
 
@@ -844,7 +844,7 @@ export default function SearchPage() {
                         </div>
                       )}
                       {earlyBooking && (
-                        <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 30%</p>
+                        <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                       )}
                     </div>
 
