@@ -122,7 +122,7 @@ async function sendEmailNotification(booking: NotificationData) {
   try {
     await transporter.sendMail({
       from: `"AL MARE — заявки с сайта" <${user}>`,
-      to: "almare@hotelalmare.ru",
+      to: "almare@hotelalmare.ru, Troyan.nastasya@mail.ru",
       subject: `🔔 Новая заявка на бронирование — AL MARE`,
       html,
     });
