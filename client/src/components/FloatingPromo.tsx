@@ -175,9 +175,8 @@ export function FloatingPromo() {
 
               <p className="mt-2.5 text-sm text-gray-500 leading-relaxed">
                 Подберём лучшие даты и номера
-                с максимальной выгодой до{" "}
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[15px] md:text-base font-bold" style={{ background: "rgba(46,196,182,0.12)", color: "#1FA99D" }}>25%</span>
-                {" "}для вашей семьи
+                Скидки в июне до{" "}
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[15px] md:text-base font-bold" style={{ background: "rgba(46,196,182,0.12)", color: "#1FA99D" }}>30%</span>
               </p>
 
               <div className="mt-4 space-y-2">

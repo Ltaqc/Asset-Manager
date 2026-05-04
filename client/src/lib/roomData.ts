@@ -165,8 +165,14 @@ export function isEarlyBooking(checkIn: string): boolean {
   return diffDays > EARLY_BOOKING_DAYS;
 }
 
-export function applyEarlyDiscount(total: number): number {
-  return Math.round(total * (1 - EARLY_BOOKING_DISCOUNT));
+export function getDiscountRate(checkIn: string): number {
+  const month = new Date(checkIn).getMonth(); // 5 = June
+  return month === 5 ? 0.20 : 0.10;
+}
+
+export function applyEarlyDiscount(total: number, checkIn = ""): number {
+  const rate = checkIn ? getDiscountRate(checkIn) : EARLY_BOOKING_DISCOUNT;
+  return Math.round(total * (1 - rate));
 }
 
 export function formatPrice(value: number): string {

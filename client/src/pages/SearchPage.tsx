@@ -15,7 +15,7 @@ import {
   ROOM_DATA, RoomCategory,
   formatPrice, nightsLabel,
   getDefaultCheckIn, getDefaultCheckOut,
-  isEarlyBooking, applyEarlyDiscount,
+  isEarlyBooking, applyEarlyDiscount, getDiscountRate,
   generateRecommendations, RoomCombo,
   calculateRoomTotalPrice, calculateFoodCost,
   calculateAccommodationCost, isRoomSuitable,
@@ -221,7 +221,8 @@ export default function SearchPage() {
     });
   };
 
-  const finalPrice = (price: number) => earlyBooking ? applyEarlyDiscount(price) : price;
+  const discountLabel = earlyBooking ? `${Math.round(getDiscountRate(checkIn) * 100)}%` : "";
+  const finalPrice = (price: number) => earlyBooking ? applyEarlyDiscount(price, checkIn) : price;
 
   const hasResults = recommendations.primary !== null;
   const hasAlternatives = recommendations.alternatives.length > 0;
@@ -407,7 +408,7 @@ export default function SearchPage() {
                                 {formatPrice(finalPrice(recommendations.primary.totalPrice))}
                               </div>
                               <div className="text-xs font-medium text-green-600" data-testid="discount-recommended">
-                                Скидка раннего бронирования — 10%
+                                Скидка раннего бронирования — {discountLabel}
                               </div>
                               <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                             </>
@@ -493,7 +494,7 @@ export default function SearchPage() {
                                   <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
                                     {formatPrice(finalPrice(combo.totalPrice))}
                                   </div>
-                                  <div className="text-xs font-medium text-green-600">Скидка раннего бронирования — 10%</div>
+                                  <div className="text-xs font-medium text-green-600">Скидка раннего бронирования — {discountLabel}</div>
                                   <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                                 </>
                               ) : (
@@ -552,7 +553,7 @@ export default function SearchPage() {
                               <span><Maximize2 className="w-3 h-3 inline mr-1" />{info.area} м²</span>
                             </div>
                             <div className="text-sm font-semibold text-primary mt-auto">
-                              от {formatPrice(earlyBooking ? applyEarlyDiscount(rc.cost) : rc.cost)}
+                              от {formatPrice(earlyBooking ? applyEarlyDiscount(rc.cost, checkIn) : rc.cost)}
                               <span className="text-xs text-muted-foreground font-normal"> / {rc.nights} {nightsLabel(rc.nights)}</span>
                             </div>
                           </div>
@@ -649,7 +650,7 @@ export default function SearchPage() {
                     </div>
                     {earlyBooking && (
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-sm font-medium text-green-600">Скидка раннего бронирования — 10%:</span>
+                        <span className="text-sm font-medium text-green-600">Скидка раннего бронирования — {discountLabel}:</span>
                         <span className="text-sm font-bold text-green-600">−{formatPrice(confirmDiscountAmount)}</span>
                       </div>
                     )}
@@ -684,7 +685,7 @@ export default function SearchPage() {
                     </div>
                     {earlyBooking && (
                       <>
-                        <p className="text-xs font-medium text-green-600 mt-1">Скидка раннего бронирования — 10%</p>
+                        <p className="text-xs font-medium text-green-600 mt-1">Скидка раннего бронирования — {discountLabel}</p>
                         <p className="text-xs font-medium text-green-600/80 mt-1">Дополнительные скидки при подтверждении бронирования — до 25%</p>
                       </>
                     )}
@@ -795,7 +796,7 @@ export default function SearchPage() {
                     </div>
                     {earlyBooking && (
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-sm font-medium text-green-600">Скидка раннего бронирования — 10%:</span>
+                        <span className="text-sm font-medium text-green-600">Скидка раннего бронирования — {discountLabel}:</span>
                         <span className="text-sm font-bold text-green-600" data-testid="modal-discount">
                           −{formatPrice(comboDiscountAmount)}
                         </span>
@@ -839,7 +840,7 @@ export default function SearchPage() {
                       </div>
                       {earlyBooking && (
                         <div className="flex items-center justify-between gap-2 mt-1">
-                          <span className="text-xs font-medium text-green-600">Скидка раннего бронирования — 10%</span>
+                          <span className="text-xs font-medium text-green-600">Скидка раннего бронирования — {discountLabel}</span>
                           <span className="text-sm text-muted-foreground line-through">{formatPrice(selectedCombo.totalPrice)}</span>
                         </div>
                       )}
