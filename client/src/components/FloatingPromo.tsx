@@ -200,7 +200,10 @@ export function FloatingPromo() {
             </div>
 
             {/* Mobile photo — top strip */}
-            <div className="sm:hidden w-full h-[200px] overflow-hidden">
+            <div
+              className="sm:hidden w-full overflow-hidden rounded-t-2xl"
+              style={{ height: "220px", flexShrink: 0 }}
+            >
               <picture className="block w-full h-full">
                 <source srcSet="/family-beach-sm.webp" type="image/webp" />
                 <img
@@ -209,7 +212,7 @@ export function FloatingPromo() {
                   width={700}
                   height={875}
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: "50% 30%" }}
+                  style={{ objectPosition: "center 22%" }}
                   loading="lazy"
                 />
               </picture>
