@@ -183,24 +183,36 @@ export function FloatingPromo() {
               <X className="w-4 h-4 pointer-events-none" />
             </button>
 
-            <div className="hidden sm:block sm:w-[280px] shrink-0">
-              <img
-                src={promoFamilyImg}
-                alt="Семейный отдых на пляже"
-                className="w-full h-full object-cover"
-                style={{ objectPosition: "center center" }}
-                loading="eager"
-              />
+            {/* Desktop photo — left panel */}
+            <div className="hidden sm:block sm:w-[280px] shrink-0 overflow-hidden">
+              <picture className="block w-full h-full">
+                <source srcSet="/family-beach-lg.webp" type="image/webp" />
+                <img
+                  src={promoFamilyImg}
+                  alt="Семейный отдых на пляже"
+                  width={1000}
+                  height={1250}
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: "center center" }}
+                  loading="lazy"
+                />
+              </picture>
             </div>
 
+            {/* Mobile photo — top strip */}
             <div className="sm:hidden w-full h-[200px] overflow-hidden">
-              <img
-                src={promoFamilyImg}
-                alt="Семейный отдых на пляже"
-                className="w-full h-full object-cover"
-                style={{ objectPosition: "50% 30%" }}
-                loading="eager"
-              />
+              <picture className="block w-full h-full">
+                <source srcSet="/family-beach-sm.webp" type="image/webp" />
+                <img
+                  src={promoFamilyImg}
+                  alt="Семейный отдых на пляже"
+                  width={700}
+                  height={875}
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: "50% 30%" }}
+                  loading="lazy"
+                />
+              </picture>
             </div>
 
             <div className="flex-1 px-5 md:px-7 pt-5 md:pt-6 pb-5 flex flex-col justify-center">
