@@ -202,38 +202,57 @@ export default function Home() {
       </header>
 
       {/* Promo Banner */}
-      <div className="relative overflow-hidden" style={{ background: "linear-gradient(100deg, #0d4f5c 0%, #1a7a72 50%, #2EC4B6 100%)" }}>
+      <div className="relative overflow-hidden" style={{ background: "linear-gradient(105deg, #0a3d4a 0%, #0f5f6e 45%, #1a8a80 100%)" }}>
         <style>{`
-          @keyframes promo-banner-glow {
-            0%, 100% { opacity: 0.18; transform: scale(1); }
-            50% { opacity: 0.32; transform: scale(1.06); }
-          }
           @keyframes promo-banner-in {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
           }
-          .promo-banner-content { animation: promo-banner-in 0.7s ease-out both; }
-          .promo-banner-orb { animation: promo-banner-glow 3.5s ease-in-out infinite; }
+          @keyframes promo-shimmer {
+            0%, 100% { opacity: 0.12; }
+            50% { opacity: 0.22; }
+          }
+          .promo-banner-content { animation: promo-banner-in 0.6s ease-out both; }
+          .promo-banner-shimmer { animation: promo-shimmer 4s ease-in-out infinite; }
         `}</style>
-        <div className="promo-banner-orb absolute -top-10 -right-10 w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%)" }} />
-        <div className="promo-banner-orb absolute -bottom-8 left-1/4 w-48 h-48 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)", animationDelay: "1.2s" }} />
 
-        <div className="promo-banner-content container mx-auto px-4 py-5 md:py-6 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
-          <div className="text-center md:text-left">
-            <p className="text-white font-display font-bold text-lg md:text-xl leading-tight">
-              🔥 Горящее предложение на отдых у моря
-            </p>
-            <p className="text-white/80 text-sm mt-1 leading-snug">
-              Цены снижены. Дополнительная выгода доступна при подтверждении бронирования.
-            </p>
+        <div className="promo-banner-shimmer absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,255,255,0.18) 0%, transparent 70%)" }} />
+        <div className="promo-banner-shimmer absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 30% 60% at 10% 50%, rgba(255,255,255,0.08) 0%, transparent 70%)", animationDelay: "2s" }} />
+
+        <div className="promo-banner-content container mx-auto px-4 py-5 md:py-7 flex flex-col md:flex-row items-center justify-between gap-5 relative z-10">
+          <div className="flex items-start md:items-center gap-4">
+            {/* Premium spark icon */}
+            <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.22)" }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z" fill="rgba(255,255,255,0.95)" />
+                <path d="M19 16L19.9 18.1L22 19L19.9 19.9L19 22L18.1 19.9L16 19L18.1 18.1L19 16Z" fill="rgba(255,255,255,0.6)" />
+                <path d="M5 3L5.6 4.4L7 5L5.6 5.6L5 7L4.4 5.6L3 5L4.4 4.4L5 3Z" fill="rgba(255,255,255,0.5)" />
+              </svg>
+            </div>
+
+            <div className="text-center md:text-left">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5">
+                <span className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.25)", letterSpacing: "0.12em" }}>ИЮНЬ</span>
+              </div>
+              <p className="text-white font-display font-bold text-lg md:text-xl leading-tight">
+                Июньское спецпредложение —{" "}
+                <span className="inline-flex items-center px-2 py-0.5 rounded-lg font-bold" style={{ background: "rgba(255,255,255,0.18)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)", fontSize: "inherit" }}>
+                  выгода до 30%
+                </span>
+              </p>
+              <p className="text-white/70 text-xs md:text-sm mt-1.5 leading-snug max-w-lg">
+                Забронируйте отдых с проживанием в июне и получите специальные условия при подтверждении бронирования.
+              </p>
+            </div>
           </div>
+
           <button
             type="button"
             onClick={scrollToCalculator}
-            className="shrink-0 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.98]"
-            style={{ background: "rgba(255,255,255,0.18)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.4)", backdropFilter: "blur(8px)" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.28)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.18)"; }}
+            className="shrink-0 px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-200 hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.97]"
+            style={{ background: "rgba(255,255,255,0.16)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.35)", backdropFilter: "blur(8px)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.26)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.16)"; }}
             data-testid="button-promo-banner-cta"
           >
             Проверить свою цену
