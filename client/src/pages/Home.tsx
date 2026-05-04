@@ -205,89 +205,85 @@ export default function Home() {
       <div
         className="relative overflow-hidden"
         style={{
-          background: "linear-gradient(118deg, #041f2b 0%, #073344 25%, #0a5260 55%, #0b6e70 80%, #0d8070 100%)",
-          borderTop: "1px solid rgba(46,196,182,0.12)",
-          borderBottom: "1px solid rgba(46,196,182,0.12)",
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.15)",
+          background: "linear-gradient(118deg, #041f2b 0%, #073344 28%, #0a5260 58%, #0b6c6e 82%, #0d7e70 100%)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.18), 0 1px 0 rgba(46,196,182,0.14)",
+          borderBottom: "1px solid rgba(46,196,182,0.16)",
         }}
       >
         <style>{`
-          @keyframes pb-in {
-            from { opacity: 0; transform: translateY(14px); }
+          @keyframes pb2-in {
+            from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
           }
-          @keyframes pb-fire-ring {
-            0%,100% { box-shadow: 0 0 0 0 rgba(234,130,30,0), 0 0 22px 6px rgba(234,130,30,0.18); }
-            50%      { box-shadow: 0 0 0 8px rgba(234,130,30,0.07), 0 0 36px 12px rgba(234,130,30,0.28); }
+          @keyframes pb2-fire-glow {
+            0%,100% { box-shadow: 0 0 14px 4px rgba(230,120,20,0.22), 0 0 0 0 rgba(230,120,20,0); }
+            50%      { box-shadow: 0 0 30px 10px rgba(230,120,20,0.38), 0 0 0 6px rgba(230,120,20,0.07); }
           }
-          @keyframes pb-fire-flicker {
-            0%,100% { transform: scaleY(1) scaleX(1); opacity: 1; }
-            33%      { transform: scaleY(1.07) scaleX(0.97); opacity: 0.9; }
-            66%      { transform: scaleY(0.96) scaleX(1.02); opacity: 0.95; }
+          @keyframes pb2-flicker {
+            0%,100% { transform: scaleY(1) scaleX(1);   opacity: 1; }
+            30%      { transform: scaleY(1.08) scaleX(0.96); opacity: 0.88; }
+            70%      { transform: scaleY(0.95) scaleX(1.03); opacity: 0.94; }
           }
-          @keyframes pb-pill-glow {
-            0%,100% { box-shadow: 0 0 0 0 rgba(255,200,50,0); }
-            50%      { box-shadow: 0 0 16px 5px rgba(255,200,50,0.22); }
+          @keyframes pb2-pill {
+            0%,100% { box-shadow: 0 0 0 0 rgba(255,195,40,0),  0 0 8px  2px rgba(255,195,40,0.12); }
+            50%      { box-shadow: 0 0 0 4px rgba(255,195,40,0.06), 0 0 20px 6px rgba(255,195,40,0.30); }
           }
-          @keyframes pb-btn-shine {
-            0%   { background-position: -200% center; }
-            100% { background-position: 200% center; }
-          }
-          .pb-in           { animation: pb-in 0.75s cubic-bezier(.22,.68,0,1.2) both; }
-          .pb-fire-ring    { animation: pb-fire-ring 3s ease-in-out infinite; }
-          .pb-fire-flicker { animation: pb-fire-flicker 2.4s ease-in-out infinite; transform-origin: 50% 90%; }
-          .pb-pill-glow    { animation: pb-pill-glow 3.8s ease-in-out infinite; }
-          .pb-btn:hover    { box-shadow: 0 0 28px 6px rgba(220,155,30,0.35) !important; transform: translateY(-1px) scale(1.02); }
-          .pb-btn:active   { transform: translateY(0) scale(0.98); }
-          .pb-btn          { transition: all 0.22s ease; }
+          .pb2-in     { animation: pb2-in 0.65s cubic-bezier(.22,.68,0,1.15) both; }
+          .pb2-glow   { animation: pb2-fire-glow 2.8s ease-in-out infinite; }
+          .pb2-flick  { animation: pb2-flicker 2.3s ease-in-out infinite; transform-origin: 50% 92%; }
+          .pb2-pill   { animation: pb2-pill 3.5s ease-in-out infinite; }
+          .pb2-btn    { transition: all 0.2s ease; }
+          .pb2-btn:hover  { transform: translateY(-1px) scale(1.02); box-shadow: 0 0 30px 8px rgba(215,145,20,0.38), inset 0 1px 0 rgba(255,255,255,0.22) !important; }
+          .pb2-btn:active { transform: translateY(0) scale(0.98); }
         `}</style>
 
-        {/* Ambient light layers */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 100% at 95% 50%, rgba(46,196,182,0.15) 0%, transparent 65%)" }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 45% 80% at 0% 50%, rgba(234,130,30,0.07) 0%, transparent 60%)" }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 40% at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 60%)" }} />
+        {/* Ambient glows */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 55% 120% at 96% 50%, rgba(46,196,182,0.13) 0%, transparent 60%)" }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 35% 90% at 2% 50%, rgba(230,110,20,0.09) 0%, transparent 55%)" }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 35% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 60%)" }} />
 
-        <div className="pb-in container mx-auto px-4 py-7 md:py-10 relative z-10">
+        <div className="pb2-in container mx-auto px-4 py-5 md:py-6 relative z-10">
 
-          {/* Main row */}
-          <div className="flex flex-col md:flex-row md:items-center gap-5 md:gap-8">
+          {/* Main row: icon · text · button */}
+          <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
 
-            {/* Large glowing fire icon */}
+            {/* Hot-offer fire badge */}
             <div
-              className="pb-fire-ring self-center md:self-auto shrink-0 w-[68px] h-[68px] md:w-20 md:h-20 rounded-2xl flex items-center justify-center"
+              className="pb2-glow self-center md:self-auto shrink-0 w-[62px] h-[62px] md:w-[72px] md:h-[72px] rounded-2xl flex items-center justify-center"
               style={{
-                background: "linear-gradient(145deg, rgba(234,130,30,0.2) 0%, rgba(200,80,10,0.14) 60%, rgba(46,196,182,0.08) 100%)",
-                border: "1.5px solid rgba(234,130,30,0.4)",
-                backdropFilter: "blur(12px)",
+                background: "linear-gradient(145deg, rgba(230,110,18,0.28) 0%, rgba(180,70,8,0.18) 55%, rgba(30,100,100,0.12) 100%)",
+                border: "1.5px solid rgba(230,120,20,0.5)",
+                backdropFilter: "blur(14px)",
               }}
             >
-              <svg className="pb-fire-flicker" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg className="pb2-flick" width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                  <linearGradient id="pbFlameGrad" x1="16" y1="4" x2="16" y2="28" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#FFE066" />
-                    <stop offset="45%" stopColor="#FF9A20" />
-                    <stop offset="100%" stopColor="#E85D10" />
+                  <linearGradient id="pbFG2" x1="16" y1="3" x2="16" y2="29" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%"   stopColor="#FFE55A" />
+                    <stop offset="42%"  stopColor="#FF9018" />
+                    <stop offset="100%" stopColor="#D44A08" />
                   </linearGradient>
-                  <linearGradient id="pbFlameInner" x1="16" y1="14" x2="16" y2="27" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stopColor="#FFF3AA" />
-                    <stop offset="100%" stopColor="#FFD040" stopOpacity="0.7" />
+                  <linearGradient id="pbFI2" x1="16" y1="15" x2="16" y2="27" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%"   stopColor="#FFFAB0" />
+                    <stop offset="100%" stopColor="#FFD030" stopOpacity="0.75" />
                   </linearGradient>
                 </defs>
-                <path d="M16 3C16 3 10 10 10 15.5C10 18.4 11.8 20.8 14.2 21.6C14.2 21.6 13 18.5 15 17.5C15 17.5 13.5 14.5 16 10C16 10 18 14 18.2 17C19.5 15.8 19.8 13 19 11.5C21.5 13.2 23 16.5 23 20C23 24.4 19.9 28 16 28C12.1 28 9 24.4 9 20C9 14 16 3 16 3Z" fill="url(#pbFlameGrad)" />
-                <path d="M16 24.5C14.4 24.5 13 23.2 13 21.5C13 19.5 14.3 18 16 17.5C16 17.5 15.4 20 16.8 20.8C16.8 20.8 18 19.5 17.8 21.5C17.6 23.2 17.6 24.5 16 24.5Z" fill="url(#pbFlameInner)" />
+                <path d="M16 3C16 3 9.5 10.5 9.5 16C9.5 19.2 11.5 21.8 14.2 22.6 14.2 22.6 13 19 15.2 18 15.2 18 13.5 14.8 16 10.5 16 10.5 18.2 14.5 18.5 17.5 19.8 16.2 20.2 14 19.3 12.2 21.8 13.8 23.5 17.2 23.5 20.8 23.5 25.2 20.1 29 16 29 11.9 29 8.5 25.2 8.5 20.8 8.5 14 16 3 16 3Z" fill="url(#pbFG2)" />
+                <path d="M16 25.5C14.3 25.5 13 24.1 13 22.5 13 20.5 14.4 19 16 18.5 16 18.5 15.3 21 16.9 21.8 16.9 21.8 18.2 20.4 18 22.5 17.8 24.1 17.7 25.5 16 25.5Z" fill="url(#pbFI2)" />
+                <path d="M11 18.5C11 18.5 12 16.5 11.8 14.8 11.8 14.8 10.2 16.5 10 18.5H11Z" fill="rgba(255,220,80,0.45)" />
               </svg>
             </div>
 
-            {/* Center: text block */}
+            {/* Text block */}
             <div className="flex-1 min-w-0 text-center md:text-left">
-              <h2 className="text-white font-display font-bold text-xl md:text-[1.7rem] leading-snug">
+              <h2 className="text-white font-display font-bold text-[1.15rem] md:text-[1.55rem] leading-tight">
                 Горящие даты июня —{" "}
                 <span
-                  className="pb-pill-glow inline-flex items-baseline px-3 py-0.5 rounded-xl align-middle whitespace-nowrap"
+                  className="pb2-pill inline-flex items-baseline px-2.5 py-[2px] rounded-lg align-middle whitespace-nowrap"
                   style={{
-                    background: "linear-gradient(120deg, rgba(255,205,50,0.22) 0%, rgba(255,170,20,0.16) 100%)",
-                    color: "#FFD44E",
-                    border: "1px solid rgba(255,200,50,0.45)",
+                    background: "linear-gradient(118deg, rgba(255,198,38,0.28) 0%, rgba(255,160,18,0.2) 100%)",
+                    color: "#FFD040",
+                    border: "1px solid rgba(255,195,38,0.55)",
                     fontSize: "inherit",
                     fontWeight: "inherit",
                   }}
@@ -296,17 +292,33 @@ export default function Home() {
                 </span>
               </h2>
 
-              <p className="text-white/55 text-sm md:text-[15px] mt-2.5 leading-relaxed max-w-lg">
+              <p className="text-white/52 text-[13px] md:text-sm mt-1.5 leading-snug max-w-md">
                 Забронируйте отдых с проживанием в июне и получите специальные условия при подтверждении бронирования.
               </p>
 
-              <div className="flex justify-center md:justify-start mt-3">
+              {/* Chips row — tight under subtitle */}
+              <div className="flex flex-wrap justify-center md:justify-start gap-1.5 mt-2.5">
+                {["Ultra All Inclusive", "Семейный отдых у моря", "Спецусловия при подтверждении"].map((label) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full whitespace-nowrap text-[11px] font-medium"
+                    style={{
+                      background: "rgba(46,196,182,0.1)",
+                      color: "rgba(46,196,182,0.85)",
+                      border: "1px solid rgba(46,196,182,0.22)",
+                      backdropFilter: "blur(6px)",
+                    }}
+                  >
+                    <span style={{ fontSize: "6px", opacity: 0.65 }}>◆</span>
+                    {label}
+                  </span>
+                ))}
                 <span
-                  className="text-[11px] font-medium px-3 py-1 rounded-full"
+                  className="inline-flex items-center px-2.5 py-1 rounded-full whitespace-nowrap text-[11px] font-medium"
                   style={{
-                    background: "rgba(255,255,255,0.06)",
-                    color: "rgba(255,255,255,0.42)",
-                    border: "1px solid rgba(255,255,255,0.12)",
+                    background: "rgba(255,255,255,0.05)",
+                    color: "rgba(255,255,255,0.38)",
+                    border: "1px solid rgba(255,255,255,0.1)",
                   }}
                 >
                   Ограниченное предложение на июнь
@@ -314,51 +326,29 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: CTA button */}
-            <div className="flex justify-center md:justify-end shrink-0">
+            {/* CTA button */}
+            <div className="flex justify-center md:justify-end shrink-0 md:pl-2">
               <button
                 type="button"
                 onClick={scrollToCalculator}
-                className="pb-btn flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm whitespace-nowrap"
+                className="pb2-btn w-full md:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-[13px] whitespace-nowrap"
                 style={{
-                  background: "linear-gradient(135deg, #b8730a 0%, #d9920f 40%, #e8a820 60%, #c9820d 100%)",
+                  background: "linear-gradient(135deg, #ae6c08 0%, #d08c0e 38%, #e6a41a 62%, #c07e0a 100%)",
                   color: "#fff",
-                  border: "1px solid rgba(255,200,60,0.4)",
-                  boxShadow: "0 2px 18px 0 rgba(220,140,20,0.22), inset 0 1px 0 rgba(255,255,255,0.18)",
-                  textShadow: "0 1px 2px rgba(0,0,0,0.25)",
+                  border: "1px solid rgba(255,195,50,0.42)",
+                  boxShadow: "0 3px 20px 0 rgba(210,130,15,0.28), inset 0 1px 0 rgba(255,255,255,0.2)",
+                  textShadow: "0 1px 2px rgba(0,0,0,0.3)",
                 }}
                 data-testid="button-promo-banner-cta"
               >
                 Посмотреть выгодные даты
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </button>
             </div>
-          </div>
 
-          {/* Benefit chips row */}
-          <div className="mt-5 flex flex-wrap md:flex-nowrap justify-center md:justify-start gap-2 overflow-x-auto pb-0.5">
-            {[
-              { icon: "✦", label: "Ultra All Inclusive" },
-              { icon: "✦", label: "Семейный отдых у моря" },
-              { icon: "✦", label: "Спецусловия при подтверждении" },
-            ].map((chip) => (
-              <span
-                key={chip.label}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full whitespace-nowrap text-[12px] font-medium shrink-0"
-                style={{
-                  background: "rgba(46,196,182,0.1)",
-                  color: "rgba(46,196,182,0.9)",
-                  border: "1px solid rgba(46,196,182,0.25)",
-                }}
-              >
-                <span style={{ fontSize: "8px", opacity: 0.7 }}>{chip.icon}</span>
-                {chip.label}
-              </span>
-            ))}
           </div>
-
         </div>
       </div>
 
