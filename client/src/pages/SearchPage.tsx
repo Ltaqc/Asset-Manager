@@ -15,10 +15,11 @@ import {
   ROOM_DATA, RoomCategory,
   formatPrice, nightsLabel,
   getDefaultCheckIn, getDefaultCheckOut,
-  isEarlyBooking, applyEarlyDiscount, getDiscountRate, hasJuneInRange, getDiscountLabel,
+  isEarlyBooking, hasJuneInRange, getDiscountLabel,
   generateRecommendations, RoomCombo,
   calculateRoomTotalPrice, calculateFoodCost,
   calculateAccommodationCost, isRoomSuitable,
+  calculateComboDiscountedTotal,
 } from "@/lib/roomData";
 
 function ComboRoomCards({ combo }: { combo: RoomCombo }) {
@@ -175,7 +176,7 @@ export default function SearchPage() {
       ? selectedCombo.rooms[0].category
       : selectedCombo.rooms.map(r => ROOM_DATA[r.category].shortTitle).join(" + ");
 
-    const displayTotal = finalPrice(selectedCombo.totalPrice);
+    const displayTotal = finalPrice(selectedCombo);
     const discountAmount = earlyBooking ? selectedCombo.totalPrice - displayTotal : 0;
     const prepaymentAmount = Math.round(displayTotal / selectedCombo.nights);
 
@@ -225,9 +226,13 @@ export default function SearchPage() {
     });
   };
 
-  const discountLabel = earlyBooking ? `${Math.round(getDiscountRate(checkIn) * 100)}%` : "";
   const discountBreakdownLabel = useMemo(() => getDiscountLabel(checkIn, checkOut), [checkIn, checkOut]);
-  const finalPrice = (price: number) => earlyBooking ? applyEarlyDiscount(price, checkIn) : price;
+  const finalPrice = (combo: RoomCombo): number => {
+    if (!earlyBooking) return combo.totalPrice;
+    const categories = combo.rooms.map(r => r.category);
+    const foodTotal = combo.totalPrice - combo.rooms.reduce((s, r) => s + r.roomCost, 0);
+    return calculateComboDiscountedTotal(categories, checkIn, checkOut, foodTotal);
+  };
 
   const hasResults = recommendations.primary !== null;
   const hasAlternatives = recommendations.alternatives.length > 0;
@@ -410,7 +415,7 @@ export default function SearchPage() {
                                 {formatPrice(recommendations.primary.totalPrice)}
                               </div>
                               <div className="text-2xl md:text-3xl font-bold font-display text-primary" data-testid="price-recommended">
-                                {formatPrice(finalPrice(recommendations.primary.totalPrice))}
+                                {formatPrice(finalPrice(recommendations.primary))}
                               </div>
                               <div className="text-xs font-medium text-green-600" data-testid="discount-recommended">
                                 Цена с учётом скидки: {discountBreakdownLabel}
@@ -497,7 +502,7 @@ export default function SearchPage() {
                                     {formatPrice(combo.totalPrice)}
                                   </div>
                                   <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
-                                    {formatPrice(finalPrice(combo.totalPrice))}
+                                    {formatPrice(finalPrice(combo))}
                                   </div>
                                   <div className="text-xs font-medium text-green-600">Цена с учётом скидки: {discountBreakdownLabel}</div>
                                   <p className="text-xs font-medium text-green-600/80 mt-1">Финальная цена может быть ниже при подтверждении бронирования</p>
@@ -558,7 +563,7 @@ export default function SearchPage() {
                               <span><Maximize2 className="w-3 h-3 inline mr-1" />{info.area} м²</span>
                             </div>
                             <div className="text-sm font-semibold text-primary mt-auto">
-                              от {formatPrice(earlyBooking ? applyEarlyDiscount(rc.cost, checkIn) : rc.cost)}
+                              от {formatPrice(earlyBooking ? calculateComboDiscountedTotal([cat], checkIn, checkOut, calcResult.foodCost) : rc.cost)}
                               <span className="text-xs text-muted-foreground font-normal"> / {rc.nights} {nightsLabel(rc.nights)}</span>
                             </div>
                           </div>
@@ -576,7 +581,7 @@ export default function SearchPage() {
       {confirmingCombo && (() => {
         const combo = confirmingCombo;
         const numRooms = combo.rooms.length;
-        const confirmDisplayTotal = finalPrice(combo.totalPrice);
+        const confirmDisplayTotal = finalPrice(combo);
         const confirmDiscountAmount = earlyBooking ? combo.totalPrice - confirmDisplayTotal : 0;
 
 
@@ -655,7 +660,7 @@ export default function SearchPage() {
                     </div>
                     {earlyBooking && (
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-sm font-medium text-green-600">Скидка {discountLabel}:</span>
+                        <span className="text-sm font-medium text-green-600">Скидка:</span>
                         <span className="text-sm font-bold text-green-600">−{formatPrice(confirmDiscountAmount)}</span>
                       </div>
                     )}
@@ -726,7 +731,7 @@ export default function SearchPage() {
         };
 
         const isMultiRoom = selectedCombo.rooms.length > 1;
-        const comboDisplayTotal = finalPrice(selectedCombo.totalPrice);
+        const comboDisplayTotal = finalPrice(selectedCombo);
         const comboDiscountAmount = earlyBooking ? selectedCombo.totalPrice - comboDisplayTotal : 0;
 
 
@@ -804,7 +809,7 @@ export default function SearchPage() {
                     </div>
                     {earlyBooking && (
                       <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-sm font-medium text-green-600">Скидка {discountLabel}:</span>
+                        <span className="text-sm font-medium text-green-600">Скидка:</span>
                         <span className="text-sm font-bold text-green-600" data-testid="modal-discount">
                           −{formatPrice(comboDiscountAmount)}
                         </span>

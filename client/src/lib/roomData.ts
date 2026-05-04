@@ -193,6 +193,32 @@ export function applyEarlyDiscount(total: number, checkIn = ""): number {
   return Math.round(total * (1 - rate));
 }
 
+export function calculateComboDiscountedTotal(
+  categories: RoomCategory[],
+  checkIn: string,
+  checkOut: string,
+  foodTotal: number,
+): number {
+  const inDate = new Date(checkIn + "T00:00:00");
+  const outDate = new Date(checkOut + "T00:00:00");
+  const nights = Math.ceil((outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (nights < 1) return 0;
+  const foodPerNight = foodTotal / nights;
+  let total = 0;
+  for (let i = 0; i < nights; i++) {
+    const d = new Date(inDate);
+    d.setDate(d.getDate() + i);
+    const monthNum = d.getMonth() + 1;
+    const discountRate = d.getMonth() === 5 ? 0.20 : 0.10;
+    let accomForNight = 0;
+    for (const cat of categories) {
+      accomForNight += (ROOM_DATA[cat].prices[monthNum] ?? 0);
+    }
+    total += (accomForNight + foodPerNight) * (1 - discountRate);
+  }
+  return Math.round(total);
+}
+
 export function formatPrice(value: number): string {
   return value.toLocaleString("ru-RU") + " \u20BD";
 }
