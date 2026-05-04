@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, CheckCircle2 } from "lucide-react";
-import promoHotelImg from "@assets/ChatGPT_Image_4_мая_2026_г.,_20_32_06_1777915939302.png";
+import promoBeachImg from "@assets/promo_beach_sunbeds.png";
 
 function scrollToCalculator() {
   const section = document.getElementById("calculator");
@@ -186,14 +186,14 @@ export function FloatingPromo() {
             {/* Desktop photo — left panel */}
             <div className="hidden sm:block sm:w-[300px] shrink-0 overflow-hidden">
               <picture className="block w-full h-full">
-                <source srcSet="/promo-hotel-lg.webp" type="image/webp" />
+                <source srcSet="/promo-beach-lg.webp" type="image/webp" />
                 <img
-                  src={promoHotelImg}
-                  alt="Отель AL MARE — бассейн и территория"
+                  src={promoBeachImg}
+                  alt="Пляж AL MARE — шезлонги и тент"
                   width={1100}
                   height={733}
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: "center 60%" }}
+                  style={{ objectPosition: "center 55%" }}
                   loading="lazy"
                 />
               </picture>
@@ -205,14 +205,14 @@ export function FloatingPromo() {
               style={{ height: "200px", flexShrink: 0 }}
             >
               <picture className="block w-full h-full">
-                <source srcSet="/promo-hotel-sm.webp" type="image/webp" />
+                <source srcSet="/promo-beach-sm.webp" type="image/webp" />
                 <img
-                  src={promoHotelImg}
-                  alt="Отель AL MARE — бассейн и территория"
+                  src={promoBeachImg}
+                  alt="Пляж AL MARE — шезлонги и тент"
                   width={720}
                   height={480}
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: "center 50%" }}
+                  style={{ objectPosition: "center 45%" }}
                   loading="lazy"
                 />
               </picture>
