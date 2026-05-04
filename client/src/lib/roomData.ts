@@ -157,6 +157,17 @@ export function isEarlyBooking(_checkIn: string): boolean {
   return true;
 }
 
+export function hasJuneInRange(checkIn: string, checkOut: string): boolean {
+  const start = new Date(checkIn + "T00:00:00");
+  const end = new Date(checkOut + "T00:00:00");
+  const cur = new Date(start);
+  while (cur < end) {
+    if (cur.getMonth() === 5) return true;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return false;
+}
+
 export function getDiscountRate(checkIn: string): number {
   const month = new Date(checkIn).getMonth(); // 5 = June
   return month === 5 ? 0.20 : 0.10;
