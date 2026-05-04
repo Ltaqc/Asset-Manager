@@ -201,6 +201,46 @@ export default function Home() {
 
       </header>
 
+      {/* Promo Banner */}
+      <div className="relative overflow-hidden" style={{ background: "linear-gradient(100deg, #0d4f5c 0%, #1a7a72 50%, #2EC4B6 100%)" }}>
+        <style>{`
+          @keyframes promo-banner-glow {
+            0%, 100% { opacity: 0.18; transform: scale(1); }
+            50% { opacity: 0.32; transform: scale(1.06); }
+          }
+          @keyframes promo-banner-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .promo-banner-content { animation: promo-banner-in 0.7s ease-out both; }
+          .promo-banner-orb { animation: promo-banner-glow 3.5s ease-in-out infinite; }
+        `}</style>
+        <div className="promo-banner-orb absolute -top-10 -right-10 w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%)" }} />
+        <div className="promo-banner-orb absolute -bottom-8 left-1/4 w-48 h-48 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)", animationDelay: "1.2s" }} />
+
+        <div className="promo-banner-content container mx-auto px-4 py-5 md:py-6 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+          <div className="text-center md:text-left">
+            <p className="text-white font-display font-bold text-lg md:text-xl leading-tight">
+              🔥 Горящее предложение на отдых у моря
+            </p>
+            <p className="text-white/80 text-sm mt-1 leading-snug">
+              Цены снижены. Дополнительная выгода доступна при подтверждении бронирования.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={scrollToCalculator}
+            className="shrink-0 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.98]"
+            style={{ background: "rgba(255,255,255,0.18)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.4)", backdropFilter: "blur(8px)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.28)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.18)"; }}
+            data-testid="button-promo-banner-cta"
+          >
+            Проверить свою цену
+          </button>
+        </div>
+      </div>
+
       {/* 2. UAI Intro */}
       <section className="relative py-12 md:py-20 bg-white">
         <div className="container mx-auto px-4">

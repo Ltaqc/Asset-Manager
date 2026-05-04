@@ -14,11 +14,11 @@ function scrollToCalculator() {
 }
 
 const benefits = [
-  "питание по меню в ресторане",
-  "собственный песчаный пляж",
-  "аквапарк и развлечения на пляже",
-  "анимация и вечерние программы",
-  "напитки в течение дня",
+  "Ultra All Inclusive уже входит в стоимость",
+  "собственный песчаный пляж рядом",
+  "питание, напитки и развлечения без лишних затрат",
+  "семейный отдых с комфортом",
+  "дополнительные скидки при подтверждении бронирования",
 ];
 
 export function FloatingPromo() {
@@ -123,7 +123,7 @@ export function FloatingPromo() {
           data-testid="promo-gift-button"
         >
           <span className="pointer-events-none text-base leading-none">🔥</span>
-          <span className="pointer-events-none">Скидки в июне до 30%</span>
+          <span className="pointer-events-none">Лучшая цена сегодня</span>
         </button>
       )}
 
@@ -177,11 +177,11 @@ export function FloatingPromo() {
 
             <div className="flex-1 px-5 md:px-7 pt-5 md:pt-6 pb-5 flex flex-col justify-center">
               <h3 className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-6">
-                Семейный отдых Ultra All&nbsp;Inclusive
+                Горящее предложение у моря
               </h3>
 
-              <p className="mt-2 text-sm font-semibold leading-snug" style={{ color: "#FF6B35" }}>
-                Специальные условия на июнь — скидки до 30%
+              <p className="mt-2 text-sm text-muted-foreground leading-snug">
+                Успейте забронировать отдых по сниженной цене
               </p>
 
               <div className="mt-4 space-y-2">
@@ -205,7 +205,7 @@ export function FloatingPromo() {
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
                 data-testid="promo-popup-cta"
               >
-                <span className="pointer-events-none">Подобрать лучший вариант</span>
+                <span className="pointer-events-none">Подобрать выгодный вариант</span>
               </button>
 
             </div>
