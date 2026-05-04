@@ -205,122 +205,160 @@ export default function Home() {
       <div
         className="relative overflow-hidden"
         style={{
-          background: "linear-gradient(118deg, #052e3d 0%, #094f65 30%, #0b7070 60%, #0e8878 100%)",
-          borderBottom: "1px solid rgba(46,196,182,0.18)",
+          background: "linear-gradient(118deg, #041f2b 0%, #073344 25%, #0a5260 55%, #0b6e70 80%, #0d8070 100%)",
+          borderTop: "1px solid rgba(46,196,182,0.12)",
+          borderBottom: "1px solid rgba(46,196,182,0.12)",
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.15)",
         }}
       >
         <style>{`
           @keyframes pb-in {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(14px); }
             to   { opacity: 1; transform: translateY(0); }
           }
-          @keyframes pb-icon-pulse {
-            0%,100% { box-shadow: 0 0 0 0 rgba(46,196,182,0), 0 0 18px 4px rgba(46,196,182,0.12); }
-            50%      { box-shadow: 0 0 0 7px rgba(46,196,182,0.07), 0 0 28px 8px rgba(46,196,182,0.22); }
+          @keyframes pb-fire-ring {
+            0%,100% { box-shadow: 0 0 0 0 rgba(234,130,30,0), 0 0 22px 6px rgba(234,130,30,0.18); }
+            50%      { box-shadow: 0 0 0 8px rgba(234,130,30,0.07), 0 0 36px 12px rgba(234,130,30,0.28); }
           }
-          @keyframes pb-badge-glow {
-            0%,100% { box-shadow: 0 0 0 0 rgba(255,208,68,0); }
-            50%      { box-shadow: 0 0 14px 4px rgba(255,208,68,0.18); }
+          @keyframes pb-fire-flicker {
+            0%,100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+            33%      { transform: scaleY(1.07) scaleX(0.97); opacity: 0.9; }
+            66%      { transform: scaleY(0.96) scaleX(1.02); opacity: 0.95; }
           }
-          @keyframes pb-flame {
-            0%,100% { transform: scaleY(1) translateY(0); opacity: 1; }
-            50%      { transform: scaleY(1.06) translateY(-1px); opacity: 0.88; }
+          @keyframes pb-pill-glow {
+            0%,100% { box-shadow: 0 0 0 0 rgba(255,200,50,0); }
+            50%      { box-shadow: 0 0 16px 5px rgba(255,200,50,0.22); }
           }
-          .pb-in           { animation: pb-in 0.7s ease-out both; }
-          .pb-icon-pulse   { animation: pb-icon-pulse 3.2s ease-in-out infinite; }
-          .pb-badge-glow   { animation: pb-badge-glow 3.6s ease-in-out infinite; }
-          .pb-flame-anim   { animation: pb-flame 2.8s ease-in-out infinite; transform-origin: bottom center; }
+          @keyframes pb-btn-shine {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+          }
+          .pb-in           { animation: pb-in 0.75s cubic-bezier(.22,.68,0,1.2) both; }
+          .pb-fire-ring    { animation: pb-fire-ring 3s ease-in-out infinite; }
+          .pb-fire-flicker { animation: pb-fire-flicker 2.4s ease-in-out infinite; transform-origin: 50% 90%; }
+          .pb-pill-glow    { animation: pb-pill-glow 3.8s ease-in-out infinite; }
+          .pb-btn:hover    { box-shadow: 0 0 28px 6px rgba(220,155,30,0.35) !important; transform: translateY(-1px) scale(1.02); }
+          .pb-btn:active   { transform: translateY(0) scale(0.98); }
+          .pb-btn          { transition: all 0.22s ease; }
         `}</style>
 
-        {/* Layered light atmosphere */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 55% 90% at 92% 40%, rgba(46,196,182,0.2) 0%, transparent 65%)" }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 30% 60% at 3% 80%, rgba(255,255,255,0.04) 0%, transparent 60%)" }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 40% 30% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 60%)" }} />
+        {/* Ambient light layers */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 100% at 95% 50%, rgba(46,196,182,0.15) 0%, transparent 65%)" }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 45% 80% at 0% 50%, rgba(234,130,30,0.07) 0%, transparent 60%)" }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 40% at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 60%)" }} />
 
-        <div className="pb-in container mx-auto px-4 py-6 md:py-9 relative z-10">
-          <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+        <div className="pb-in container mx-auto px-4 py-7 md:py-10 relative z-10">
 
-            {/* Left: icon + content */}
-            <div className="flex items-start gap-4 md:gap-5 flex-1 min-w-0">
+          {/* Main row */}
+          <div className="flex flex-col md:flex-row md:items-center gap-5 md:gap-8">
 
-              {/* Premium animated flame icon */}
-              <div
-                className="pb-icon-pulse shrink-0 w-12 h-12 md:w-[56px] md:h-[56px] rounded-2xl flex items-center justify-center"
-                style={{
-                  background: "linear-gradient(140deg, rgba(46,196,182,0.22) 0%, rgba(14,136,120,0.18) 100%)",
-                  border: "1.5px solid rgba(46,196,182,0.45)",
-                  backdropFilter: "blur(10px)",
-                }}
-              >
-                <svg className="pb-flame-anim" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 21.5C8.96 21.5 6.5 19.1 6.5 16.2C6.5 13.6 7.9 11.5 9.7 9.7C9.7 9.7 9.3 12.3 11.1 12.8C11.1 12.8 10 10.6 12 7.5C12 7.5 13.5 10 13.7 12.2C14.6 11.3 14.7 9.4 14.2 8.2C16.1 9.7 17.5 12.5 17.5 16.2C17.5 19.1 15.04 21.5 12 21.5Z" fill="rgba(255,255,255,0.92)" />
-                  <path d="M12 18.5C10.9 18.5 10 17.7 10 16.7C10 15.5 10.8 14.3 12 14C12 14 11.6 15.5 12.6 16C12.6 16 13.4 15.1 13.2 16.7C13.1 17.8 13.1 18.5 12 18.5Z" fill="rgba(255,213,70,0.8)" />
-                  <path d="M8.5 15C8.5 15 9.5 13.5 9.5 12C9.5 12 8 13 7.5 15H8.5Z" fill="rgba(255,255,255,0.35)" />
-                </svg>
-              </div>
+            {/* Large glowing fire icon */}
+            <div
+              className="pb-fire-ring self-center md:self-auto shrink-0 w-[68px] h-[68px] md:w-20 md:h-20 rounded-2xl flex items-center justify-center"
+              style={{
+                background: "linear-gradient(145deg, rgba(234,130,30,0.2) 0%, rgba(200,80,10,0.14) 60%, rgba(46,196,182,0.08) 100%)",
+                border: "1.5px solid rgba(234,130,30,0.4)",
+                backdropFilter: "blur(12px)",
+              }}
+            >
+              <svg className="pb-fire-flicker" width="38" height="38" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="pbFlameGrad" x1="16" y1="4" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#FFE066" />
+                    <stop offset="45%" stopColor="#FF9A20" />
+                    <stop offset="100%" stopColor="#E85D10" />
+                  </linearGradient>
+                  <linearGradient id="pbFlameInner" x1="16" y1="14" x2="16" y2="27" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#FFF3AA" />
+                    <stop offset="100%" stopColor="#FFD040" stopOpacity="0.7" />
+                  </linearGradient>
+                </defs>
+                <path d="M16 3C16 3 10 10 10 15.5C10 18.4 11.8 20.8 14.2 21.6C14.2 21.6 13 18.5 15 17.5C15 17.5 13.5 14.5 16 10C16 10 18 14 18.2 17C19.5 15.8 19.8 13 19 11.5C21.5 13.2 23 16.5 23 20C23 24.4 19.9 28 16 28C12.1 28 9 24.4 9 20C9 14 16 3 16 3Z" fill="url(#pbFlameGrad)" />
+                <path d="M16 24.5C14.4 24.5 13 23.2 13 21.5C13 19.5 14.3 18 16 17.5C16 17.5 15.4 20 16.8 20.8C16.8 20.8 18 19.5 17.8 21.5C17.6 23.2 17.6 24.5 16 24.5Z" fill="url(#pbFlameInner)" />
+              </svg>
+            </div>
 
-              <div className="text-center md:text-left min-w-0">
-                {/* Main headline */}
-                <h2 className="text-white font-display font-bold text-xl md:text-[1.6rem] leading-snug">
-                  Горящие даты июня —{" "}
-                  <span
-                    className="pb-badge-glow inline-flex items-center px-2.5 py-0.5 rounded-lg align-middle"
-                    style={{
-                      background: "rgba(255,208,68,0.16)",
-                      color: "#FFD44E",
-                      border: "1px solid rgba(255,208,68,0.42)",
-                      fontSize: "inherit",
-                      fontWeight: "inherit",
-                      lineHeight: "inherit",
-                    }}
-                  >
-                    выгода до 30%
-                  </span>
-                </h2>
+            {/* Center: text block */}
+            <div className="flex-1 min-w-0 text-center md:text-left">
+              <h2 className="text-white font-display font-bold text-xl md:text-[1.7rem] leading-snug">
+                Горящие даты июня —{" "}
+                <span
+                  className="pb-pill-glow inline-flex items-baseline px-3 py-0.5 rounded-xl align-middle whitespace-nowrap"
+                  style={{
+                    background: "linear-gradient(120deg, rgba(255,205,50,0.22) 0%, rgba(255,170,20,0.16) 100%)",
+                    color: "#FFD44E",
+                    border: "1px solid rgba(255,200,50,0.45)",
+                    fontSize: "inherit",
+                    fontWeight: "inherit",
+                  }}
+                >
+                  выгода до 30%
+                </span>
+              </h2>
 
-                {/* Subtitle */}
-                <p className="text-white/60 text-sm md:text-[15px] mt-2.5 leading-relaxed max-w-md">
-                  Забронируйте отдых с проживанием в июне и получите специальные условия при подтверждении бронирования.
-                </p>
+              <p className="text-white/55 text-sm md:text-[15px] mt-2.5 leading-relaxed max-w-lg">
+                Забронируйте отдых с проживанием в июне и получите специальные условия при подтверждении бронирования.
+              </p>
 
-                {/* Limited chip */}
-                <div className="flex justify-center md:justify-start mt-3">
-                  <span
-                    className="text-[11px] font-medium px-3 py-1 rounded-full"
-                    style={{
-                      background: "rgba(255,255,255,0.07)",
-                      color: "rgba(255,255,255,0.48)",
-                      border: "1px solid rgba(255,255,255,0.14)",
-                    }}
-                  >
-                    Ограниченное предложение на июнь
-                  </span>
-                </div>
+              <div className="flex justify-center md:justify-start mt-3">
+                <span
+                  className="text-[11px] font-medium px-3 py-1 rounded-full"
+                  style={{
+                    background: "rgba(255,255,255,0.06)",
+                    color: "rgba(255,255,255,0.42)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                  }}
+                >
+                  Ограниченное предложение на июнь
+                </span>
               </div>
             </div>
 
-            {/* Right: CTA */}
+            {/* Right: CTA button */}
             <div className="flex justify-center md:justify-end shrink-0">
               <button
                 type="button"
                 onClick={scrollToCalculator}
-                className="px-7 py-3.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-200 hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.97]"
+                className="pb-btn flex items-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm whitespace-nowrap"
                 style={{
-                  background: "rgba(255,255,255,0.13)",
+                  background: "linear-gradient(135deg, #b8730a 0%, #d9920f 40%, #e8a820 60%, #c9820d 100%)",
                   color: "#fff",
-                  border: "1.5px solid rgba(255,255,255,0.3)",
-                  backdropFilter: "blur(12px)",
-                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,200,60,0.4)",
+                  boxShadow: "0 2px 18px 0 rgba(220,140,20,0.22), inset 0 1px 0 rgba(255,255,255,0.18)",
+                  textShadow: "0 1px 2px rgba(0,0,0,0.25)",
                 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.22)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.13)"; }}
                 data-testid="button-promo-banner-cta"
               >
-                Проверить свою цену
+                Посмотреть выгодные даты
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </button>
             </div>
-
           </div>
+
+          {/* Benefit chips row */}
+          <div className="mt-5 flex flex-wrap md:flex-nowrap justify-center md:justify-start gap-2 overflow-x-auto pb-0.5">
+            {[
+              { icon: "✦", label: "Ultra All Inclusive" },
+              { icon: "✦", label: "Семейный отдых у моря" },
+              { icon: "✦", label: "Спецусловия при подтверждении" },
+            ].map((chip) => (
+              <span
+                key={chip.label}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full whitespace-nowrap text-[12px] font-medium shrink-0"
+                style={{
+                  background: "rgba(46,196,182,0.1)",
+                  color: "rgba(46,196,182,0.9)",
+                  border: "1px solid rgba(46,196,182,0.25)",
+                }}
+              >
+                <span style={{ fontSize: "8px", opacity: 0.7 }}>{chip.icon}</span>
+                {chip.label}
+              </span>
+            ))}
+          </div>
+
         </div>
       </div>
 
