@@ -260,23 +260,9 @@ export default function Home() {
               </div>
 
               <div className="text-center md:text-left min-w-0">
-                {/* ИЮНЬ badge */}
-                <div className="flex justify-center md:justify-start mb-2.5">
-                  <span
-                    className="text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full"
-                    style={{
-                      background: "rgba(255,208,68,0.14)",
-                      color: "#FFCE44",
-                      border: "1px solid rgba(255,208,68,0.38)",
-                    }}
-                  >
-                    ИЮНЬ
-                  </span>
-                </div>
-
                 {/* Main headline */}
                 <h2 className="text-white font-display font-bold text-xl md:text-[1.6rem] leading-snug">
-                  Июньское спецпредложение —{" "}
+                  Горящие даты июня —{" "}
                   <span
                     className="pb-badge-glow inline-flex items-center px-2.5 py-0.5 rounded-lg align-middle"
                     style={{
