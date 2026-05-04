@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, CheckCircle2 } from "lucide-react";
-import promoFamilyImg from "@assets/ChatGPT_Image_4_мая_2026_г.,_19_04_00_1777910653339.png";
+import promoHotelImg from "@assets/ChatGPT_Image_4_мая_2026_г.,_20_32_06_1777915939302.png";
 
 function scrollToCalculator() {
   const section = document.getElementById("calculator");
@@ -184,16 +184,16 @@ export function FloatingPromo() {
             </button>
 
             {/* Desktop photo — left panel */}
-            <div className="hidden sm:block sm:w-[280px] shrink-0 overflow-hidden">
+            <div className="hidden sm:block sm:w-[300px] shrink-0 overflow-hidden">
               <picture className="block w-full h-full">
-                <source srcSet="/family-beach-lg.webp" type="image/webp" />
+                <source srcSet="/promo-hotel-lg.webp" type="image/webp" />
                 <img
-                  src={promoFamilyImg}
-                  alt="Семейный отдых на пляже"
-                  width={1000}
-                  height={1250}
+                  src={promoHotelImg}
+                  alt="Отель AL MARE — бассейн и территория"
+                  width={1100}
+                  height={733}
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: "center center" }}
+                  style={{ objectPosition: "center 60%" }}
                   loading="lazy"
                 />
               </picture>
@@ -202,17 +202,17 @@ export function FloatingPromo() {
             {/* Mobile photo — top strip */}
             <div
               className="sm:hidden w-full overflow-hidden rounded-t-2xl"
-              style={{ height: "220px", flexShrink: 0 }}
+              style={{ height: "200px", flexShrink: 0 }}
             >
               <picture className="block w-full h-full">
-                <source srcSet="/family-beach-sm.webp" type="image/webp" />
+                <source srcSet="/promo-hotel-sm.webp" type="image/webp" />
                 <img
-                  src={promoFamilyImg}
-                  alt="Семейный отдых на пляже"
-                  width={700}
-                  height={875}
+                  src={promoHotelImg}
+                  alt="Отель AL MARE — бассейн и территория"
+                  width={720}
+                  height={480}
                   className="w-full h-full object-cover"
-                  style={{ objectPosition: "center 22%" }}
+                  style={{ objectPosition: "center 50%" }}
                   loading="lazy"
                 />
               </picture>
