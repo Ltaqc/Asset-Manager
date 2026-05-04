@@ -14,11 +14,11 @@ function scrollToCalculator() {
 }
 
 const benefits = [
+  "повышенная выгода на даты с проживанием в июне",
   "Ultra All Inclusive уже входит в стоимость",
   "собственный песчаный пляж рядом",
-  "питание, напитки и развлечения без лишних затрат",
-  "семейный отдых с комфортом",
-  "дополнительные скидки при подтверждении бронирования",
+  "питание, напитки и развлечения включены",
+  "семейный отдых у моря без лишних затрат",
 ];
 
 export function FloatingPromo() {
@@ -204,19 +204,41 @@ export function FloatingPromo() {
             </div>
 
             <div className="flex-1 px-5 md:px-7 pt-5 md:pt-6 pb-5 flex flex-col justify-center">
+
+              {/* ИЮНЬ badge + 30% pill */}
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <span
+                  className="text-[10px] font-bold tracking-[0.13em] uppercase px-2.5 py-0.5 rounded-full"
+                  style={{ background: "rgba(46,196,182,0.1)", color: "#2EC4B6", border: "1px solid rgba(46,196,182,0.3)" }}
+                >
+                  ИЮНЬ
+                </span>
+                <span
+                  className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
+                  style={{
+                    background: "linear-gradient(118deg, rgba(255,198,38,0.2) 0%, rgba(255,155,15,0.14) 100%)",
+                    color: "#C8820A",
+                    border: "1px solid rgba(225,170,30,0.45)",
+                    boxShadow: "0 0 10px 2px rgba(255,195,40,0.12)",
+                  }}
+                >
+                  выгода до 30%
+                </span>
+              </div>
+
               <h3 className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-6">
-                Горящее предложение у моря
+                Горящие даты июня — специальные условия
               </h3>
 
-              <p className="mt-2 text-sm text-muted-foreground leading-snug">
-                Успейте забронировать отдых по сниженной цене
+              <p className="mt-1.5 text-sm text-muted-foreground leading-snug">
+                Забронируйте проживание в июне и получите специальные условия при подтверждении бронирования.
               </p>
 
-              <div className="mt-4 space-y-2">
+              <div className="mt-3.5 space-y-2">
                 {benefits.map((text, i) => (
-                  <div key={i} className="flex items-center gap-2.5">
-                    <CheckCircle2 className="w-[18px] h-[18px] text-[#2EC4B6] shrink-0" />
-                    <span className="text-[13px] md:text-sm text-gray-700">{text}</span>
+                  <div key={i} className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-[17px] h-[17px] mt-[1px] shrink-0" style={{ color: "#C8820A" }} />
+                    <span className="text-[13px] md:text-sm text-gray-700 leading-snug">{text}</span>
                   </div>
                 ))}
               </div>
@@ -224,16 +246,18 @@ export function FloatingPromo() {
               <button
                 type="button"
                 onClick={handleCtaClick}
-                className="mt-5 w-full h-12 rounded-xl text-white font-semibold text-sm cursor-pointer transition-all duration-[250ms] ease-in-out hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center"
+                className="mt-5 w-full h-12 rounded-xl text-white font-semibold text-sm cursor-pointer flex items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]"
                 style={{
-                  background: "#2EC4B6",
-                  boxShadow: "0 6px 18px rgba(46,196,182,0.3)",
+                  background: "linear-gradient(135deg, #a86208 0%, #cc8a0c 35%, #e8a41a 60%, #be7c0a 100%)",
+                  boxShadow: "0 4px 20px rgba(210,130,15,0.35), inset 0 1px 0 rgba(255,255,255,0.2)",
+                  textShadow: "0 1px 2px rgba(0,0,0,0.25)",
                 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#23B1A5"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
                 data-testid="promo-popup-cta"
               >
-                <span className="pointer-events-none">Подобрать выгодный вариант</span>
+                <span className="pointer-events-none">Посмотреть выгодные даты</span>
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="pointer-events-none">
+                  <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </button>
 
             </div>
