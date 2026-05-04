@@ -105,25 +105,52 @@ export function FloatingPromo() {
   return (
     <>
       <style>{`
-        @keyframes promo-glow {
-          0%, 100% { box-shadow: 0 4px 18px rgba(255,107,53,0.45), 0 0 0 0 rgba(255,107,53,0.3); }
-          50% { box-shadow: 0 6px 28px rgba(255,107,53,0.65), 0 0 0 6px rgba(255,107,53,0.08); }
+        @keyframes fp-glow {
+          0%,100% { box-shadow: 0 4px 20px rgba(11,100,100,0.5), 0 0 0 0 rgba(230,170,30,0); }
+          50%      { box-shadow: 0 6px 30px rgba(11,100,100,0.7), 0 0 0 5px rgba(230,170,30,0.08); }
         }
-        .promo-btn-glow { animation: promo-glow 2.2s ease-in-out infinite; }
+        @keyframes fp-flick {
+          0%,100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+          40%      { transform: scaleY(1.1) scaleX(0.95); opacity: 0.85; }
+          70%      { transform: scaleY(0.93) scaleX(1.04); opacity: 0.92; }
+        }
+        .fp-glow  { animation: fp-glow 2.6s ease-in-out infinite; }
+        .fp-flick { animation: fp-flick 2.4s ease-in-out infinite; transform-origin: 50% 90%; }
+        .fp-btn   { transition: transform 0.18s ease; }
+        .fp-btn:hover  { transform: translateY(-2px) scale(1.04); }
+        .fp-btn:active { transform: scale(0.97); }
       `}</style>
 
       {showGiftButton && !popupVisible && (
         <button
           type="button"
           onClick={handleGiftClick}
-          className="promo-btn-glow fixed left-4 md:left-6 bottom-[34px] md:bottom-20 z-50 flex items-center gap-1.5 px-4 py-2.5 rounded-full text-white text-xs md:text-sm font-bold cursor-pointer transition-transform duration-200 hover:scale-[1.04] hover:-translate-y-0.5 active:scale-[0.97]"
+          className="fp-glow fp-btn fixed left-4 md:left-6 bottom-[34px] md:bottom-20 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full cursor-pointer"
           style={{
-            background: "linear-gradient(135deg, #FF6B35 0%, #FF3CAC 100%)",
+            background: "linear-gradient(118deg, #041f2b 0%, #073344 50%, #0a5260 100%)",
+            border: "1.5px solid rgba(225,170,30,0.55)",
           }}
           data-testid="promo-gift-button"
         >
-          <span className="pointer-events-none text-base leading-none">🔥</span>
-          <span className="pointer-events-none">Лучшая цена сегодня</span>
+          {/* Premium SVG flame */}
+          <svg className="fp-flick shrink-0" width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="fpFG" x1="10" y1="2" x2="10" y2="18" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"  stopColor="#FFE055" />
+                <stop offset="50%" stopColor="#FF9818" />
+                <stop offset="100%" stopColor="#D44A08" />
+              </linearGradient>
+              <linearGradient id="fpFI" x1="10" y1="10" x2="10" y2="18" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"  stopColor="#FFF8A0" />
+                <stop offset="100%" stopColor="#FFD030" stopOpacity="0.7" />
+              </linearGradient>
+            </defs>
+            <path d="M10 2C10 2 6.5 6.5 6.5 10.2C6.5 12.3 7.7 14.1 9.4 14.7 9.4 14.7 8.6 12.4 10 11.7 10 11.7 9 9.6 10.5 7 10.5 7 11.8 9.4 12 11.4 12.8 10.5 13 8.9 12.4 7.8 14.1 9 15.2 11.3 15.2 13.6 15.2 16.3 12.9 18 10 18 7.1 18 4.8 16.3 4.8 13.6 4.8 9 10 2 10 2Z" fill="url(#fpFG)" />
+            <path d="M10 16C9 16 8.3 15.2 8.3 14.2 8.3 13 9.1 12.1 10 11.8 10 11.8 9.6 13.2 10.5 13.8 10.5 13.8 11.3 12.9 11.1 14.2 10.9 15.2 10.9 16 10 16Z" fill="url(#fpFI)" />
+          </svg>
+          <span className="text-white text-xs md:text-sm font-semibold whitespace-nowrap pointer-events-none" style={{ letterSpacing: "0.01em" }}>
+            Горящие даты июня
+          </span>
         </button>
       )}
 
