@@ -202,61 +202,139 @@ export default function Home() {
       </header>
 
       {/* Promo Banner */}
-      <div className="relative overflow-hidden" style={{ background: "linear-gradient(105deg, #0a3d4a 0%, #0f5f6e 45%, #1a8a80 100%)" }}>
+      <div
+        className="relative overflow-hidden"
+        style={{
+          background: "linear-gradient(118deg, #052e3d 0%, #094f65 30%, #0b7070 60%, #0e8878 100%)",
+          borderBottom: "1px solid rgba(46,196,182,0.18)",
+        }}
+      >
         <style>{`
-          @keyframes promo-banner-in {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+          @keyframes pb-in {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
           }
-          @keyframes promo-shimmer {
-            0%, 100% { opacity: 0.12; }
-            50% { opacity: 0.22; }
+          @keyframes pb-icon-pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(46,196,182,0), 0 0 18px 4px rgba(46,196,182,0.12); }
+            50%      { box-shadow: 0 0 0 7px rgba(46,196,182,0.07), 0 0 28px 8px rgba(46,196,182,0.22); }
           }
-          .promo-banner-content { animation: promo-banner-in 0.6s ease-out both; }
-          .promo-banner-shimmer { animation: promo-shimmer 4s ease-in-out infinite; }
+          @keyframes pb-badge-glow {
+            0%,100% { box-shadow: 0 0 0 0 rgba(255,208,68,0); }
+            50%      { box-shadow: 0 0 14px 4px rgba(255,208,68,0.18); }
+          }
+          @keyframes pb-flame {
+            0%,100% { transform: scaleY(1) translateY(0); opacity: 1; }
+            50%      { transform: scaleY(1.06) translateY(-1px); opacity: 0.88; }
+          }
+          .pb-in           { animation: pb-in 0.7s ease-out both; }
+          .pb-icon-pulse   { animation: pb-icon-pulse 3.2s ease-in-out infinite; }
+          .pb-badge-glow   { animation: pb-badge-glow 3.6s ease-in-out infinite; }
+          .pb-flame-anim   { animation: pb-flame 2.8s ease-in-out infinite; transform-origin: bottom center; }
         `}</style>
 
-        <div className="promo-banner-shimmer absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 80% at 80% 50%, rgba(255,255,255,0.18) 0%, transparent 70%)" }} />
-        <div className="promo-banner-shimmer absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 30% 60% at 10% 50%, rgba(255,255,255,0.08) 0%, transparent 70%)", animationDelay: "2s" }} />
+        {/* Layered light atmosphere */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 55% 90% at 92% 40%, rgba(46,196,182,0.2) 0%, transparent 65%)" }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 30% 60% at 3% 80%, rgba(255,255,255,0.04) 0%, transparent 60%)" }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 40% 30% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 60%)" }} />
 
-        <div className="promo-banner-content container mx-auto px-4 py-5 md:py-7 flex flex-col md:flex-row items-center justify-between gap-5 relative z-10">
-          <div className="flex items-start md:items-center gap-4">
-            {/* Premium spark icon */}
-            <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.22)" }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z" fill="rgba(255,255,255,0.95)" />
-                <path d="M19 16L19.9 18.1L22 19L19.9 19.9L19 22L18.1 19.9L16 19L18.1 18.1L19 16Z" fill="rgba(255,255,255,0.6)" />
-                <path d="M5 3L5.6 4.4L7 5L5.6 5.6L5 7L4.4 5.6L3 5L4.4 4.4L5 3Z" fill="rgba(255,255,255,0.5)" />
-              </svg>
-            </div>
+        <div className="pb-in container mx-auto px-4 py-6 md:py-9 relative z-10">
+          <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
 
-            <div className="text-center md:text-left">
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5">
-                <span className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.85)", border: "1px solid rgba(255,255,255,0.25)", letterSpacing: "0.12em" }}>ИЮНЬ</span>
+            {/* Left: icon + content */}
+            <div className="flex items-start gap-4 md:gap-5 flex-1 min-w-0">
+
+              {/* Premium animated flame icon */}
+              <div
+                className="pb-icon-pulse shrink-0 w-12 h-12 md:w-[56px] md:h-[56px] rounded-2xl flex items-center justify-center"
+                style={{
+                  background: "linear-gradient(140deg, rgba(46,196,182,0.22) 0%, rgba(14,136,120,0.18) 100%)",
+                  border: "1.5px solid rgba(46,196,182,0.45)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                <svg className="pb-flame-anim" width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 21.5C8.96 21.5 6.5 19.1 6.5 16.2C6.5 13.6 7.9 11.5 9.7 9.7C9.7 9.7 9.3 12.3 11.1 12.8C11.1 12.8 10 10.6 12 7.5C12 7.5 13.5 10 13.7 12.2C14.6 11.3 14.7 9.4 14.2 8.2C16.1 9.7 17.5 12.5 17.5 16.2C17.5 19.1 15.04 21.5 12 21.5Z" fill="rgba(255,255,255,0.92)" />
+                  <path d="M12 18.5C10.9 18.5 10 17.7 10 16.7C10 15.5 10.8 14.3 12 14C12 14 11.6 15.5 12.6 16C12.6 16 13.4 15.1 13.2 16.7C13.1 17.8 13.1 18.5 12 18.5Z" fill="rgba(255,213,70,0.8)" />
+                  <path d="M8.5 15C8.5 15 9.5 13.5 9.5 12C9.5 12 8 13 7.5 15H8.5Z" fill="rgba(255,255,255,0.35)" />
+                </svg>
               </div>
-              <p className="text-white font-display font-bold text-lg md:text-xl leading-tight">
-                Июньское спецпредложение —{" "}
-                <span className="inline-flex items-center px-2 py-0.5 rounded-lg font-bold" style={{ background: "rgba(255,255,255,0.18)", color: "#fff", border: "1px solid rgba(255,255,255,0.3)", fontSize: "inherit" }}>
-                  выгода до 30%
-                </span>
-              </p>
-              <p className="text-white/70 text-xs md:text-sm mt-1.5 leading-snug max-w-lg">
-                Забронируйте отдых с проживанием в июне и получите специальные условия при подтверждении бронирования.
-              </p>
-            </div>
-          </div>
 
-          <button
-            type="button"
-            onClick={scrollToCalculator}
-            className="shrink-0 px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-200 hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.97]"
-            style={{ background: "rgba(255,255,255,0.16)", color: "#fff", border: "1.5px solid rgba(255,255,255,0.35)", backdropFilter: "blur(8px)" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.26)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.16)"; }}
-            data-testid="button-promo-banner-cta"
-          >
-            Проверить свою цену
-          </button>
+              <div className="text-center md:text-left min-w-0">
+                {/* ИЮНЬ badge */}
+                <div className="flex justify-center md:justify-start mb-2.5">
+                  <span
+                    className="text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full"
+                    style={{
+                      background: "rgba(255,208,68,0.14)",
+                      color: "#FFCE44",
+                      border: "1px solid rgba(255,208,68,0.38)",
+                    }}
+                  >
+                    ИЮНЬ
+                  </span>
+                </div>
+
+                {/* Main headline */}
+                <h2 className="text-white font-display font-bold text-xl md:text-[1.6rem] leading-snug">
+                  Июньское спецпредложение —{" "}
+                  <span
+                    className="pb-badge-glow inline-flex items-center px-2.5 py-0.5 rounded-lg align-middle"
+                    style={{
+                      background: "rgba(255,208,68,0.16)",
+                      color: "#FFD44E",
+                      border: "1px solid rgba(255,208,68,0.42)",
+                      fontSize: "inherit",
+                      fontWeight: "inherit",
+                      lineHeight: "inherit",
+                    }}
+                  >
+                    выгода до 30%
+                  </span>
+                </h2>
+
+                {/* Subtitle */}
+                <p className="text-white/60 text-sm md:text-[15px] mt-2.5 leading-relaxed max-w-md">
+                  Забронируйте отдых с проживанием в июне и получите специальные условия при подтверждении бронирования.
+                </p>
+
+                {/* Limited chip */}
+                <div className="flex justify-center md:justify-start mt-3">
+                  <span
+                    className="text-[11px] font-medium px-3 py-1 rounded-full"
+                    style={{
+                      background: "rgba(255,255,255,0.07)",
+                      color: "rgba(255,255,255,0.48)",
+                      border: "1px solid rgba(255,255,255,0.14)",
+                    }}
+                  >
+                    Ограниченное предложение на июнь
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: CTA */}
+            <div className="flex justify-center md:justify-end shrink-0">
+              <button
+                type="button"
+                onClick={scrollToCalculator}
+                className="px-7 py-3.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all duration-200 hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.97]"
+                style={{
+                  background: "rgba(255,255,255,0.13)",
+                  color: "#fff",
+                  border: "1.5px solid rgba(255,255,255,0.3)",
+                  backdropFilter: "blur(12px)",
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12)",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.22)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.13)"; }}
+                data-testid="button-promo-banner-cta"
+              >
+                Проверить свою цену
+              </button>
+            </div>
+
+          </div>
         </div>
       </div>
 
