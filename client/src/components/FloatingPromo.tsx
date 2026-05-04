@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, CheckCircle2 } from "lucide-react";
-import promoFamilyImg from "@assets/promo_family_beach.png";
+import promoFamilyImg from "@assets/ChatGPT_Image_4_мая_2026_г.,_19_04_00_1777910653339.png";
 
 function scrollToCalculator() {
   const section = document.getElementById("calculator");
