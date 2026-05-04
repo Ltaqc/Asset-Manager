@@ -313,16 +313,6 @@ export default function Home() {
                     {label}
                   </span>
                 ))}
-                <span
-                  className="inline-flex items-center px-2.5 py-1 rounded-full whitespace-nowrap text-[11px] font-medium"
-                  style={{
-                    background: "rgba(255,255,255,0.05)",
-                    color: "rgba(255,255,255,0.38)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                  }}
-                >
-                  Ограниченное предложение на июнь
-                </span>
               </div>
             </div>
 
