@@ -14,7 +14,7 @@ function scrollToCalculator() {
 }
 
 const benefits = [
-  "повышенная выгода на даты с проживанием в июне",
+  "специальные условия на выбранные даты",
   "Ultra All Inclusive уже входит в стоимость",
   "собственный песчаный пляж рядом",
   "питание, напитки и развлечения включены",
@@ -205,14 +205,8 @@ export function FloatingPromo() {
 
             <div className="flex-1 px-5 md:px-7 pt-5 md:pt-6 pb-5 flex flex-col justify-center">
 
-              {/* ИЮНЬ badge + 30% pill */}
+              {/* 30% pill */}
               <div className="flex flex-wrap items-center gap-2 mb-3">
-                <span
-                  className="text-[10px] font-bold tracking-[0.13em] uppercase px-2.5 py-0.5 rounded-full"
-                  style={{ background: "rgba(46,196,182,0.1)", color: "#2EC4B6", border: "1px solid rgba(46,196,182,0.3)" }}
-                >
-                  ИЮНЬ
-                </span>
                 <span
                   className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
                   style={{
@@ -227,11 +221,11 @@ export function FloatingPromo() {
               </div>
 
               <h3 className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-6">
-                Горящие даты июня — специальные условия
+                Горящие даты июня — выгода до 30%
               </h3>
 
               <p className="mt-1.5 text-sm text-muted-foreground leading-snug">
-                Забронируйте проживание в июне и получите специальные условия при подтверждении бронирования.
+                Забронируйте отдых у моря и получите специальные условия при подтверждении бронирования.
               </p>
 
               <div className="mt-3.5 space-y-2">
