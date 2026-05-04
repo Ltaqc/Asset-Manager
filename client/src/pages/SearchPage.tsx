@@ -15,7 +15,7 @@ import {
   ROOM_DATA, RoomCategory,
   formatPrice, nightsLabel,
   getDefaultCheckIn, getDefaultCheckOut,
-  isEarlyBooking, applyEarlyDiscount, getDiscountRate, hasJuneInRange,
+  isEarlyBooking, applyEarlyDiscount, getDiscountRate, hasJuneInRange, getDiscountLabel,
   generateRecommendations, RoomCombo,
   calculateRoomTotalPrice, calculateFoodCost,
   calculateAccommodationCost, isRoomSuitable,
@@ -226,6 +226,7 @@ export default function SearchPage() {
   };
 
   const discountLabel = earlyBooking ? `${Math.round(getDiscountRate(checkIn) * 100)}%` : "";
+  const discountBreakdownLabel = useMemo(() => getDiscountLabel(checkIn, checkOut), [checkIn, checkOut]);
   const finalPrice = (price: number) => earlyBooking ? applyEarlyDiscount(price, checkIn) : price;
 
   const hasResults = recommendations.primary !== null;
@@ -412,7 +413,7 @@ export default function SearchPage() {
                                 {formatPrice(finalPrice(recommendations.primary.totalPrice))}
                               </div>
                               <div className="text-xs font-medium text-green-600" data-testid="discount-recommended">
-                                Цена с учётом скидки {discountLabel}
+                                Цена с учётом скидки: {discountBreakdownLabel}
                               </div>
                               <p className="text-xs font-medium text-green-600/80 mt-1">Финальная цена может быть ниже при подтверждении бронирования</p>
                             </>
@@ -498,7 +499,7 @@ export default function SearchPage() {
                                   <div className="text-xl font-bold font-display text-primary" data-testid={`price-alt-${idx}`}>
                                     {formatPrice(finalPrice(combo.totalPrice))}
                                   </div>
-                                  <div className="text-xs font-medium text-green-600">Цена с учётом скидки {discountLabel}</div>
+                                  <div className="text-xs font-medium text-green-600">Цена с учётом скидки: {discountBreakdownLabel}</div>
                                   <p className="text-xs font-medium text-green-600/80 mt-1">Финальная цена может быть ниже при подтверждении бронирования</p>
                                 </>
                               ) : (
@@ -669,7 +670,7 @@ export default function SearchPage() {
                       <span className="text-2xl font-bold font-display text-primary" data-testid="confirm-total-price">{formatPrice(confirmDisplayTotal)}</span>
                     </div>
                     {earlyBooking && (
-                      <p className="text-xs font-medium text-green-600 mt-1">Цена с учётом скидки {discountLabel}</p>
+                      <p className="text-xs font-medium text-green-600 mt-1">Цена с учётом скидки: {discountBreakdownLabel}</p>
                     )}
                   </div>
 
@@ -692,7 +693,7 @@ export default function SearchPage() {
                     </div>
                     {earlyBooking && (
                       <>
-                        <p className="text-xs font-medium text-green-600 mt-1">Цена с учётом скидки {discountLabel}</p>
+                        <p className="text-xs font-medium text-green-600 mt-1">Цена с учётом скидки: {discountBreakdownLabel}</p>
                         <p className="text-xs font-medium text-green-600/80 mt-1">Финальная цена может быть ниже при подтверждении бронирования</p>
                       </>
                     )}
@@ -822,7 +823,7 @@ export default function SearchPage() {
                           {formatPrice(comboDisplayTotal)}
                         </span>
                       </div>
-                      <p className="text-xs font-medium text-green-600 mt-1">Цена с учётом скидки {discountLabel}</p>
+                      <p className="text-xs font-medium text-green-600 mt-1">Цена с учётом скидки: {discountBreakdownLabel}</p>
                     </div>
                   )}
 
@@ -850,7 +851,7 @@ export default function SearchPage() {
                         </span>
                       </div>
                       {earlyBooking && (
-                        <p className="text-xs font-medium text-green-600 mt-1">Цена с учётом скидки {discountLabel}</p>
+                        <p className="text-xs font-medium text-green-600 mt-1">Цена с учётом скидки: {discountBreakdownLabel}</p>
                       )}
                       {earlyBooking && (
                         <p className="text-xs font-medium text-green-600/80 mt-1">Финальная цена может быть ниже при подтверждении бронирования</p>

@@ -173,6 +173,21 @@ export function getDiscountRate(checkIn: string): number {
   return month === 5 ? 0.20 : 0.10;
 }
 
+export function getDiscountLabel(checkIn: string, checkOut: string): string {
+  const MONTH_NAMES: Record<number, string> = { 5: "июнь", 6: "июль", 7: "август", 8: "сентябрь" };
+  const MONTH_RATES: Record<number, number> = { 5: 20, 6: 10, 7: 10, 8: 10 };
+  const start = new Date(checkIn + "T00:00:00");
+  const end = new Date(checkOut + "T00:00:00");
+  const seenMonths: number[] = [];
+  const cur = new Date(start);
+  while (cur < end) {
+    const m = cur.getMonth();
+    if (!seenMonths.includes(m)) seenMonths.push(m);
+    cur.setDate(cur.getDate() + 1);
+  }
+  return seenMonths.map(m => `${MONTH_NAMES[m] ?? ""} — ${MONTH_RATES[m] ?? 10}%`).join(", ");
+}
+
 export function applyEarlyDiscount(total: number, checkIn = ""): number {
   const rate = getDiscountRate(checkIn);
   return Math.round(total * (1 - rate));
