@@ -275,7 +275,10 @@ export default function Home() {
             </div>
 
             {/* Text block */}
-            <div className="flex-1 min-w-0 text-center md:text-left">
+            <div
+              className="flex-1 min-w-0 text-center md:text-left relative px-3 py-2 md:px-4 md:py-2.5 rounded-xl"
+              style={{ background: "linear-gradient(105deg, rgba(4,28,40,0.55) 0%, rgba(4,28,40,0.25) 70%, transparent 100%)", backdropFilter: "blur(2px)" }}
+            >
               <h2 className="text-white font-display font-bold text-[1.15rem] md:text-[1.55rem] leading-tight">
                 Горящие даты июня —{" "}
                 <span
@@ -292,7 +295,7 @@ export default function Home() {
                 </span>
               </h2>
 
-              <p className="text-white/52 text-[13px] md:text-sm mt-1.5 leading-snug max-w-md">
+              <p className="mt-1.5 leading-relaxed max-w-[38ch]" style={{ color: "rgba(255,255,255,0.9)", fontSize: "14px", fontWeight: 400 }}>
                 Забронируйте отдых с проживанием в июне и получите специальные условия при подтверждении бронирования.
               </p>
 
