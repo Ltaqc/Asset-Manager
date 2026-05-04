@@ -106,8 +106,8 @@ export function FloatingPromo() {
     <>
       <style>{`
         @keyframes fp-glow {
-          0%,100% { box-shadow: 0 4px 20px rgba(11,100,100,0.5), 0 0 0 0 rgba(230,170,30,0); }
-          50%      { box-shadow: 0 6px 30px rgba(11,100,100,0.7), 0 0 0 5px rgba(230,170,30,0.08); }
+          0%,100% { box-shadow: 0 4px 20px rgba(190,120,10,0.45), 0 0 0 0 rgba(230,170,20,0); }
+          50%      { box-shadow: 0 6px 30px rgba(210,140,15,0.65), 0 0 0 5px rgba(230,170,20,0.1); }
         }
         @keyframes fp-flick {
           0%,100% { transform: scaleY(1) scaleX(1); opacity: 1; }
@@ -127,8 +127,9 @@ export function FloatingPromo() {
           onClick={handleGiftClick}
           className="fp-glow fp-btn fixed left-4 md:left-6 bottom-[34px] md:bottom-20 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full cursor-pointer"
           style={{
-            background: "linear-gradient(118deg, #041f2b 0%, #073344 50%, #0a5260 100%)",
-            border: "1.5px solid rgba(225,170,30,0.55)",
+            background: "linear-gradient(135deg, #ae6c08 0%, #d08c0e 38%, #e6a41a 62%, #c07e0a 100%)",
+            border: "1px solid rgba(255,195,50,0.42)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.2)",
           }}
           data-testid="promo-gift-button"
         >

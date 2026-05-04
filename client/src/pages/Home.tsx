@@ -275,10 +275,7 @@ export default function Home() {
             </div>
 
             {/* Text block */}
-            <div
-              className="flex-1 min-w-0 text-center md:text-left relative px-3 py-2 md:px-4 md:py-2.5 rounded-xl"
-              style={{ background: "linear-gradient(105deg, rgba(4,28,40,0.55) 0%, rgba(4,28,40,0.25) 70%, transparent 100%)", backdropFilter: "blur(2px)" }}
-            >
+            <div className="flex-1 min-w-0 text-center md:text-left">
               <h2 className="text-white font-display font-bold text-[1.15rem] md:text-[1.55rem] leading-tight">
                 Горящие даты июня —{" "}
                 <span
