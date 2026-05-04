@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { X, CheckCircle2 } from "lucide-react";
-import promoBeachImg from "@assets/promo_beach_sunbeds.png";
+import promoBeachImg from "@assets/promo_beach_sunbeds2.png";
 
 function scrollToCalculator() {
   const section = document.getElementById("calculator");
@@ -186,7 +186,7 @@ export function FloatingPromo() {
             {/* Desktop photo — left panel */}
             <div className="hidden sm:block sm:w-[300px] shrink-0 overflow-hidden">
               <picture className="block w-full h-full">
-                <source srcSet="/promo-beach-lg.webp" type="image/webp" />
+                <source srcSet="/promo-beach2-lg.webp" type="image/webp" />
                 <img
                   src={promoBeachImg}
                   alt="Пляж AL MARE — шезлонги и тент"
@@ -205,7 +205,7 @@ export function FloatingPromo() {
               style={{ height: "200px", flexShrink: 0 }}
             >
               <picture className="block w-full h-full">
-                <source srcSet="/promo-beach-sm.webp" type="image/webp" />
+                <source srcSet="/promo-beach2-sm.webp" type="image/webp" />
                 <img
                   src={promoBeachImg}
                   alt="Пляж AL MARE — шезлонги и тент"
