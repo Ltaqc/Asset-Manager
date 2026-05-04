@@ -153,16 +153,8 @@ export const FOOD_RATES = {
   toddler: 0,
 };
 
-export const EARLY_BOOKING_DAYS = 30;
-export const EARLY_BOOKING_DISCOUNT = 0.10;
-
-export function isEarlyBooking(checkIn: string): boolean {
-  const now = new Date();
-  now.setHours(0, 0, 0, 0);
-  const inDate = new Date(checkIn);
-  const diffMs = inDate.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  return diffDays > EARLY_BOOKING_DAYS;
+export function isEarlyBooking(_checkIn: string): boolean {
+  return true;
 }
 
 export function getDiscountRate(checkIn: string): number {
@@ -171,7 +163,7 @@ export function getDiscountRate(checkIn: string): number {
 }
 
 export function applyEarlyDiscount(total: number, checkIn = ""): number {
-  const rate = checkIn ? getDiscountRate(checkIn) : EARLY_BOOKING_DISCOUNT;
+  const rate = getDiscountRate(checkIn);
   return Math.round(total * (1 - rate));
 }
 
