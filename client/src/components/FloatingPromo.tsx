@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { X, Gift, CheckCircle2 } from "lucide-react";
-import promoFamilyImg from "@assets/ChatGPT_Image_22_февр._2026_г.,_14_53_48_1771761235460.png";
+import { X, CheckCircle2 } from "lucide-react";
+import promoFamilyImg from "@assets/promo_family_beach.png";
 
 function scrollToCalculator() {
   const section = document.getElementById("calculator");
@@ -104,19 +104,26 @@ export function FloatingPromo() {
 
   return (
     <>
+      <style>{`
+        @keyframes promo-glow {
+          0%, 100% { box-shadow: 0 4px 18px rgba(255,107,53,0.45), 0 0 0 0 rgba(255,107,53,0.3); }
+          50% { box-shadow: 0 6px 28px rgba(255,107,53,0.65), 0 0 0 6px rgba(255,107,53,0.08); }
+        }
+        .promo-btn-glow { animation: promo-glow 2.2s ease-in-out infinite; }
+      `}</style>
+
       {showGiftButton && !popupVisible && (
         <button
           type="button"
           onClick={handleGiftClick}
-          className="fixed left-4 md:left-6 bottom-[34px] md:bottom-20 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full text-white text-xs md:text-sm font-semibold cursor-pointer transition-all duration-[250ms] ease-in-out hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.97]"
+          className="promo-btn-glow fixed left-4 md:left-6 bottom-[34px] md:bottom-20 z-50 flex items-center gap-1.5 px-4 py-2.5 rounded-full text-white text-xs md:text-sm font-bold cursor-pointer transition-transform duration-200 hover:scale-[1.04] hover:-translate-y-0.5 active:scale-[0.97]"
           style={{
-            background: "#2EC4B6",
-            boxShadow: "0 6px 20px rgba(46,196,182,0.35)",
+            background: "linear-gradient(135deg, #FF6B35 0%, #FF3CAC 100%)",
           }}
           data-testid="promo-gift-button"
         >
-          <Gift className="w-4 h-4 pointer-events-none" />
-          <span className="pointer-events-none">Выгода до 25%</span>
+          <span className="pointer-events-none text-base leading-none">🔥</span>
+          <span className="pointer-events-none">Скидки в июне до 30%</span>
         </button>
       )}
 
@@ -153,7 +160,7 @@ export function FloatingPromo() {
                 src={promoFamilyImg}
                 alt="Семейный отдых на пляже"
                 className="w-full h-full object-cover"
-                style={{ objectPosition: "left center" }}
+                style={{ objectPosition: "center center" }}
                 loading="eager"
               />
             </div>
@@ -163,7 +170,7 @@ export function FloatingPromo() {
                 src={promoFamilyImg}
                 alt="Семейный отдых на пляже"
                 className="w-full h-full object-cover"
-                style={{ objectPosition: "20% 15%" }}
+                style={{ objectPosition: "50% 30%" }}
                 loading="eager"
               />
             </div>
@@ -173,10 +180,8 @@ export function FloatingPromo() {
                 Семейный отдых Ultra All&nbsp;Inclusive
               </h3>
 
-              <p className="mt-2.5 text-sm text-gray-500 leading-relaxed">
-                Подберём лучшие даты и номера
-                Скидки в июне до{" "}
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[15px] md:text-base font-bold" style={{ background: "rgba(46,196,182,0.12)", color: "#1FA99D" }}>30%</span>
+              <p className="mt-2 text-sm font-semibold leading-snug" style={{ color: "#FF6B35" }}>
+                Специальные условия на июнь — скидки до 30%
               </p>
 
               <div className="mt-4 space-y-2">
@@ -200,7 +205,7 @@ export function FloatingPromo() {
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
                 data-testid="promo-popup-cta"
               >
-                <span className="pointer-events-none">Подобрать выгодный вариант</span>
+                <span className="pointer-events-none">Подобрать лучший вариант</span>
               </button>
 
             </div>
