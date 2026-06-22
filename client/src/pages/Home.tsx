@@ -100,23 +100,27 @@ export default function Home() {
   const year = today.getFullYear();
 
   const seasonStartDate = new Date(year, 5, 1);
-  const seasonEndDate = new Date(year, 8, 15);
+  const seasonEndDate = new Date(year, 7, 31);
 
   let SEASON_START: string;
   let SEASON_END: string;
+  let MAX_CHECKIN: string;
   let defaultCheckIn: string;
 
   if (today < seasonStartDate) {
     SEASON_START = `${year}-06-01`;
-    SEASON_END = `${year}-09-15`;
+    SEASON_END = `${year}-08-31`;
+    MAX_CHECKIN = `${year}-08-30`;
     defaultCheckIn = SEASON_START;
   } else if (today > seasonEndDate) {
     SEASON_START = `${year + 1}-06-01`;
-    SEASON_END = `${year + 1}-09-15`;
+    SEASON_END = `${year + 1}-08-31`;
+    MAX_CHECKIN = `${year + 1}-08-30`;
     defaultCheckIn = SEASON_START;
   } else {
     SEASON_START = `${year}-06-01`;
-    SEASON_END = `${year}-09-15`;
+    SEASON_END = `${year}-08-31`;
+    MAX_CHECKIN = `${year}-08-30`;
     defaultCheckIn = todayStr;
   }
 
@@ -285,7 +289,7 @@ export default function Home() {
             <div className="flex-1 min-w-0 text-center md:text-left">
 
               <h2 className="font-display font-bold leading-tight" style={{ fontSize: "clamp(1.15rem, 2.5vw, 1.65rem)", color: "#fff" }}>
-                Горящие даты июня —{" "}
+                Горящие даты августа —{" "}
                 <span
                   className="pb3-pill inline-flex items-baseline px-3 py-0.5 rounded-xl align-middle whitespace-nowrap"
                   style={{
@@ -297,12 +301,12 @@ export default function Home() {
                     textShadow: "0 0 18px rgba(255,200,40,0.4)",
                   }}
                 >
-                  выгода до 30%
+                  специальная выгода
                 </span>
               </h2>
 
               <p className="mt-2 leading-relaxed max-w-[42ch] mx-auto md:mx-0" style={{ color: "rgba(255,255,255,0.88)", fontSize: "14.5px", fontWeight: 400 }}>
-                Забронируйте проживание в июне и получите специальные условия с максимальной выгодой.
+                Забронируйте отдых у моря в августе и получите специальные условия при подтверждении бронирования.
               </p>
 
               {/* Premium glass chips */}
@@ -487,7 +491,7 @@ export default function Home() {
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 15 сентября</p>
+            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 31 августа</p>
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
@@ -502,7 +506,7 @@ export default function Home() {
                     }
                   }}
                   minDate={minCheckIn}
-                  maxDate={SEASON_END}
+                  maxDate={MAX_CHECKIN}
                   seasonStart={SEASON_START}
                   seasonEnd={SEASON_END}
                   placeholder="Выберите даты"

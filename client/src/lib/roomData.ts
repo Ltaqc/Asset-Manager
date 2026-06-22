@@ -153,11 +153,31 @@ export const FOOD_RATES = {
   toddler: 0,
 };
 
+export function hasAugustInRange(checkIn: string, checkOut: string): boolean {
+  if (!checkIn || !checkOut) return false;
+  const start = new Date(checkIn + "T00:00:00");
+  const end = new Date(checkOut + "T00:00:00");
+  const cur = new Date(start);
+  while (cur < end) {
+    if (cur.getMonth() === 7) return true;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return false;
+}
+
+export function hasSeptemberInRange(checkIn: string, checkOut: string): boolean {
+  if (!checkIn || !checkOut) return false;
+  const inDate = new Date(checkIn + "T00:00:00");
+  const outDate = new Date(checkOut + "T00:00:00");
+  return inDate.getMonth() >= 8 || outDate.getMonth() >= 8;
+}
+
 export function isEarlyBooking(_checkIn: string): boolean {
   return true;
 }
 
 export function hasJuneInRange(checkIn: string, checkOut: string): boolean {
+  if (!checkIn || !checkOut) return false;
   const start = new Date(checkIn + "T00:00:00");
   const end = new Date(checkOut + "T00:00:00");
   const cur = new Date(start);
@@ -168,29 +188,17 @@ export function hasJuneInRange(checkIn: string, checkOut: string): boolean {
   return false;
 }
 
-export function getDiscountRate(checkIn: string): number {
-  const month = new Date(checkIn).getMonth(); // 5 = June
-  return month === 5 ? 0.20 : 0.10;
+export function getDiscountRate(month0indexed: number): number {
+  return month0indexed === 7 ? 0.10 : 0;
 }
 
 export function getDiscountLabel(checkIn: string, checkOut: string): string {
-  const MONTH_NAMES: Record<number, string> = { 5: "июнь", 6: "июль", 7: "август", 8: "сентябрь" };
-  const MONTH_RATES: Record<number, number> = { 5: 20, 6: 10, 7: 10, 8: 10 };
-  const start = new Date(checkIn + "T00:00:00");
-  const end = new Date(checkOut + "T00:00:00");
-  const seenMonths: number[] = [];
-  const cur = new Date(start);
-  while (cur < end) {
-    const m = cur.getMonth();
-    if (!seenMonths.includes(m)) seenMonths.push(m);
-    cur.setDate(cur.getDate() + 1);
-  }
-  return seenMonths.map(m => `${MONTH_NAMES[m] ?? ""} — ${MONTH_RATES[m] ?? 10}%`).join(", ");
+  if (hasAugustInRange(checkIn, checkOut)) return "август";
+  return "";
 }
 
-export function applyEarlyDiscount(total: number, checkIn = ""): number {
-  const rate = getDiscountRate(checkIn);
-  return Math.round(total * (1 - rate));
+export function applyEarlyDiscount(total: number, _checkIn = ""): number {
+  return total;
 }
 
 export function calculateComboDiscountedTotal(
@@ -209,7 +217,7 @@ export function calculateComboDiscountedTotal(
     const d = new Date(inDate);
     d.setDate(d.getDate() + i);
     const monthNum = d.getMonth() + 1;
-    const discountRate = d.getMonth() === 5 ? 0.20 : 0.10;
+    const discountRate = d.getMonth() === 7 ? 0.10 : 0;
     let accomForNight = 0;
     for (const cat of categories) {
       accomForNight += (ROOM_DATA[cat].prices[monthNum] ?? 0);
@@ -237,18 +245,24 @@ export function getDefaultCheckIn(): string {
   const now = new Date();
   const year = now.getFullYear();
   const june1 = new Date(year, 5, 1);
-  if (now < june1) return `${year}-06-15`;
-  if (now.getMonth() >= 5 && now.getMonth() <= 8) {
+  const aug31 = new Date(year, 7, 31);
+  if (now < june1) return `${year}-08-01`;
+  if (now <= aug31) {
     const d = new Date(now);
     d.setDate(d.getDate() + 1);
-    return d.toISOString().split("T")[0];
+    const next = d.toISOString().split("T")[0];
+    if (d > aug31) return `${year + 1}-08-01`;
+    return next;
   }
-  return `${year + 1}-06-15`;
+  return `${year + 1}-08-01`;
 }
 
 export function getDefaultCheckOut(checkIn: string): string {
   const d = new Date(checkIn);
   d.setDate(d.getDate() + 5);
+  const year = d.getFullYear();
+  const aug31 = new Date(year, 7, 31);
+  if (d > aug31) return `${year}-08-31`;
   return d.toISOString().split("T")[0];
 }
 
@@ -377,6 +391,10 @@ export function generateRecommendations(
   toddlers: number,
 ): Recommendations {
   const totalMain = adults + teens + children;
+
+  if (hasSeptemberInRange(checkIn, checkOut)) {
+    return { primary: null, alternatives: [], seasonError: "Бронирование на сентябрь временно недоступно. Выберите даты до 31 августа." };
+  }
 
   const testCalc = calculateAccommodationCost(roomCategories[0], checkIn, checkOut);
   if (testCalc && "error" in testCalc) {

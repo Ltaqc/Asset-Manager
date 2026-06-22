@@ -150,7 +150,7 @@ export function FloatingPromo() {
             <path d="M10 16C9 16 8.3 15.2 8.3 14.2 8.3 13 9.1 12.1 10 11.8 10 11.8 9.6 13.2 10.5 13.8 10.5 13.8 11.3 12.9 11.1 14.2 10.9 15.2 10.9 16 10 16Z" fill="url(#fpFI)" />
           </svg>
           <span className="text-white text-xs md:text-sm font-semibold whitespace-nowrap pointer-events-none" style={{ letterSpacing: "0.01em" }}>
-            Горящие даты июня
+            Горящие даты августа
           </span>
         </button>
       )}
@@ -231,16 +231,16 @@ export function FloatingPromo() {
                     boxShadow: "0 0 10px 2px rgba(255,195,40,0.12)",
                   }}
                 >
-                  выгода до 30%
+                  специальная выгода
                 </span>
               </div>
 
               <h3 className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-6">
-                Горящие даты июня — выгода до 30%
+                Горящие даты августа — специальные условия
               </h3>
 
               <p className="mt-1.5 text-sm text-muted-foreground leading-snug">
-                Забронируйте отдых у моря и получите специальные условия при подтверждении бронирования.
+                Забронируйте отдых у моря в августе и получите выгодные условия при подтверждении бронирования.
               </p>
 
               <div className="mt-3.5 space-y-2">

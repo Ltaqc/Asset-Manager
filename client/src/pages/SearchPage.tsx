@@ -15,7 +15,7 @@ import {
   ROOM_DATA, RoomCategory,
   formatPrice, nightsLabel,
   getDefaultCheckIn, getDefaultCheckOut,
-  isEarlyBooking, hasJuneInRange, getDiscountLabel,
+  hasAugustInRange, getDiscountLabel,
   generateRecommendations, RoomCombo,
   calculateRoomTotalPrice, calculateFoodCost,
   calculateAccommodationCost, isRoomSuitable,
@@ -69,9 +69,10 @@ export default function SearchPage() {
   const todayStr = today.toISOString().split("T")[0];
   const sYear = today.getFullYear();
   const seasonStartDate = new Date(sYear, 5, 1);
-  const seasonEndDate = new Date(sYear, 8, 15);
+  const seasonEndDate = new Date(sYear, 7, 31);
   const SEASON_START = today > seasonEndDate ? `${sYear + 1}-06-01` : `${sYear}-06-01`;
-  const SEASON_END = today > seasonEndDate ? `${sYear + 1}-09-15` : `${sYear}-09-15`;
+  const SEASON_END = today > seasonEndDate ? `${sYear + 1}-08-31` : `${sYear}-08-31`;
+  const MAX_CHECKIN = today > seasonEndDate ? `${sYear + 1}-08-30` : `${sYear}-08-30`;
   const minCheckIn = todayStr > SEASON_START && todayStr <= SEASON_END ? todayStr : SEASON_START;
   const addDays = (dateStr: string, days: number) => {
     const d = new Date(dateStr);
@@ -98,11 +99,7 @@ export default function SearchPage() {
 
   const createBooking = useCreateBooking();
 
-  const earlyBooking = useMemo(() => isEarlyBooking(checkIn), [checkIn]);
-  const additionalDiscountLabel = useMemo(
-    () => hasJuneInRange(checkIn, checkOut) ? "до 30%" : "до 25%",
-    [checkIn, checkOut]
-  );
+  const earlyBooking = useMemo(() => hasAugustInRange(checkIn, checkOut), [checkIn, checkOut]);
 
   const recommendations = useMemo(() => {
     return generateRecommendations(checkIn, checkOut, adults, teens, children, toddlers);
@@ -257,7 +254,7 @@ export default function SearchPage() {
                     }
                   }}
                   minDate={minCheckIn}
-                  maxDate={SEASON_END}
+                  maxDate={MAX_CHECKIN}
                   seasonStart={SEASON_START}
                   seasonEnd={SEASON_END}
                   placeholder="Заезд"
