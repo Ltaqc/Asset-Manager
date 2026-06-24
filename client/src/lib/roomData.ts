@@ -211,20 +211,16 @@ export function calculateComboDiscountedTotal(
   const outDate = new Date(checkOut + "T00:00:00");
   const nights = Math.ceil((outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24));
   if (nights < 1) return 0;
-  const foodPerNight = foodTotal / nights;
-  let total = 0;
+  let accomTotal = 0;
   for (let i = 0; i < nights; i++) {
     const d = new Date(inDate);
     d.setDate(d.getDate() + i);
     const monthNum = d.getMonth() + 1;
-    const discountRate = d.getMonth() === 7 ? 0.10 : 0;
-    let accomForNight = 0;
     for (const cat of categories) {
-      accomForNight += (ROOM_DATA[cat].prices[monthNum] ?? 0);
+      accomTotal += (ROOM_DATA[cat].prices[monthNum] ?? 0);
     }
-    total += (accomForNight + foodPerNight) * (1 - discountRate);
   }
-  return Math.round(total);
+  return Math.round(accomTotal + foodTotal);
 }
 
 export function formatPrice(value: number): string {
@@ -244,17 +240,16 @@ export function calculateFoodCost(adults: number, teens: number, children: numbe
 export function getDefaultCheckIn(): string {
   const now = new Date();
   const year = now.getFullYear();
-  const june1 = new Date(year, 5, 1);
+  const jul1 = new Date(year, 6, 1);
   const aug31 = new Date(year, 7, 31);
-  if (now < june1) return `${year}-08-01`;
+  if (now < jul1) return `${year}-07-01`;
   if (now <= aug31) {
     const d = new Date(now);
     d.setDate(d.getDate() + 1);
-    const next = d.toISOString().split("T")[0];
-    if (d > aug31) return `${year + 1}-08-01`;
-    return next;
+    if (d > aug31) return `${year + 1}-07-01`;
+    return d.toISOString().split("T")[0];
   }
-  return `${year + 1}-08-01`;
+  return `${year + 1}-07-01`;
 }
 
 export function getDefaultCheckOut(checkIn: string): string {
@@ -391,6 +386,10 @@ export function generateRecommendations(
   toddlers: number,
 ): Recommendations {
   const totalMain = adults + teens + children;
+
+  if (checkIn && new Date(checkIn + "T00:00:00").getMonth() <= 5) {
+    return { primary: null, alternatives: [], seasonError: "Бронирование на июнь временно недоступно. Выберите даты с 1 июля." };
+  }
 
   if (hasSeptemberInRange(checkIn, checkOut)) {
     return { primary: null, alternatives: [], seasonError: "Бронирование на сентябрь временно недоступно. Выберите даты до 31 августа." };

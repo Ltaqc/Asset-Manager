@@ -14,11 +14,11 @@ function scrollToCalculator() {
 }
 
 const benefits = [
-  "специальные условия на выбранные даты",
   "Ultra All Inclusive уже входит в стоимость",
   "собственный песчаный пляж рядом",
   "питание, напитки и развлечения включены",
   "семейный отдых у моря без лишних затрат",
+  "количество свободных номеров ограничено",
 ];
 
 export function FloatingPromo() {
@@ -150,7 +150,7 @@ export function FloatingPromo() {
             <path d="M10 16C9 16 8.3 15.2 8.3 14.2 8.3 13 9.1 12.1 10 11.8 10 11.8 9.6 13.2 10.5 13.8 10.5 13.8 11.3 12.9 11.1 14.2 10.9 15.2 10.9 16 10 16Z" fill="url(#fpFI)" />
           </svg>
           <span className="text-white text-xs md:text-sm font-semibold whitespace-nowrap pointer-events-none" style={{ letterSpacing: "0.01em" }}>
-            Горящие даты августа
+            Успейте забронировать AL MARE
           </span>
         </button>
       )}
@@ -231,16 +231,16 @@ export function FloatingPromo() {
                     boxShadow: "0 0 10px 2px rgba(255,195,40,0.12)",
                   }}
                 >
-                  специальная выгода
+                  места ограничены
                 </span>
               </div>
 
               <h3 className="text-lg md:text-xl font-display font-bold text-foreground leading-snug pr-6">
-                Горящие даты августа — специальные условия
+                Успейте забронировать отдых в AL MARE
               </h3>
 
               <p className="mt-1.5 text-sm text-muted-foreground leading-snug">
-                Забронируйте отдых у моря в августе и получите выгодные условия при подтверждении бронирования.
+                Летние даты быстро заполняются. Оставьте заявку, и менеджер подберёт лучший доступный вариант размещения.
               </p>
 
               <div className="mt-3.5 space-y-2">
@@ -263,7 +263,7 @@ export function FloatingPromo() {
                 }}
                 data-testid="promo-popup-cta"
               >
-                <span className="pointer-events-none">Посмотреть выгодные даты</span>
+                <span className="pointer-events-none">Проверить свободные даты</span>
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="pointer-events-none">
                   <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>

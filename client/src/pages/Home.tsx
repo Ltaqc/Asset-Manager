@@ -99,7 +99,7 @@ export default function Home() {
   const todayStr = today.toISOString().split("T")[0];
   const year = today.getFullYear();
 
-  const seasonStartDate = new Date(year, 5, 1);
+  const seasonStartDate = new Date(year, 6, 1);
   const seasonEndDate = new Date(year, 7, 31);
 
   let SEASON_START: string;
@@ -108,17 +108,17 @@ export default function Home() {
   let defaultCheckIn: string;
 
   if (today < seasonStartDate) {
-    SEASON_START = `${year}-06-01`;
+    SEASON_START = `${year}-07-01`;
     SEASON_END = `${year}-08-31`;
     MAX_CHECKIN = `${year}-08-30`;
     defaultCheckIn = SEASON_START;
   } else if (today > seasonEndDate) {
-    SEASON_START = `${year + 1}-06-01`;
+    SEASON_START = `${year + 1}-07-01`;
     SEASON_END = `${year + 1}-08-31`;
     MAX_CHECKIN = `${year + 1}-08-30`;
     defaultCheckIn = SEASON_START;
   } else {
-    SEASON_START = `${year}-06-01`;
+    SEASON_START = `${year}-07-01`;
     SEASON_END = `${year}-08-31`;
     MAX_CHECKIN = `${year}-08-30`;
     defaultCheckIn = todayStr;
@@ -289,24 +289,11 @@ export default function Home() {
             <div className="flex-1 min-w-0 text-center md:text-left">
 
               <h2 className="font-display font-bold leading-tight" style={{ fontSize: "clamp(1.15rem, 2.5vw, 1.65rem)", color: "#fff" }}>
-                Горящие даты августа —{" "}
-                <span
-                  className="pb3-pill inline-flex items-baseline px-3 py-0.5 rounded-xl align-middle whitespace-nowrap"
-                  style={{
-                    background: "linear-gradient(118deg, rgba(255,200,38,0.32) 0%, rgba(255,155,15,0.22) 100%)",
-                    color: "#FFD23E",
-                    border: "1.5px solid rgba(255,195,38,0.6)",
-                    fontSize: "inherit",
-                    fontWeight: "inherit",
-                    textShadow: "0 0 18px rgba(255,200,40,0.4)",
-                  }}
-                >
-                  специальная выгода
-                </span>
+                Успейте забронировать отдых в AL MARE
               </h2>
 
               <p className="mt-2 leading-relaxed max-w-[42ch] mx-auto md:mx-0" style={{ color: "rgba(255,255,255,0.88)", fontSize: "14.5px", fontWeight: 400 }}>
-                Забронируйте отдых у моря в августе и получите специальные условия при подтверждении бронирования.
+                Количество свободных номеров на летние даты ограничено. Подберите подходящий вариант заранее.
               </p>
 
               {/* Premium glass chips */}
@@ -314,7 +301,7 @@ export default function Home() {
                 {[
                   { label: "Ultra All Inclusive",       icon: <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" fill="currentColor"/> },
                   { label: "Семейный отдых у моря",     icon: <><circle cx="12" cy="5" r="2" fill="currentColor"/><path d="M12 9c-3 0-5 1.5-5 3.5V14h10v-1.5C17 10.5 15 9 12 9z" fill="currentColor"/><path d="M5 12c-2 0-3 1-3 2.5V16h6v-1c0-1-.4-2.1-1-3H5z" fill="currentColor" opacity=".7"/><path d="M19 12c2 0 3 1 3 2.5V16h-6v-1c0-1 .4-2.1 1-3H19z" fill="currentColor" opacity=".7"/></> },
-                  { label: "Спецусловия при подтверждении", icon: <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none"/> },
+                  { label: "Ограниченное количество мест", icon: <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="currentColor"/> },
                 ].map(({ label, icon }) => (
                   <span
                     key={label}
@@ -347,7 +334,7 @@ export default function Home() {
                 }}
                 data-testid="button-promo-banner-cta"
               >
-                Посмотреть выгодные даты
+                Проверить свободные даты
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -491,7 +478,7 @@ export default function Home() {
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июня по 31 августа</p>
+            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июля по 31 августа</p>
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
