@@ -72,6 +72,22 @@ export async function initApp(httpServer: http.Server): Promise<void> {
     }
   }
 
+  // Diagnostic probe — confirms request reaches backend (not caught by SPA fallback)
+  app.get("/probe", (req, res) => {
+    console.log("[probe] request reached backend", {
+      time: new Date().toISOString(),
+      ip: req.ip,
+      host: req.headers.host,
+      userAgent: req.headers["user-agent"],
+    });
+    res.status(200).json({
+      ok: true,
+      route: "/probe",
+      time: new Date().toISOString(),
+      host: req.headers.host,
+    });
+  });
+
   // API routes (DB, storage, email, Telegram — all heavy deps)
   await registerRoutes(httpServer, app);
 
