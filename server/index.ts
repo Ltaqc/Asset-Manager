@@ -36,7 +36,8 @@ export function log(message: string, source = "express") {
 // Replit polls GET / immediately on startup. These must answer before anything
 // else is initialized, so they are registered at module-level before listen().
 app.get("/", (_req, res) => {
-  res.status(200).send("OK");
+  console.log("[healthcheck] GET / -> 200 OK");
+  res.status(200).type("text/plain").send("OK");
 });
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
@@ -85,7 +86,7 @@ if (process.env.NODE_ENV === "production") {
 // Listen BEFORE the async IIFE. Healthcheck GET / hits the already-registered
 // route above and returns 200 immediately, before any async work completes.
 const port = parseInt(process.env.PORT || "5000", 10);
-httpServer.listen({ port, host: "0.0.0.0", reusePort: true }, () => {
+httpServer.listen({ port, host: "0.0.0.0" }, () => {
   log(`serving on port ${port}`);
 });
 
