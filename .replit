@@ -11,7 +11,7 @@ PORT = "5000"
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["node", "dist/index.cjs"]
+run = ["node", "dist/startup.cjs"]
 build = ["npm", "run", "build"]
 
 [workflows]

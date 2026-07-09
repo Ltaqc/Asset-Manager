@@ -46,12 +46,32 @@ async function buildAll() {
   ];
   const externals = allDeps.filter((dep) => !allowlist.includes(dep));
 
+  // ── Bundle 1: startup.cjs — tiny entry (~5 KB) ─────────────────────────────
+  // Only http/path/fs. Binds port in < 5 ms so healthcheck never times out.
+  // require("./app.cjs") is marked external so it stays as a runtime require
+  // and is NOT bundled in — it resolves to dist/app.cjs at runtime.
   await esbuild({
-    entryPoints: ["server/index.ts"],
+    entryPoints: ["server/startup.ts"],
     platform: "node",
     bundle: true,
     format: "cjs",
-    outfile: "dist/index.cjs",
+    outfile: "dist/startup.cjs",
+    define: {
+      "process.env.NODE_ENV": '"production"',
+    },
+    minify: true,
+    external: [...externals, "./app.cjs"],
+    logLevel: "info",
+  });
+
+  // ── Bundle 2: app.cjs — full Express app (~1.2 MB) ─────────────────────────
+  // Loaded by startup.cjs at runtime after port is already bound.
+  await esbuild({
+    entryPoints: ["server/app.ts"],
+    platform: "node",
+    bundle: true,
+    format: "cjs",
+    outfile: "dist/app.cjs",
     define: {
       "process.env.NODE_ENV": '"production"',
     },
