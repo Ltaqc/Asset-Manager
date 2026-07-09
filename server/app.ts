@@ -4,10 +4,6 @@ import * as http from "http";
 import path from "path";
 import fs from "fs";
 
-// ── Full Express app — compiled to dist/app.cjs (~1.2 MB) ────────────────────
-// Loaded by dist/startup.cjs AFTER the port is bound.
-// Also imported by server/index.ts for dev (tsx).
-
 declare module "http" {
   interface IncomingMessage {
     rawBody: unknown;
@@ -43,13 +39,11 @@ export async function initApp(httpServer: http.Server): Promise<void> {
     const start = Date.now();
     const reqPath = req.path;
     let capturedJsonResponse: Record<string, any> | undefined;
-
     const originalJson = res.json;
     res.json = function (body, ...args) {
       capturedJsonResponse = body;
       return originalJson.apply(res, [body, ...args]);
     };
-
     res.on("finish", () => {
       const ms = Date.now() - start;
       if (reqPath.startsWith("/api")) {
@@ -59,20 +53,14 @@ export async function initApp(httpServer: http.Server): Promise<void> {
         log(line);
       }
     });
-
     next();
   });
 
-  if (process.env.NODE_ENV === "production") {
-    if (fs.existsSync(distPublic)) {
-      app.use(express.static(distPublic));
-      log("static middleware registered");
-    } else {
-      console.error(`[startup] dist/public not found at ${distPublic}`);
-    }
-  }
+  // ── Health + probe — registered before static so they are never intercepted ─
+  app.get("/health", (_req, res) => {
+    res.status(200).json({ status: "ok" });
+  });
 
-  // Diagnostic probe — confirms request reaches backend (not caught by SPA fallback)
   app.get("/probe", (req, res) => {
     console.log("[probe] request reached backend", {
       time: new Date().toISOString(),
@@ -88,10 +76,36 @@ export async function initApp(httpServer: http.Server): Promise<void> {
     });
   });
 
-  // API routes (DB, storage, email, Telegram — all heavy deps)
+  // ── Static assets + frontend ───────────────────────────────────────────────
+  if (process.env.NODE_ENV === "production") {
+    const indexPath = path.resolve(distPublic, "index.html");
+    if (fs.existsSync(distPublic)) {
+      // Log when GET / is served as index.html (before static intercepts it)
+      app.get("/", (_req, res, next) => {
+        console.log("[frontend] GET / -> index.html 200");
+        next(); // hand off to express.static below
+      });
+
+      app.use(express.static(distPublic));
+      log("static middleware registered");
+    } else {
+      console.error(`[startup] dist/public not found at ${distPublic}`);
+    }
+
+    // ── Hand off HTTP listener to Express NOW — before async registerRoutes ──
+    // This is the critical fix: startup.cjs fallback served index.html for ALL
+    // paths (including /assets/*.js → wrong content → blank page). By swapping
+    // here, express.static takes over and serves assets correctly while
+    // registerRoutes (DB connections etc.) is still initialising.
+    httpServer.removeAllListeners("request");
+    httpServer.on("request", app);
+    log("express handler active");
+  }
+
+  // ── API routes — async; DB/storage/email init happens here ────────────────
   await registerRoutes(httpServer, app);
 
-  // Error handler — AFTER all route handlers
+  // Error handler — must be after all route handlers
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     if (err instanceof URIError) {
       return res
@@ -106,6 +120,8 @@ export async function initApp(httpServer: http.Server): Promise<void> {
   });
 
   if (process.env.NODE_ENV === "production") {
+    // SPA catch-all: any non-API route not matched above → index.html
+    // Registered after registerRoutes so /api/* is never intercepted
     if (fs.existsSync(distPublic)) {
       app.use((_req, res) => {
         res.sendFile(path.resolve(distPublic, "index.html"));
@@ -116,10 +132,8 @@ export async function initApp(httpServer: http.Server): Promise<void> {
     // Dev: Vite middleware handles HMR and SPA routing
     const { setupVite } = await import("./vite");
     await setupVite(httpServer, app);
+    // In dev the HTTP handler is set up by setupVite
+    httpServer.removeAllListeners("request");
+    httpServer.on("request", app);
   }
-
-  // Hand off the HTTP server's request handling to Express.
-  // Until this point, startup.ts served the minimal fallback handler.
-  httpServer.removeAllListeners("request");
-  httpServer.on("request", app);
 }
