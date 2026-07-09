@@ -32,13 +32,9 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-// ── Healthcheck — FIRST routes, sync, no deps, instant 200 ───────────────────
-// Replit polls GET / immediately on startup. These must answer before anything
-// else is initialized, so they are registered at module-level before listen().
-app.get("/", (_req, res) => {
-  console.log("[healthcheck] GET / -> 200 OK");
-  res.status(200).type("text/plain").send("OK");
-});
+// ── Healthcheck — registered sync, before listen() ───────────────────────────
+// /health is used as the deployment healthcheck path (healthcheckPath = "/health")
+// GET / is handled by express.static (serves index.html → 200) — no extra route needed
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
