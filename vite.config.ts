@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import { viteSingleFile } from "vite-plugin-singlefile";
 
 export default defineConfig({
   plugins: [
@@ -18,6 +19,10 @@ export default defineConfig({
           ),
         ]
       : []),
+    // Inline JS + CSS into index.html — eliminates separate /assets/*.js and
+    // /assets/*.css requests that fail over Replit edge via QUIC/HTTP3.
+    // Applied in production only (plugin is a no-op in dev mode).
+    viteSingleFile(),
   ],
   resolve: {
     alias: {
@@ -30,6 +35,14 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    assetsInlineLimit: 100000000,
+    cssCodeSplit: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+        inlineDynamicImports: true,
+      },
+    },
   },
   server: {
     fs: {

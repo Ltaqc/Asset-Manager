@@ -1,0 +1,103 @@
+Переходим на другое решение. Предыдущие попытки лечить express.static не решили проблему.
+
+Текущий факт:
+
+1. https://hotel-almare.ru/probe работает и возвращает JSON.
+2. https://hotel-almare.ru/ возвращает index.html со статусом 200.
+3. Но frontend не запускается, потому что отдельные asset-запросы падают:
+   - /assets/index-*.js → ERR_CONNECTION_RESET
+   - /assets/index-*.css → ERR_CONNECTION_RESET / ERR_QUIC_PROTOCOL_ERROR / QUIC_TOO_MANY_RTOS
+4. Через VPN сайт открывается, без VPN отдельные JS/CSS assets нестабильно загружаются.
+5. Значит проблема не в DNS, не в домене, не в /, не в React router, а в загрузке отдельных static asset файлов через edge/network.
+
+Нужно сделать production frontend single-file build, чтобы убрать отдельные /assets/index-*.js и /assets/index-*.css запросы.
+
+Задача:
+
+1. Найди frontend build config:
+   - vite.config.ts
+   - vite.config.js
+   - package.json
+   - build scripts
+
+2. Настрой Vite production build так, чтобы JS и CSS инлайнились в index.html.
+
+Предпочтительный вариант:
+- установить и использовать vite-plugin-singlefile
+
+Если установка пакета возможна:
+npm install -D vite-plugin-singlefile
+
+В vite.config.ts добавить:
+
+import { viteSingleFile } from "vite-plugin-singlefile";
+
+plugins: [
+  ...existingPlugins,
+  viteSingleFile()
+]
+
+build:
+{
+  assetsInlineLimit: 100000000,
+  cssCodeSplit: false,
+  rollupOptions: {
+    output: {
+      manualChunks: undefined,
+      inlineDynamicImports: true
+    }
+  }
+}
+
+3. Если vite-plugin-singlefile несовместим с текущей конфигурацией, сделать кастомный postbuild script:
+
+После npm run build:
+- открыть production index.html
+- найти ссылку на /assets/*.css
+- прочитать этот CSS-файл из dist
+- встроить его в index.html через <style>...</style>
+- удалить <link rel="stylesheet" ...>
+- найти script type="module" src="/assets/*.js"
+- прочитать JS-файл из dist
+- встроить его в index.html через <script type="module">...</script>
+- удалить src script
+- сохранить index.html
+
+4. После сборки production index.html НЕ должен содержать:
+   src="/assets/index-*.js"
+   href="/assets/index-*.css"
+
+5. Отдельные изображения можно пока оставить внешними. Главное — убрать отдельную загрузку основного JS и CSS.
+
+6. Express routes оставить:
+   - /probe → JSON
+   - /health → JSON
+   - / → отдаёт index.html 200
+   - SPA fallback → index.html
+   - express.static → для изображений и прочих assets
+
+7. Сделать clean build:
+rm -rf dist
+npm run build
+
+8. Проверить содержимое production index.html:
+   - есть inline <script type="module">...</script>
+   - есть inline <style>...</style>
+   - нет ссылок на /assets/index-*.js
+   - нет ссылок на /assets/index-*.css
+
+9. Republish.
+
+Критерий успеха:
+
+Без VPN:
+https://hotel-almare.ru/ открывает сайт AL MARE.
+
+В DevTools → Network:
+- document / → 200
+- НЕ должно быть запросов к /assets/index-*.js
+- НЕ должно быть запросов к /assets/index-*.css
+- нет ERR_CONNECTION_RESET по основному JS/CSS
+- нет ERR_QUIC_PROTOCOL_ERROR по основному JS/CSS
+
+Если после single-file build сайт откроется, значит проблема была в отдельных asset requests через Replit edge/network.
