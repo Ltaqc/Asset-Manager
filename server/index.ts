@@ -32,9 +32,12 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-// ── Health check ─────────────────────────────────────────────────────────────
-// Registered synchronously — responds 200 from the very first request.
-// No DB, no email, no external deps.
+// ── Healthcheck — FIRST routes, sync, no deps, instant 200 ───────────────────
+// Replit polls GET / immediately on startup. These must answer before anything
+// else is initialized, so they are registered at module-level before listen().
+app.get("/", (_req, res) => {
+  res.status(200).send("OK");
+});
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
@@ -63,57 +66,50 @@ app.use((req, res, next) => {
   next();
 });
 
-// ── Production static files (synchronous, before async IIFE) ─────────────────
-// Registering express.static here means GET / (and all asset requests) are
-// served immediately, even before API routes are wired up.
-// The SPA catch-all is added later (after API routes) inside the async IIFE.
-const distPath = path.resolve(__dirname, "public");
+// ── Static files (production, sync, before listen) ───────────────────────────
+// express.static serves assets and index.html for /. Registered synchronously
+// so it is available from the very first request after listen().
+// Avoid __dirname — not available in ESM (tsx dev). Use process.cwd() instead.
+// In production: node runs from workspace root, dist/public is relative to cwd.
+const distPublic = path.resolve(process.cwd(), "dist", "public");
 if (process.env.NODE_ENV === "production") {
-  if (fs.existsSync(distPath)) {
-    app.use(express.static(distPath));
+  if (fs.existsSync(distPublic)) {
+    app.use(express.static(distPublic));
     log("static middleware registered");
   } else {
-    console.error(`[startup] dist/public not found at ${distPath} — frontend will not be served`);
+    console.error(`[startup] dist/public not found at ${distPublic}`);
   }
 }
 
-// ── Start listening synchronously ─────────────────────────────────────────────
-// Server binds to the port BEFORE the async IIFE so healthcheck passes
-// within the very first milliseconds of the process.
+// ── Bind port synchronously ───────────────────────────────────────────────────
+// Listen BEFORE the async IIFE. Healthcheck GET / hits the already-registered
+// route above and returns 200 immediately, before any async work completes.
 const port = parseInt(process.env.PORT || "5000", 10);
 httpServer.listen({ port, host: "0.0.0.0", reusePort: true }, () => {
   log(`serving on port ${port}`);
 });
 
-// ── Async IIFE: API routes + SPA catch-all ────────────────────────────────────
+// ── Async IIFE: API routes + SPA fallback ─────────────────────────────────────
 (async () => {
-  // registerRoutes is declared async but has no real awaits — resolves in < 1ms
   await registerRoutes(httpServer, app);
 
-  // Error middleware — must be after all route handlers
+  // Error middleware — after all route handlers
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
     if (err instanceof URIError) {
       return res.status(400).json({ message: "Bad Request: Invalid URL encoding" });
     }
-
-    // Express 5: unhandled routes call next(err) with no status → default to 404
     const status = err.status || err.statusCode || 404;
     const message = err.message || "Not Found";
-
-    if (status >= 500) {
-      console.error("Server error:", err);
-    }
-
+    if (status >= 500) console.error("Server error:", err);
     if (res.headersSent) return next(err);
     return res.status(status).json({ message });
   });
 
   if (process.env.NODE_ENV === "production") {
-    // SPA catch-all: serve index.html for any non-asset, non-API path
-    // Must be AFTER API routes so POST /api/bookings is not caught here
-    if (fs.existsSync(distPath)) {
+    // SPA catch-all: AFTER API routes, so /api/* is not intercepted
+    if (fs.existsSync(distPublic)) {
       app.use((_req, res) => {
-        res.sendFile(path.resolve(distPath, "index.html"));
+        res.sendFile(path.resolve(distPublic, "index.html"));
       });
       log("SPA catch-all registered");
     }
