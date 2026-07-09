@@ -86,7 +86,21 @@ export async function initApp(httpServer: http.Server): Promise<void> {
         next(); // hand off to express.static below
       });
 
-      app.use(express.static(distPublic));
+      app.use(
+        express.static(distPublic, {
+          acceptRanges: false,
+          etag: false,
+          lastModified: false,
+          setHeaders: (res, filePath) => {
+            res.setHeader(
+              "Cache-Control",
+              "no-store, no-cache, must-revalidate, proxy-revalidate",
+            );
+            res.setHeader("Pragma", "no-cache");
+            res.setHeader("Expires", "0");
+          },
+        }),
+      );
       log("static middleware registered");
     } else {
       console.error(`[startup] dist/public not found at ${distPublic}`);
