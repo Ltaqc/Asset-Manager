@@ -12,8 +12,10 @@ export function serveStatic(app: Express) {
 
   app.use(express.static(distPath));
 
-  // fall through to index.html if the file doesn't exist
-  app.use("/{*path}", (_req, res) => {
+  // Catch-all: serve index.html for every non-API, non-asset route.
+  // Using app.use() without a path pattern so it matches "/" as well.
+  // Express 5 wildcard patterns like "/{*path}" do NOT match bare "/".
+  app.use((_req, res) => {
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }

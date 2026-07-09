@@ -2,6 +2,8 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import path from "path";
+import fs from "fs";
 
 const app = express();
 const httpServer = createServer(app);
@@ -33,14 +35,14 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-// Health check endpoint — must respond immediately, no DB or external calls
+// Health check — responds immediately, no DB or external calls
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
 app.use((req, res, next) => {
   const start = Date.now();
-  const path = req.path;
+  const reqPath = req.path;
   let capturedJsonResponse: Record<string, any> | undefined = undefined;
 
   const originalResJson = res.json;
@@ -51,12 +53,11 @@ app.use((req, res, next) => {
 
   res.on("finish", () => {
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+    if (reqPath.startsWith("/api")) {
+      let logLine = `${req.method} ${reqPath} ${res.statusCode} in ${duration}ms`;
       if (capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
-
       log(logLine);
     }
   });
@@ -64,24 +65,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Start listening immediately — before any async init so the healthcheck passes
-const port = parseInt(process.env.PORT || "3000", 10);
-httpServer.listen(
-  {
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  },
-  () => {
-    log(`serving on port ${port}`);
-  },
-);
+// Register API routes synchronously-compatible part first, then async setup
+const port = parseInt(process.env.PORT || "5000", 10);
 
 (async () => {
   await registerRoutes(httpServer, app);
 
+  // Error middleware — must come after routes
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
-    // Handle malformed URL encoding (e.g. URIError: Failed to decode param '%C0')
     if (err instanceof URIError) {
       return res.status(400).json({ message: "Bad Request: Invalid URL encoding" });
     }
@@ -98,13 +89,37 @@ httpServer.listen(
     return res.status(status).json({ message });
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
   if (process.env.NODE_ENV === "production") {
-    serveStatic(app);
+    try {
+      serveStatic(app);
+      log("static files registered");
+    } catch (e) {
+      console.error("serveStatic failed:", e);
+      // Fallback: try serving from alternate dist path
+      const altPath = path.resolve(process.cwd(), "dist", "public");
+      if (fs.existsSync(altPath)) {
+        app.use(express.static(altPath));
+        app.use((_req, res) => {
+          res.sendFile(path.resolve(altPath, "index.html"));
+        });
+        log("static files registered (fallback path)");
+      }
+    }
   } else {
     const { setupVite } = await import("./vite");
     await setupVite(httpServer, app);
   }
+
+  // Listen AFTER all middleware/routes are registered so every route is
+  // available from the first request — avoids transient 404/500 on healthcheck
+  httpServer.listen(
+    {
+      port,
+      host: "0.0.0.0",
+      reusePort: true,
+    },
+    () => {
+      log(`serving on port ${port}`);
+    },
+  );
 })();
