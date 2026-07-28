@@ -1,0 +1,10 @@
+[Unit]
+Description=AL MARE public booking form end-to-end check
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/var/www/almare
+ExecStart=/usr/bin/node /var/www/almare/scripts/booking-form-monitor.mjs

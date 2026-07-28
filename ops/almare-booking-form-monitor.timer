@@ -1,0 +1,20 @@
+[Unit]
+Description=Run the AL MARE booking form check at 11:00 MSK for 10 days
+
+[Timer]
+OnCalendar=2026-07-29 11:00:00 Europe/Moscow
+OnCalendar=2026-07-30 11:00:00 Europe/Moscow
+OnCalendar=2026-07-31 11:00:00 Europe/Moscow
+OnCalendar=2026-08-01 11:00:00 Europe/Moscow
+OnCalendar=2026-08-02 11:00:00 Europe/Moscow
+OnCalendar=2026-08-03 11:00:00 Europe/Moscow
+OnCalendar=2026-08-04 11:00:00 Europe/Moscow
+OnCalendar=2026-08-05 11:00:00 Europe/Moscow
+OnCalendar=2026-08-06 11:00:00 Europe/Moscow
+OnCalendar=2026-08-07 11:00:00 Europe/Moscow
+AccuracySec=1s
+Persistent=true
+Unit=almare-booking-form-monitor.service
+
+[Install]
+WantedBy=timers.target

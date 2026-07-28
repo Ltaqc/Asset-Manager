@@ -8,6 +8,7 @@
     "build": "tsx script/build.ts",
     "start": "NODE_ENV=production node dist/startup.cjs",
     "check": "tsc",
+    "monitor:booking-form": "node scripts/booking-form-monitor.mjs",
     "db:push": "drizzle-kit push"
   },
   "dependencies": {
