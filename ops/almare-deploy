@@ -202,15 +202,14 @@ mapfile -t release_dirs < <(
     -printf '%T@ %p\n' | sort -nr | cut -d' ' -f2-
 )
 
-kept=0
+kept_noncurrent=0
 for old_release in "${release_dirs[@]}"; do
   if [[ "$(realpath -m -- "${old_release}")" == "${current_release}" ]]; then
-    ((kept += 1))
     continue
   fi
 
-  if (( kept < 5 )); then
-    ((kept += 1))
+  if (( kept_noncurrent < 2 )); then
+    ((kept_noncurrent += 1))
     continue
   fi
 
