@@ -1,14 +1,19 @@
 [Unit]
-Description=AL MARE public booking form end-to-end check
-After=network-online.target
+Description=AL MARE production website
+After=network-online.target postgresql.service
 Wants=network-online.target
 
 [Service]
-Type=oneshot
+Type=simple
 User=almare
 Group=almare
 WorkingDirectory=/var/www/almare/current
-ExecStart=/usr/bin/node /var/www/almare/current/scripts/booking-form-monitor.mjs
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node /var/www/almare/current/dist/startup.cjs
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGINT
 UMask=0027
 
 NoNewPrivileges=true
@@ -24,4 +29,8 @@ LockPersonality=true
 CapabilityBoundingSet=
 AmbientCapabilities=
 RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
-ReadWritePaths=/var/lib/almare-booking-monitor
+MemoryHigh=450M
+MemoryMax=600M
+
+[Install]
+WantedBy=multi-user.target

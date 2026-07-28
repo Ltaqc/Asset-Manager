@@ -1,0 +1,1 @@
+almare-deploy ALL=(root) NOPASSWD: /usr/local/sbin/almare-deploy *
