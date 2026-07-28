@@ -48,7 +48,9 @@ export async function initApp(httpServer: http.Server): Promise<void> {
       const ms = Date.now() - start;
       if (reqPath.startsWith("/api")) {
         let line = `${req.method} ${reqPath} ${res.statusCode} in ${ms}ms`;
-        if (capturedJsonResponse)
+        // Booking responses contain guest contact details. Keep status/timing
+        // logs, but never copy that payload into PM2 log files.
+        if (capturedJsonResponse && reqPath !== "/api/bookings")
           line += ` :: ${JSON.stringify(capturedJsonResponse)}`;
         log(line);
       }

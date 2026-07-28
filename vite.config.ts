@@ -22,7 +22,7 @@ export default defineConfig({
     // Inline JS + CSS into index.html — eliminates separate /assets/*.js and
     // /assets/*.css requests that fail over Replit edge via QUIC/HTTP3.
     // Applied in production only (plugin is a no-op in dev mode).
-    viteSingleFile(),
+    ...(process.env.REPL_ID ? [viteSingleFile()] : []),
   ],
   resolve: {
     alias: {
@@ -35,7 +35,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    assetsInlineLimit: 100000000,
+    assetsInlineLimit: process.env.REPL_ID ? 100000000 : 4096,
     cssCodeSplit: false,
     rollupOptions: {
       output: {

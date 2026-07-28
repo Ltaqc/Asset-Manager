@@ -2,6 +2,16 @@ import * as http from "http";
 import * as path from "path";
 import * as fs from "fs";
 
+// PM2 launches the compiled entrypoint directly, so load deployment settings
+// before importing the full application and initializing the database.
+// Node preserves variables that are already set, so secrets must load first.
+for (const envFile of [".env.secrets", ".env", ".env.production"]) {
+  const envPath = path.resolve(process.cwd(), envFile);
+  if (fs.existsSync(envPath)) {
+    process.loadEnvFile(envPath);
+  }
+}
+
 // ── Prod entry point — ONLY http/path/fs imported here ────────────────────────
 // This file compiles to dist/startup.cjs (~5 KB). Node.js loads it in < 5 ms
 // and binds the port before Replit's healthcheck fires.

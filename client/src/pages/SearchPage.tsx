@@ -98,6 +98,7 @@ export default function SearchPage() {
   const createBooking = useCreateBooking();
 
   const earlyBooking = false;
+  const discountBreakdownLabel = "уточняется менеджером";
 
   const recommendations = useMemo(() => {
     return generateRecommendations(checkIn, checkOut, adults, teens, children, toddlers);

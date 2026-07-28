@@ -72,13 +72,20 @@ npm run check
 
 Пример переменных находится в файле `.env.example`.
 
-Минимально необходимая переменная:
+Обязательные переменные:
 
 ```
 SESSION_SECRET
+DATABASE_URL
+SMTP_HOST
+SMTP_PORT
+SMTP_FROM
+BOOKING_EMAIL_TO
 ```
 
-Остальные переменные (SMTP, Telegram, Database) можно подключить позже при переносе сайта на другой хостинг.
+Для SMTP с авторизацией также задаются `SMTP_USER` и `SMTP_PASS`.
+Telegram можно подключить как дополнительный канал через
+`TELEGRAM_BOT_TOKEN` и `TELEGRAM_CHAT_ID`.
 
 ---
 
