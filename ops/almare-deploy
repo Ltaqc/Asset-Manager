@@ -139,7 +139,7 @@ done
 chown -R root:"${APP_GROUP}" "${stage}"
 chmod -R u=rwX,g=rX,o= "${stage}"
 
-for env_file in .env.secrets .env.production .env; do
+for env_file in .env.secrets .env.production; do
   if [[ -f "${BASE_DIR}/${env_file}" ]]; then
     ln -s "${BASE_DIR}/${env_file}" "${stage}/${env_file}"
   fi
