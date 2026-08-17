@@ -1,0 +1,93 @@
+Remove Microsoft Clarity completely from the AL MARE website and project.
+
+This must be a full technical removal, not just hiding Clarity from the UI.
+
+### Required changes
+
+1. Search the entire project for every reference to:
+
+* Microsoft Clarity
+* Clarity
+* clarity.ms
+* clarity.microsoft.com
+* c.clarity.ms
+* any Clarity tracking ID
+* any Clarity initialization script
+* any Clarity npm/package dependency
+* any environment variable related to Clarity
+* any analytics configuration related specifically to Clarity
+
+2. Completely remove the Microsoft Clarity tracking code from the website.
+
+The browser must no longer load or call any Microsoft Clarity domains or endpoints.
+
+3. Remove any Clarity-specific:
+
+* `<script>` tags
+* JavaScript initialization code
+* React components/hooks/providers
+* analytics helpers
+* package dependencies
+* environment variables
+* configuration entries
+* CSP/domain allowlist entries, if they exist only for Clarity
+* preload/preconnect/dns-prefetch links
+* tag-manager configuration stored inside the project, if applicable
+
+4. Remove all references to Microsoft Clarity from:
+
+* Privacy Policy
+* Personal Data Processing Policy
+* cookie policy
+* cookie banner
+* consent dialogs
+* legal information
+* footer
+* any other public page or text
+
+Do not leave wording suggesting that Microsoft Clarity may be used.
+
+5. If the cookie banner or analytics consent system currently contains separate Clarity logic, remove only the Clarity part.
+
+Do NOT remove or break other analytics systems that are still actually used, including Yandex Metrica.
+
+6. If Clarity created its own cookies or cookie descriptions in the project, remove those descriptions and all associated Clarity-specific consent logic.
+
+Do not manually delete unrelated cookies belonging to other active services.
+
+7. Do not change:
+
+* AL MARE visual design
+* booking calculator
+* booking logic
+* prices
+* forms
+* Yandex Metrica
+* other working functionality
+* unrelated legal information
+
+8. After removal, perform a project-wide search again and confirm that there are no remaining Microsoft Clarity references.
+
+9. Run the project/build/tests and verify:
+
+* website loads correctly;
+* no console errors were introduced;
+* booking functionality still works;
+* forms still work;
+* mobile and desktop layouts are unchanged;
+* no network requests are sent to `clarity.ms`, `clarity.microsoft.com`, `c.clarity.ms`, or other Microsoft Clarity endpoints.
+
+10. If a package dependency was removed, update the lock file correctly.
+
+11. Do not add any replacement analytics service.
+
+### Final report
+
+Return only:
+
+1. Files changed.
+2. Clarity code/configuration removed.
+3. Clarity references removed from legal/cookie documents.
+4. Dependencies/environment variables removed, if any.
+5. Confirmation that a full-project search contains no remaining Clarity references.
+6. Confirmation that the website builds and works normally without Microsoft Clarity.

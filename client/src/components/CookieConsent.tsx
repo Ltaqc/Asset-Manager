@@ -3,19 +3,7 @@ import { Link } from "wouter";
 import { X } from "lucide-react";
 
 const STORAGE_KEY = "almare_cookie_consent";
-const CLARITY_TAG = "vh8f42vvll";
 const YM_ID = 107159929;
-
-function initClarity() {
-  if (typeof window === "undefined") return;
-  if ((window as any).clarity) return;
-  const c = window as any;
-  c.clarity = c.clarity || function (...args: unknown[]) { (c.clarity.q = c.clarity.q || []).push(args); };
-  const t = document.createElement("script");
-  t.async = true;
-  t.src = "https://www.clarity.ms/tag/" + CLARITY_TAG;
-  document.head.appendChild(t);
-}
 
 function initYM() {
   if (typeof window === "undefined") return;
@@ -43,7 +31,6 @@ export function CookieConsent() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === "accepted") {
       initYM();
-      initClarity();
     } else if (stored === "declined") {
       // nothing
     } else {
@@ -55,7 +42,6 @@ export function CookieConsent() {
   const accept = () => {
     localStorage.setItem(STORAGE_KEY, "accepted");
     initYM();
-    initClarity();
     setVisible(false);
   };
 
@@ -76,7 +62,7 @@ export function CookieConsent() {
         style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.12)" }}
       >
         <p className="text-xs text-slate-600 leading-relaxed flex-1">
-          Мы используем файлы cookie и аналитику (Яндекс Метрика, Microsoft Clarity) для улучшения работы сайта.{" "}
+          Мы используем файлы cookie и аналитику (Яндекс Метрика) для улучшения работы сайта.{" "}
           <Link href="/privacy" className="text-primary hover:underline whitespace-nowrap">Политика персональных данных</Link>
           .
         </p>

@@ -103,11 +103,6 @@ export default function PrivacyPage() {
               </div>
 
               <div className="bg-secondary/30 rounded-lg p-4">
-                <p className="font-medium">Microsoft Clarity</p>
-                <p className="text-muted-foreground mt-1">Оператор: Microsoft Corporation, США. Tag ID: vh8f42vvll. Сервис записывает тепловые карты кликов и сессий. Данные передаются на серверы Microsoft. Политика Microsoft: <a href="https://privacy.microsoft.com/ru-ru/privacystatement" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">privacy.microsoft.com</a>.</p>
-              </div>
-
-              <div className="bg-secondary/30 rounded-lg p-4">
                 <p className="font-medium">Яндекс Карты</p>
                 <p className="text-muted-foreground mt-1">Встроенная карта для отображения местоположения отеля. При загрузке карты Яндекс может обрабатывать технические данные браузера.</p>
               </div>
