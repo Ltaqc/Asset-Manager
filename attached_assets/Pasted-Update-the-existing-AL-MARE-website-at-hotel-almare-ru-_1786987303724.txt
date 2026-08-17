@@ -1,0 +1,203 @@
+Update the existing AL MARE website at hotel-almare.ru to bring its public legal information and personal-data handling UI into compliance without changing the current visual style, structure, booking logic, pricing logic, or existing working functionality.
+
+IMPORTANT:
+
+* First inspect the existing project and understand the current footer, booking/contact forms, analytics integrations, privacy-related pages, and data flow.
+* Preserve the current premium AL MARE design.
+* Do not redesign the website.
+* Do not remove or break existing functionality.
+* All visible website text must be in Russian.
+* Do not invent legal entity information or banking details.
+* Do NOT display bank account, correspondent account, BIK, bank name or other payment banking requisites on the public website.
+
+### 1. Add legal information about the hotel operator
+
+The hotel service provider is:
+
+Индивидуальный предприниматель Коноян Эдуард Георгиевич
+Сокращенное наименование: ИП Коноян Э.Г.
+ИНН: 235500777991
+ОГРНИП: 319237500088304
+Дата государственной регистрации: 14.03.2019
+Адрес регистрации: Краснодарский край, г. Новороссийск, ул. Данини, д. 4
+Адрес места осуществления деятельности: Краснодарский край, Темрюкский район, ст-ца Голубицкая, ул. Набережная, д. 7
+E-mail: [hotelalmare.7@gmail.com](mailto:hotelalmare.7@gmail.com)
+Телефон: +7 (918) 642-49-12
+
+Create a clean page/section called:
+
+«Правовая информация»
+
+Add a discreet link to it in the footer.
+
+Do not overload the main footer with all details. In the footer itself show only:
+
+ИП Коноян Эдуард Георгиевич
+ИНН 235500777991 · ОГРНИП 319237500088304
+
+and links to the relevant legal pages.
+
+### 2. Add hotel registry information
+
+Add the following information both to the «Правовая информация» page and in a compact form in the footer:
+
+Реестровый номер средства размещения: С232024013948
+
+Add a clickable link:
+
+«Запись в Едином реестре классифицированных средств размещения»
+
+URL:
+
+https://tourism.fsa.gov.ru/ru/resorts/hotels/9cc7ea7f-c608-11ef-92da-cd8fd626ea73/about-resort
+
+Open the registry link in a new tab with safe rel attributes.
+
+Do not display a star category unless the category can be reliably confirmed from the official registry.
+
+### 3. Add payment clarification
+
+Because direct online payment is not performed on this website, add a short clarification to the booking information where it is logically appropriate:
+
+«Оплата непосредственно на сайте не осуществляется. Бронирование, окончательная стоимость и порядок оплаты подтверждаются менеджером после обращения гостя.»
+
+Do not present the website as an online payment service.
+
+### 4. Personal data policy
+
+Inspect all forms and functionality that collect:
+
+* name;
+* phone;
+* email;
+* booking information;
+* message text;
+* any other personal data.
+
+Create a separate page:
+
+«Политика в отношении обработки персональных данных»
+
+The policy must reflect the ACTUAL implementation of this project after inspecting the code.
+
+Do not invent services that are not used.
+
+The operator in the policy is:
+
+ИП Коноян Эдуард Георгиевич
+ИНН 235500777991
+ОГРНИП 319237500088304
+
+Include:
+
+* categories of collected personal data;
+* purposes of processing;
+* legal grounds;
+* methods of processing;
+* storage principles;
+* data deletion/withdrawal procedure;
+* information about third-party processors actually used by the project;
+* analytics/cookies actually used by the website;
+* operator contact details.
+
+If the code contains external services receiving personal data, explicitly identify them in your implementation report instead of silently hiding them.
+
+### 5. Consent near forms
+
+For every form that sends personal data, inspect its legal basis and UI.
+
+Where consent is required, add an unchecked checkbox immediately before the submit button.
+
+Use text similar to:
+
+«Я даю согласие на обработку персональных данных и подтверждаю, что ознакомлен(а) с Политикой в отношении обработки персональных данных.»
+
+Make:
+
+* «согласие на обработку персональных данных»
+* «Политикой в отношении обработки персональных данных»
+
+clickable links to the appropriate documents/pages.
+
+The checkbox must NOT be preselected.
+
+The form must not submit when mandatory consent is required but the checkbox is unchecked.
+
+Do not add unnecessary consent checkboxes where the data is processed solely for execution of a booking/request and the existing legal basis does not require consent. Inspect the actual form purpose first.
+
+### 6. Cookies and analytics
+
+Inspect the source code and identify all analytics/tracking systems.
+
+If Yandex Metrica or any non-essential analytics is present:
+
+* create a compact cookie notice consistent with the current AL MARE design;
+* do not use a huge modal blocking the entire site;
+* provide a clear action for analytics consent where required by the implemented data-processing model;
+* link to the personal data policy;
+* do not initialize optional analytics before the applicable user choice if the implementation requires consent.
+
+Necessary technical cookies must continue to work.
+
+### 7. Booking rules
+
+Create or update a page:
+
+«Правила бронирования, оплаты, отмены и возврата»
+
+Do NOT invent cancellation penalties, refund deadlines, prepayment percentages, check-in/check-out times, or other commercial conditions that are not already present in the existing project.
+
+Reuse confirmed existing conditions from the website/code.
+
+If any legally relevant booking condition is missing and cannot be derived from the current project, leave it unchanged and list it in the final report as requiring business confirmation instead of inventing a value.
+
+### 8. Footer structure
+
+Integrate legal links neatly into the existing footer:
+
+Правовая информация
+Политика обработки персональных данных
+Правила бронирования и отмены
+
+Also display:
+
+ИП Коноян Эдуард Георгиевич
+ИНН 235500777991 · ОГРНИП 319237500088304
+Реестровый номер: С232024013948
+
+Keep typography secondary and visually clean. Do not make the footer look like a wall of legal text.
+
+### 9. Do not show domain administrator information
+
+Do NOT add Великанов Александр Сергеевич anywhere in the public legal information solely because he is the administrator/registrant of the domain or technical developer of the website.
+
+The public hotel-service provider remains ИП Коноян Эдуард Георгиевич.
+
+### 10. Technical requirements
+
+After implementation:
+
+* check desktop and mobile layouts;
+* check all footer links;
+* check the official hotel registry link;
+* test all forms;
+* test consent validation;
+* ensure no form became unusable;
+* ensure no console errors were introduced;
+* ensure existing booking calculator and existing site functionality still work;
+* ensure SEO metadata and routes are not broken;
+* do not change unrelated files or functionality.
+
+Before making changes, create a backup/restore point of the current working version.
+
+Then implement the changes.
+
+At the end, provide a concise report containing:
+
+1. Files changed.
+2. New pages/routes created.
+3. Forms where consent was added.
+4. Analytics/cookie services detected.
+5. External services that receive personal data.
+6. Anything that could not be safely implemented because business/legal information is missing.
+7. Confirmation that the existing booking and site functionality still passes testing.

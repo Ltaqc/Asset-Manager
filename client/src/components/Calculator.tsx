@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -35,6 +36,8 @@ export function Calculator() {
   const [toddlers, setToddlers] = useState(0);
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [consentError, setConsentError] = useState(false);
 
   const createBooking = useCreateBooking();
 
@@ -58,6 +61,10 @@ export function Calculator() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!result || "error" in result) return;
+    if (!consentChecked) {
+      setConsentError(true);
+      return;
+    }
     metrikaGoal("booking_open");
     metrikaHit("/booking/open");
 
@@ -178,6 +185,29 @@ export function Calculator() {
                     />
                   </div>
                 </div>
+
+                <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
+                  Оплата непосредственно на сайте не осуществляется. Бронирование, окончательная стоимость и порядок оплаты подтверждаются менеджером после обращения гостя.
+                </p>
+
+                <label className={`flex items-start gap-2.5 mt-4 cursor-pointer group ${consentError ? "text-red-600" : ""}`}>
+                  <input
+                    type="checkbox"
+                    data-testid="input-consent"
+                    checked={consentChecked}
+                    onChange={(e) => { setConsentChecked(e.target.checked); if (e.target.checked) setConsentError(false); }}
+                    className="mt-0.5 shrink-0 w-4 h-4 accent-primary"
+                  />
+                  <span className="text-xs leading-relaxed text-muted-foreground group-hover:text-foreground transition-colors">
+                    Я даю{" "}
+                    <a href="/privacy" className="text-primary underline underline-offset-2 hover:opacity-80" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>согласие на обработку персональных данных</a>
+                    {" "}и подтверждаю, что ознакомлен(а) с{" "}
+                    <a href="/privacy" className="text-primary underline underline-offset-2 hover:opacity-80" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>Политикой в отношении обработки персональных данных</a>.
+                  </span>
+                </label>
+                {consentError && (
+                  <p className="text-xs text-red-600 mt-1">Необходимо согласие на обработку персональных данных</p>
+                )}
               </div>
             </div>
 

@@ -88,6 +88,8 @@ export default function SearchPage() {
   const [confirmingCombo, setConfirmingCombo] = useState<RoomCombo | null>(null);
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [consentChecked, setConsentChecked] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const [showAllRooms, setShowAllRooms] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -109,6 +111,8 @@ export default function SearchPage() {
     metrikaHit("/booking/open");
     setFieldErrors({ name: false, phone: false });
     setValidationError(null);
+    setConsentChecked(false);
+    setConsentError(false);
     setSelectedCombo(combo);
   };
 
@@ -165,6 +169,13 @@ export default function SearchPage() {
         if (nameMissing) nameInputRef.current?.focus();
         else phoneInputRef.current?.focus();
       });
+      return;
+    }
+
+    if (!consentChecked) {
+      setConsentError(true);
+      const msg = "Необходимо согласие на обработку персональных данных";
+      setValidationError((prev) => prev === msg ? msg + " " : msg);
       return;
     }
 
@@ -863,6 +874,29 @@ export default function SearchPage() {
                   />
                 </div>
                 <div className="space-y-3 pt-1">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Оплата непосредственно на сайте не осуществляется. Бронирование и порядок оплаты подтверждаются менеджером.
+                  </p>
+
+                  <label className={`flex items-start gap-2.5 cursor-pointer group ${consentError ? "text-red-600" : ""}`}>
+                    <input
+                      type="checkbox"
+                      data-testid="input-consent"
+                      checked={consentChecked}
+                      onChange={(e) => { setConsentChecked(e.target.checked); if (e.target.checked) setConsentError(false); }}
+                      className="mt-0.5 shrink-0 w-4 h-4 accent-primary"
+                    />
+                    <span className="text-xs leading-relaxed text-muted-foreground group-hover:text-foreground transition-colors">
+                      Я даю{" "}
+                      <a href="/privacy" className="text-primary underline underline-offset-2 hover:opacity-80" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>согласие на обработку персональных данных</a>
+                      {" "}и ознакомлен(а) с{" "}
+                      <a href="/privacy" className="text-primary underline underline-offset-2 hover:opacity-80" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>Политикой персональных данных</a>.
+                    </span>
+                  </label>
+                  {consentError && (
+                    <p className="text-xs text-red-600 -mt-1">Необходимо согласие на обработку персональных данных</p>
+                  )}
+
                   <Button
                     type="submit"
                     className="w-full h-14 text-base font-bold rounded-xl shadow-lg shadow-primary/20 cursor-pointer touch-manipulation select-none"
@@ -877,7 +911,7 @@ export default function SearchPage() {
                     type="button"
                     variant="outline"
                     className="w-full h-11 text-sm rounded-xl"
-                    onClick={() => setSelectedCombo(null)}
+                    onClick={() => { setSelectedCombo(null); setConsentChecked(false); setConsentError(false); }}
                   >
                     Отмена
                   </Button>

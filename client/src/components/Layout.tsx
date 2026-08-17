@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import { Phone, Mail, MapPin, X, Menu } from "lucide-react";
+import { CookieConsent } from "@/components/CookieConsent";
 import { FloatingContact } from "@/components/FloatingContact";
 import { FloatingPromo } from "@/components/FloatingPromo";
 
@@ -125,38 +126,40 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       <footer className="bg-slate-900 text-white py-16 md:py-20 relative z-50" data-testid="section-footer">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16">
-            <div className="space-y-6 md:space-y-8">
+          <div className="grid md:grid-cols-3 gap-10 md:gap-12">
+            {/* Brand + contacts */}
+            <div className="space-y-6">
               <h2 className="text-3xl md:text-4xl font-display font-bold text-primary">AL MARE</h2>
-              <p className="text-slate-300 max-w-md leading-relaxed text-sm md:text-base">
+              <p className="text-slate-300 leading-relaxed text-sm">
                 Уютный семейный курорт на Азовском побережье в станице Голубицкая.
                 Всё включено: питание, пляж, развлечения и вечерние программы.
               </p>
-              <div className="space-y-4 md:space-y-5 pt-2">
-                <a href="https://yandex.ru/maps/?rtext=~45.326978,37.290373&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors" data-testid="link-address-footer">
-                  <MapPin className="text-primary w-5 h-5 shrink-0" />
-                  <span className="text-sm md:text-base">ст. Голубицкая, ул. Набережная, д. 7</span>
+              <div className="space-y-4 pt-1">
+                <a href="https://yandex.ru/maps/?rtext=~45.326978,37.290373&rtt=auto&text=ст. Голубицкая, ул. Набережная, д. 7" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-300 hover:text-primary transition-colors" data-testid="link-address-footer">
+                  <MapPin className="text-primary w-4 h-4 shrink-0" />
+                  <span className="text-sm">ст. Голубицкая, ул. Набережная, д. 7</span>
                 </a>
-                <a href="tel:+79184710374" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
-                  <Phone className="text-primary w-5 h-5 shrink-0" />
-                  <span className="text-sm md:text-base">+7 (918) 471-03-74</span>
+                <a href="tel:+79184710374" className="flex items-center gap-3 text-slate-300 hover:text-primary transition-colors">
+                  <Phone className="text-primary w-4 h-4 shrink-0" />
+                  <span className="text-sm">+7 (918) 471-03-74</span>
                 </a>
-                <a href="mailto:almare@hotelalmare.ru" className="flex items-center gap-4 text-slate-300 hover:text-primary transition-colors">
-                  <Mail className="text-primary w-5 h-5 shrink-0" />
-                  <span className="text-sm md:text-base">almare@hotelalmare.ru</span>
+                <a href="mailto:almare@hotelalmare.ru" className="flex items-center gap-3 text-slate-300 hover:text-primary transition-colors">
+                  <Mail className="text-primary w-4 h-4 shrink-0" />
+                  <span className="text-sm">almare@hotelalmare.ru</span>
                 </a>
               </div>
             </div>
 
+            {/* Nav */}
             <div>
-              <h3 className="text-lg md:text-xl font-display font-bold text-primary mb-4 md:mb-6">Разделы сайта</h3>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-3 md:gap-y-4">
+              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Разделы сайта</h3>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-2">
                 {NAV_ITEMS.map((item) => (
                   <a
                     key={item.anchor}
                     href={`#${item.anchor}`}
                     onClick={(e) => { e.preventDefault(); handleNavClick(item.anchor); }}
-                    className="text-slate-300 hover:text-primary transition-colors text-sm md:text-base leading-relaxed text-left py-2 cursor-pointer block w-full relative z-[1]"
+                    className="text-slate-300 hover:text-primary transition-colors text-sm py-1.5 cursor-pointer block w-full relative z-[1]"
                     style={{ WebkitTapHighlightColor: "rgba(46,196,182,0.15)" }}
                   >
                     {item.label}
@@ -164,13 +167,33 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 ))}
               </div>
             </div>
+
+            {/* Legal */}
+            <div>
+              <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Документы</h3>
+              <div className="space-y-2">
+                <Link href="/legal" className="block text-slate-300 hover:text-primary transition-colors text-sm py-1.5">Правовая информация</Link>
+                <Link href="/privacy" className="block text-slate-300 hover:text-primary transition-colors text-sm py-1.5">Политика персональных данных</Link>
+                <Link href="/booking-rules" className="block text-slate-300 hover:text-primary transition-colors text-sm py-1.5">Правила бронирования и отмены</Link>
+              </div>
+
+              <div className="mt-6 pt-5 border-t border-white/10">
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  ИП Коноян Эдуард Георгиевич<br />
+                  ИНН 235500777991 · ОГРНИП 319237500088304<br />
+                  Реестровый номер: С232024013948
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className="border-t border-white/10 mt-12 md:mt-16 pt-6 md:pt-8 text-center text-slate-500 text-xs md:text-sm">
-            &copy; {new Date().getFullYear()} AL MARE Resort. Все права защищены.
+          <div className="border-t border-white/10 mt-12 md:mt-14 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-slate-500 text-xs">
+            <span>&copy; {new Date().getFullYear()} AL MARE Resort. Все права защищены.</span>
+            <Link href="/legal" className="hover:text-slate-400 transition-colors">ИП Коноян Э.Г. · ИНН 235500777991 · ОГРНИП 319237500088304</Link>
           </div>
         </div>
       </footer>
+      <CookieConsent />
     </div>
   );
 }

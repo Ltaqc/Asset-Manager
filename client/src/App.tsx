@@ -7,6 +7,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
 import Home from "@/pages/Home";
 import SearchPage from "@/pages/SearchPage";
+import LegalPage from "@/pages/LegalPage";
+import PrivacyPage from "@/pages/PrivacyPage";
+import BookingRulesPage from "@/pages/BookingRulesPage";
 import NotFound from "@/pages/not-found";
 
 function ScrollToTop() {
@@ -25,6 +28,9 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/search" component={SearchPage} />
+      <Route path="/legal" component={LegalPage} />
+      <Route path="/privacy" component={PrivacyPage} />
+      <Route path="/booking-rules" component={BookingRulesPage} />
       <Route component={NotFound} />
     </Switch>
   );
