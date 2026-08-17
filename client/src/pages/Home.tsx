@@ -205,150 +205,35 @@ export default function Home() {
 
       </header>
 
-      {/* Season closing notice */}
-      <div className="bg-amber-50 border-b border-amber-200 py-2.5 px-4 text-center">
-        <p className="text-sm text-amber-800 font-medium">
-          🌊 Сезон 2026 завершается <strong>21 августа</strong> — успейте забронировать последние даты!
-        </p>
-      </div>
-
-      {/* Promo Banner */}
-      <div
-        className="relative overflow-hidden"
-        style={{
-          background: "linear-gradient(118deg, #031a25 0%, #062d40 22%, #094d62 50%, #0b6570 75%, #0d7870 100%)",
-          borderBottom: "1px solid rgba(46,196,182,0.14)",
-        }}
-      >
-        <style>{`
-          @keyframes pb3-in {
-            from { opacity: 0; transform: translateY(12px); }
-            to   { opacity: 1; transform: translateY(0); }
-          }
-          @keyframes pb3-fire-glow {
-            0%,100% { box-shadow: 0 0 18px 5px rgba(230,120,15,0.25), 0 0 0 0 rgba(230,120,15,0); }
-            50%      { box-shadow: 0 0 38px 14px rgba(230,120,15,0.45), 0 0 0 8px rgba(230,120,15,0.06); }
-          }
-          @keyframes pb3-flicker {
-            0%,100% { transform: scaleY(1) scaleX(1); opacity: 1; }
-            30%      { transform: scaleY(1.09) scaleX(0.95); opacity: 0.86; }
-            65%      { transform: scaleY(0.94) scaleX(1.04); opacity: 0.93; }
-          }
-          @keyframes pb3-pill {
-            0%,100% { box-shadow: 0 0 8px 2px rgba(255,195,40,0.14); }
-            50%      { box-shadow: 0 0 22px 7px rgba(255,195,40,0.36); }
-          }
-          @keyframes pb3-btn-glow {
-            0%,100% { box-shadow: 0 4px 20px rgba(210,130,15,0.3), inset 0 1px 0 rgba(255,255,255,0.2); }
-            50%      { box-shadow: 0 4px 32px rgba(210,130,15,0.52), inset 0 1px 0 rgba(255,255,255,0.2); }
-          }
-          .pb3-in        { animation: pb3-in 0.7s cubic-bezier(.22,.68,0,1.15) both; }
-          .pb3-fire-glow { animation: pb3-fire-glow 3s ease-in-out infinite; }
-          .pb3-flick     { animation: pb3-flicker 2.4s ease-in-out infinite; transform-origin: 50% 92%; }
-          .pb3-pill      { animation: pb3-pill 3.6s ease-in-out infinite; }
-          .pb3-btn-glow  { animation: pb3-btn-glow 3s ease-in-out infinite; }
-          .pb3-btn       { transition: all 0.2s ease; }
-          .pb3-btn:hover { transform: translateY(-2px) scale(1.025); }
-          .pb3-btn:active{ transform: scale(0.97); }
-        `}</style>
-
-        {/* Layered ambient atmosphere */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 50% 130% at 98% 50%, rgba(46,196,182,0.16) 0%, transparent 58%)" }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 30% 100% at 0% 50%, rgba(230,115,15,0.1) 0%, transparent 55%)" }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 65% 40% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 55%)" }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 40% 50% at 30% 100%, rgba(46,196,182,0.06) 0%, transparent 60%)" }} />
-
-        <div className="pb3-in container mx-auto px-4 py-6 md:py-7 relative z-10">
-          <div className="flex flex-col md:flex-row md:items-center gap-5 md:gap-8">
-
-            {/* ── LEFT: premium fire icon ── */}
-            <div
-              className="pb3-fire-glow self-center md:self-auto shrink-0 w-[76px] h-[76px] md:w-[88px] md:h-[88px] rounded-[22px] flex items-center justify-center"
-              style={{
-                background: "linear-gradient(145deg, rgba(225,105,12,0.3) 0%, rgba(170,65,5,0.2) 55%, rgba(25,95,100,0.1) 100%)",
-                border: "1.5px solid rgba(235,125,18,0.55)",
-                backdropFilter: "blur(16px)",
-              }}
+      {/* Season closing notice — compact premium */}
+      <div className="bg-white border-b border-slate-100" style={{ boxShadow: "0 2px 12px rgba(14,78,100,0.07)" }}>
+        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div className="flex items-center gap-3">
+            <span
+              className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #e8f7f6 0%, #cdf0ed 100%)", border: "1px solid rgba(46,196,182,0.25)" }}
             >
-              <svg className="pb3-flick" width="42" height="42" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="pb3FG" x1="18" y1="3" x2="18" y2="33" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%"   stopColor="#FFE84A" />
-                    <stop offset="40%"  stopColor="#FF8C14" />
-                    <stop offset="100%" stopColor="#CC3E06" />
-                  </linearGradient>
-                  <linearGradient id="pb3FI" x1="18" y1="17" x2="18" y2="31" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%"   stopColor="#FFFAB8" />
-                    <stop offset="100%" stopColor="#FFD028" stopOpacity="0.8" />
-                  </linearGradient>
-                  <linearGradient id="pb3FS" x1="13" y1="18" x2="13" y2="26" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%"   stopColor="#FFE870" stopOpacity="0.55" />
-                    <stop offset="100%" stopColor="#FFC030" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <path d="M18 3.5C18 3.5 10.5 12 10.5 18.5C10.5 22 12.8 25 16 26 16 26 14.5 22 17 20.5 17 20.5 15 17 18 12 18 12 20.5 16.5 21 19.5 22.5 18 23 15.5 22 14 24.5 15.5 26.5 19.5 26.5 23.5 26.5 28.5 23.2 32 18 32 12.8 32 9.5 28.5 9.5 23.5 9.5 16 18 3.5 18 3.5Z" fill="url(#pb3FG)" />
-                <path d="M18 28.5C16 28.5 14.5 27 14.5 25 14.5 22.5 16.2 20.8 18 20.2 18 20.2 17.2 23 19.2 24 19.2 24 20.8 22.3 20.5 25 20.2 27 20.2 28.5 18 28.5Z" fill="url(#pb3FI)" />
-                <path d="M13 21C13 21 14.5 18.5 14.2 16.5 14.2 16.5 12 18.8 11.5 21H13Z" fill="url(#pb3FS)" />
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="4" width="18" height="17" rx="3" stroke="#2EC4B6" strokeWidth="1.8"/>
+                <path d="M3 9h18" stroke="#2EC4B6" strokeWidth="1.8"/>
+                <path d="M8 2v4M16 2v4" stroke="#2EC4B6" strokeWidth="1.8" strokeLinecap="round"/>
+                <path d="M8 13h4" stroke="#2EC4B6" strokeWidth="1.8" strokeLinecap="round"/>
               </svg>
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-slate-800 leading-snug">Сезон 2026 — до 21 августа</p>
+              <p className="text-xs text-slate-500 mt-0.5 leading-snug">Бронирование доступно только до 21 августа. Количество дат ограничено.</p>
             </div>
-
-            {/* ── CENTER: headline + subtitle + chips ── */}
-            <div className="flex-1 min-w-0 text-center md:text-left">
-
-              <h2 className="font-display font-bold leading-tight" style={{ fontSize: "clamp(1.15rem, 2.5vw, 1.65rem)", color: "#fff" }}>
-                Успейте забронировать отдых в AL MARE
-              </h2>
-
-              <p className="mt-2 leading-relaxed max-w-[42ch] mx-auto md:mx-0" style={{ color: "rgba(255,255,255,0.88)", fontSize: "14.5px", fontWeight: 400 }}>
-                Количество свободных номеров на летние даты ограничено. Подберите подходящий вариант заранее.
-              </p>
-
-              {/* Premium glass chips */}
-              <div className="flex flex-wrap justify-center md:justify-start gap-2 mt-3">
-                {[
-                  { label: "Ultra All Inclusive",       icon: <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" fill="currentColor"/> },
-                  { label: "Семейный отдых у моря",     icon: <><circle cx="12" cy="5" r="2" fill="currentColor"/><path d="M12 9c-3 0-5 1.5-5 3.5V14h10v-1.5C17 10.5 15 9 12 9z" fill="currentColor"/><path d="M5 12c-2 0-3 1-3 2.5V16h6v-1c0-1-.4-2.1-1-3H5z" fill="currentColor" opacity=".7"/><path d="M19 12c2 0 3 1 3 2.5V16h-6v-1c0-1 .4-2.1 1-3H19z" fill="currentColor" opacity=".7"/></> },
-                  { label: "Ограниченное количество мест", icon: <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="currentColor"/> },
-                ].map(({ label, icon }) => (
-                  <span
-                    key={label}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full whitespace-nowrap text-[12px] font-medium"
-                    style={{
-                      background: "rgba(46,196,182,0.11)",
-                      color: "rgba(46,196,182,0.92)",
-                      border: "1px solid rgba(46,196,182,0.28)",
-                      backdropFilter: "blur(8px)",
-                    }}
-                  >
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.8 }}>{icon}</svg>
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* ── RIGHT: CTA button ── */}
-            <div className="flex justify-center md:justify-end shrink-0 md:pl-2">
-              <button
-                type="button"
-                onClick={scrollToCalculator}
-                className="pb3-btn pb3-btn-glow w-full md:w-auto flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold text-[13.5px] whitespace-nowrap"
-                style={{
-                  background: "linear-gradient(135deg, #a86208 0%, #cc8a0c 35%, #e8a41a 60%, #be7c0a 100%)",
-                  color: "#fff",
-                  border: "1px solid rgba(255,198,52,0.45)",
-                  textShadow: "0 1px 3px rgba(0,0,0,0.3)",
-                }}
-                data-testid="button-promo-banner-cta"
-              >
-                Проверить свободные даты
-                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-            </div>
-
           </div>
+          <button
+            type="button"
+            onClick={scrollToCalculator}
+            className="shrink-0 self-start sm:self-auto text-xs font-semibold px-4 py-2 rounded-lg transition-all duration-150 hover:opacity-90 active:scale-95"
+            style={{ background: "linear-gradient(135deg, #2EC4B6 0%, #1aa898 100%)", color: "#fff", boxShadow: "0 2px 8px rgba(46,196,182,0.3)" }}
+            data-testid="button-promo-banner-cta"
+          >
+            Забронировать
+          </button>
         </div>
       </div>
 
