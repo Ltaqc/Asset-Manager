@@ -67,10 +67,10 @@ export default function SearchPage() {
   const todayStr = today.toISOString().split("T")[0];
   const sYear = today.getFullYear();
   const seasonStartDate = new Date(sYear, 6, 1);
-  const seasonEndDate = new Date(sYear, 7, 31);
+  const seasonEndDate = new Date(sYear, 7, 21);
   const SEASON_START = today > seasonEndDate ? `${sYear + 1}-07-01` : `${sYear}-07-01`;
-  const SEASON_END = today > seasonEndDate ? `${sYear + 1}-08-31` : `${sYear}-08-31`;
-  const MAX_CHECKIN = today > seasonEndDate ? `${sYear + 1}-08-30` : `${sYear}-08-30`;
+  const SEASON_END = today > seasonEndDate ? `${sYear + 1}-08-21` : `${sYear}-08-21`;
+  const MAX_CHECKIN = today > seasonEndDate ? `${sYear + 1}-08-20` : `${sYear}-08-20`;
   const minCheckIn = todayStr > SEASON_START && todayStr <= SEASON_END ? todayStr : SEASON_START;
   const addDays = (dateStr: string, days: number) => {
     const d = new Date(dateStr);

@@ -100,7 +100,7 @@ export default function Home() {
   const year = today.getFullYear();
 
   const seasonStartDate = new Date(year, 6, 1);
-  const seasonEndDate = new Date(year, 7, 31);
+  const seasonEndDate = new Date(year, 7, 21);
 
   let SEASON_START: string;
   let SEASON_END: string;
@@ -109,18 +109,18 @@ export default function Home() {
 
   if (today < seasonStartDate) {
     SEASON_START = `${year}-07-01`;
-    SEASON_END = `${year}-08-31`;
-    MAX_CHECKIN = `${year}-08-30`;
+    SEASON_END = `${year}-08-21`;
+    MAX_CHECKIN = `${year}-08-20`;
     defaultCheckIn = SEASON_START;
   } else if (today > seasonEndDate) {
     SEASON_START = `${year + 1}-07-01`;
-    SEASON_END = `${year + 1}-08-31`;
-    MAX_CHECKIN = `${year + 1}-08-30`;
+    SEASON_END = `${year + 1}-08-21`;
+    MAX_CHECKIN = `${year + 1}-08-20`;
     defaultCheckIn = SEASON_START;
   } else {
     SEASON_START = `${year}-07-01`;
-    SEASON_END = `${year}-08-31`;
-    MAX_CHECKIN = `${year}-08-30`;
+    SEASON_END = `${year}-08-21`;
+    MAX_CHECKIN = `${year}-08-20`;
     defaultCheckIn = todayStr;
   }
 
@@ -204,6 +204,13 @@ export default function Home() {
         </div>
 
       </header>
+
+      {/* Season closing notice */}
+      <div className="bg-amber-50 border-b border-amber-200 py-2.5 px-4 text-center">
+        <p className="text-sm text-amber-800 font-medium">
+          🌊 Сезон 2026 завершается <strong>21 августа</strong> — успейте забронировать последние даты!
+        </p>
+      </div>
 
       {/* Promo Banner */}
       <div
@@ -478,7 +485,7 @@ export default function Home() {
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июля по 31 августа</p>
+            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июля по 21 августа</p>
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>

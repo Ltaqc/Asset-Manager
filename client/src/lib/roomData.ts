@@ -241,12 +241,12 @@ export function getDefaultCheckIn(): string {
   const now = new Date();
   const year = now.getFullYear();
   const jul1 = new Date(year, 6, 1);
-  const aug31 = new Date(year, 7, 31);
+  const aug21 = new Date(year, 7, 21);
   if (now < jul1) return `${year}-07-01`;
-  if (now <= aug31) {
+  if (now <= aug21) {
     const d = new Date(now);
     d.setDate(d.getDate() + 1);
-    if (d > aug31) return `${year + 1}-07-01`;
+    if (d > aug21) return `${year + 1}-07-01`;
     return d.toISOString().split("T")[0];
   }
   return `${year + 1}-07-01`;
@@ -256,8 +256,8 @@ export function getDefaultCheckOut(checkIn: string): string {
   const d = new Date(checkIn);
   d.setDate(d.getDate() + 5);
   const year = d.getFullYear();
-  const aug31 = new Date(year, 7, 31);
-  if (d > aug31) return `${year}-08-31`;
+  const aug21 = new Date(year, 7, 21);
+  if (d > aug21) return `${year}-08-21`;
   return d.toISOString().split("T")[0];
 }
 
@@ -392,7 +392,7 @@ export function generateRecommendations(
   }
 
   if (hasSeptemberInRange(checkIn, checkOut)) {
-    return { primary: null, alternatives: [], seasonError: "Бронирование на сентябрь временно недоступно. Выберите даты до 31 августа." };
+    return { primary: null, alternatives: [], seasonError: "Бронирование на сентябрь временно недоступно. Выберите даты до 21 августа." };
   }
 
   const testCalc = calculateAccommodationCost(roomCategories[0], checkIn, checkOut);

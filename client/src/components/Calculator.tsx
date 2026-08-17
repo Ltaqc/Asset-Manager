@@ -21,6 +21,9 @@ import {
 
 type _RoomCategory = RoomCategory;
 
+const CALC_SEASON_END = "2026-08-21";
+const CALC_MAX_CHECKIN = "2026-08-20";
+
 export function Calculator() {
   const defaultIn = getDefaultCheckIn();
   const [roomCategory, setRoomCategory] = useState<RoomCategory>(roomCategories[0]);
@@ -115,6 +118,7 @@ export function Calculator() {
                     data-testid="input-checkin"
                     type="date"
                     value={checkIn}
+                    max={CALC_MAX_CHECKIN}
                     onChange={(e) => {
                       setCheckIn(e.target.value);
                       if (e.target.value && checkOut <= e.target.value) {
@@ -133,6 +137,7 @@ export function Calculator() {
                     type="date"
                     value={checkOut}
                     min={checkIn}
+                    max={CALC_SEASON_END}
                     onChange={(e) => setCheckOut(e.target.value)}
                     className="h-12 bg-secondary/30 border-primary/20 focus:ring-primary/20"
                   />
