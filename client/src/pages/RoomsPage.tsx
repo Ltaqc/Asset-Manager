@@ -1,4 +1,3 @@
-import { useLocation } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,22 +6,9 @@ import { RoomImageCarousel } from "@/components/RoomImageCarousel";
 import { Users, Maximize2 } from "lucide-react";
 import { roomCategories } from "@shared/schema";
 import { ROOM_DATA } from "@/lib/roomData";
+import { showSeasonStatus } from "@/components/SeasonStatusModal";
 
 export default function RoomsPage() {
-  const [, setLocation] = useLocation();
-
-  const goToCalculator = () => {
-    setLocation("/");
-    setTimeout(() => {
-      const el = document.getElementById("calculator");
-      if (el) {
-        const navHeight = 64;
-        const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
-        window.scrollTo({ top, behavior: "smooth" });
-      }
-    }, 100);
-  };
-
   return (
     <div className="bg-secondary/10 min-h-screen">
       <section className="py-24">
@@ -66,8 +52,8 @@ export default function RoomsPage() {
                         до {info.cap} гостей
                       </span>
                     </div>
-                    <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={goToCalculator}>
-                      Рассчитать стоимость
+                    <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={showSeasonStatus}>
+                      Следить за открытием продаж
                     </Button>
                   </div>
                 </Card>

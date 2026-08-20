@@ -4,6 +4,7 @@ import { Phone, Mail, MapPin, X, Menu } from "lucide-react";
 import { CookieConsent } from "@/components/CookieConsent";
 import { FloatingContact } from "@/components/FloatingContact";
 import { FloatingPromo } from "@/components/FloatingPromo";
+import { SeasonStatusModal, showSeasonStatus } from "@/components/SeasonStatusModal";
 
 const NAV_ITEMS = [
   { label: "Главная", anchor: "hero" },
@@ -29,17 +30,6 @@ function scrollToSection(anchor: string) {
   }
 }
 
-function scrollToCalculator() {
-  const el = document.getElementById("calculator");
-  if (el) {
-    const navHeight = 64;
-    const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
-    window.scrollTo({ top, behavior: "smooth" });
-    el.classList.add("calculator-highlight");
-    setTimeout(() => el.classList.remove("calculator-highlight"), 2000);
-  }
-}
-
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location, setLocation] = useLocation();
 
@@ -53,12 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const handleBookClick = () => {
-    if (location !== "/") {
-      setLocation("/");
-      setTimeout(() => scrollToCalculator(), 100);
-    } else {
-      scrollToCalculator();
-    }
+    showSeasonStatus();
   };
 
   return (
@@ -99,7 +84,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#2EC4B6"; }}
                 data-testid="button-header-book"
               >
-                <span className="pointer-events-none">Забронировать номер</span>
+                <span className="pointer-events-none">Следить за открытием продаж</span>
               </button>
             </div>
 
@@ -194,6 +179,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
       <CookieConsent />
+      <SeasonStatusModal />
     </div>
   );
 }
@@ -273,7 +259,7 @@ function MobileMenu({ onNavClick, onBookClick }: { onNavClick: (anchor: string) 
                 }}
                 data-testid="button-mobile-book"
               >
-                <span className="pointer-events-none">Забронировать номер</span>
+                <span className="pointer-events-none">Следить за открытием продаж</span>
               </button>
               <a href="tel:+79184710374" className="flex items-center gap-3 text-sm text-muted-foreground py-2 min-h-[44px]">
                 <Phone className="w-4 h-4 shrink-0" /> +7 (918) 471-03-74

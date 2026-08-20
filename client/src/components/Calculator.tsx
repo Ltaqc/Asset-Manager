@@ -1,15 +1,14 @@
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { metrikaGoal, metrikaHit } from "@/lib/metrika";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { GuestCounter } from "@/components/GuestCounter";
 import { roomCategories } from "@shared/schema";
-import { useCreateBooking } from "@/hooks/use-bookings";
-import { Loader2, Calculator as CalcIcon, AlertCircle } from "lucide-react";
+import { Calculator as CalcIcon, AlertCircle } from "lucide-react";
+import { showSeasonStatus } from "@/components/SeasonStatusModal";
 import {
   RoomCategory,
   calculateRoomTotalPrice,
@@ -24,6 +23,7 @@ type _RoomCategory = RoomCategory;
 
 const CALC_SEASON_END = "2026-08-21";
 const CALC_MAX_CHECKIN = "2026-08-20";
+const SEASON_PREVIEW_MODE = true;
 
 export function Calculator() {
   const defaultIn = getDefaultCheckIn();
@@ -38,8 +38,6 @@ export function Calculator() {
   const [contactPhone, setContactPhone] = useState("");
   const [consentChecked, setConsentChecked] = useState(false);
   const [consentError, setConsentError] = useState(false);
-
-  const createBooking = useCreateBooking();
 
   const suitable = useMemo(() => isRoomSuitable(roomCategory, adults, teens, children, toddlers), [roomCategory, adults, teens, children, toddlers]);
 
@@ -60,26 +58,7 @@ export function Calculator() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!result || "error" in result) return;
-    if (!consentChecked) {
-      setConsentError(true);
-      return;
-    }
-    metrikaGoal("booking_open");
-    metrikaHit("/booking/open");
-
-    createBooking.mutate({
-      roomCategory,
-      checkIn,
-      checkOut,
-      adults,
-      teens,
-      children,
-      toddlers,
-      totalPrice: result.total,
-      contactName: contactName || null,
-      contactPhone: contactPhone || null,
-    });
+    showSeasonStatus();
   };
 
   const validResult = result && !("error" in result) ? result : null;
@@ -90,15 +69,15 @@ export function Calculator() {
       <div className="bg-primary/5 p-6 md:p-8 border-b border-primary/10">
         <h3 className="text-2xl md:text-3xl font-display font-semibold text-primary mb-2 flex items-center gap-3">
           <CalcIcon className="w-6 h-6 md:w-8 md:h-8" />
-          Калькулятор стоимости
+          Предварительная стоимость
         </h3>
-        <p className="text-muted-foreground">Рассчитайте стоимость вашего отдыха в AL MARE</p>
+        <p className="text-muted-foreground">Расчёт предварительной стоимости на сезон 2027 будет доступен в ближайшее время</p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-0">
         <div className="p-6 md:p-8 space-y-6">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
+            <div className="space-y-4 pointer-events-none opacity-45">
               <div className="space-y-2">
                 <Label>Категория номера</Label>
                 <Select
@@ -215,16 +194,9 @@ export function Calculator() {
               data-testid="button-submit-booking"
               type="submit"
               className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl mt-4"
-              disabled={createBooking.isPending || !validResult || !suitable}
+              disabled={false}
             >
-              {createBooking.isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Отправляем...
-                </>
-              ) : (
-                "Забронировать номер"
-              )}
+              Узнать об открытии продаж
             </Button>
           </form>
         </div>
@@ -232,10 +204,17 @@ export function Calculator() {
         <div className="bg-primary text-primary-foreground p-6 md:p-8 flex flex-col justify-center">
           <div className="space-y-8">
             <h4 className="text-2xl font-display text-primary-foreground/90 border-b border-primary-foreground/20 pb-4">
-              Расчёт стоимости
+              Предварительная стоимость
             </h4>
 
-            {capacityWarning ? (
+            {SEASON_PREVIEW_MODE ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center text-primary-foreground/80">
+                <CalcIcon className="mb-4 h-16 w-16 opacity-50" />
+                <p className="max-w-sm text-lg leading-relaxed">
+                  Расчёт предварительной стоимости на сезон 2027 будет доступен в ближайшее время.
+                </p>
+              </div>
+            ) : capacityWarning ? (
               <div className="flex flex-col items-center justify-center text-primary-foreground/70 py-12">
                 <AlertCircle className="w-16 h-16 mb-4 opacity-50" />
                 <p className="text-base text-center leading-relaxed">{capacityWarning}</p>

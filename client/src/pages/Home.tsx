@@ -1,6 +1,4 @@
-import { useState, useCallback } from "react";
-import { useLocation } from "wouter";
-import { metrikaGoal, metrikaHit } from "@/lib/metrika";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { SeasonCalendar } from "@/components/SeasonCalendar";
@@ -25,6 +23,7 @@ import {
   AquaparkIcon, BeachCafeIcon, VolleyballIcon,
 } from "@/components/CustomIcons";
 import { YandexMap } from "@/components/YandexMap";
+import { showSeasonStatus } from "@/components/SeasonStatusModal";
 
 function MaxIcon({ className }: { className?: string }) {
   return (
@@ -86,7 +85,6 @@ const TERRITORY_GALLERY = [
 ];
 
 export default function Home() {
-  const [, navigate] = useLocation();
   const MIN_NIGHTS = 1;
 
   const addDays = (dateStr: string, days: number) => {
@@ -131,45 +129,16 @@ export default function Home() {
   const [children, setChildren] = useState(0);
   const [toddlers, setToddlers] = useState(0);
   const [dateError, setDateError] = useState("");
-  const [toast, setToast] = useState<string | null>(null);
-
-  const showToast = useCallback((msg: string) => {
-    setToast(msg);
-    setTimeout(() => setToast(null), 2800);
-  }, []);
-
   const minCheckIn = todayStr > SEASON_START && todayStr <= SEASON_END ? todayStr : SEASON_START;
   const minCheckOut = checkIn ? addDays(checkIn, MIN_NIGHTS) : addDays(SEASON_START, MIN_NIGHTS);
 
   const handleCalculate = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!checkIn || !checkOut) {
-      showToast("Выберите даты проживания");
-      return;
-    }
-    if (checkIn < SEASON_START || checkIn > SEASON_END) {
-      setDateError("Дата заезда должна быть в пределах сезона");
-      return;
-    }
-    if (checkOut <= checkIn || checkOut > SEASON_END) {
-      setDateError("Дата выезда должна быть в пределах сезона");
-      return;
-    }
-    setDateError("");
-    metrikaGoal("calc_open");
-    metrikaHit("/calc/open");
-    const params = new URLSearchParams({
-      checkIn, checkOut,
-      adults: String(adults),
-      teens: String(teens),
-      children: String(children),
-      toddlers: String(toddlers),
-    });
-    navigate(`/search?${params.toString()}`);
+    showSeasonStatus();
   };
 
-  const scrollToCalculator = () => {
-    const el = document.getElementById("calculator");
+  const scrollToSection = (sectionId: string) => {
+    const el = document.getElementById(sectionId);
     if (el) {
       const navHeight = 64;
       const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
@@ -207,7 +176,7 @@ export default function Home() {
 
       {/* Season closing notice — compact premium */}
       <div className="bg-white border-b border-slate-100" style={{ boxShadow: "0 2px 12px rgba(14,78,100,0.07)" }}>
-        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div className="container mx-auto px-4 py-4 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex items-center gap-3">
             <span
               className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
@@ -221,19 +190,37 @@ export default function Home() {
               </svg>
             </span>
             <div>
-              <p className="text-sm font-semibold text-slate-800 leading-snug">Сезон 2026 — до 21 августа</p>
-              <p className="text-xs text-slate-500 mt-0.5 leading-snug">Бронирование доступно только до 21 августа. Количество дат ограничено.</p>
+              <p className="text-sm font-semibold text-slate-800 leading-snug">Сезон 2026 завершён</p>
+              <p className="text-xs text-slate-500 mt-0.5 leading-snug">Продажи на сезон 2027 скоро откроются. Сейчас можно спокойно познакомиться с AL MARE.</p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={scrollToCalculator}
-            className="shrink-0 self-start sm:self-auto text-xs font-semibold px-4 py-2 rounded-lg transition-all duration-150 hover:opacity-90 active:scale-95"
-            style={{ background: "linear-gradient(135deg, #2EC4B6 0%, #1aa898 100%)", color: "#fff", boxShadow: "0 2px 8px rgba(46,196,182,0.3)" }}
-            data-testid="button-promo-banner-cta"
-          >
-            Забронировать
-          </button>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => scrollToSection("rooms")}
+              className="text-xs font-semibold px-3.5 py-2 rounded-lg border border-primary/20 text-primary hover:bg-primary/5 transition-colors"
+              data-testid="button-promo-banner-rooms"
+            >
+              Ознакомиться с номерами
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToSection("infrastructure")}
+              className="text-xs font-semibold px-3.5 py-2 rounded-lg border border-primary/20 text-primary hover:bg-primary/5 transition-colors"
+              data-testid="button-promo-banner-territory"
+            >
+              Посмотреть территорию
+            </button>
+            <button
+              type="button"
+              onClick={showSeasonStatus}
+              className="text-xs font-semibold px-3.5 py-2 rounded-lg transition-all duration-150 hover:opacity-90 active:scale-95"
+              style={{ background: "linear-gradient(135deg, #2EC4B6 0%, #1aa898 100%)", color: "#fff", boxShadow: "0 2px 8px rgba(46,196,182,0.3)" }}
+              data-testid="button-promo-banner-cta"
+            >
+              Следить за открытием продаж
+            </button>
+          </div>
         </div>
       </div>
 
@@ -275,11 +262,11 @@ export default function Home() {
           <div className="mt-8 md:mt-10 text-center">
             <Button
               type="button"
-              onClick={scrollToCalculator}
+              onClick={() => scrollToSection("rooms")}
               className="h-13 px-8 text-base font-semibold rounded-xl shadow-lg shadow-primary/20 cursor-pointer touch-manipulation select-none"
               data-testid="button-uai-cta"
             >
-              <span className="pointer-events-none">Проверить наличие номеров</span>
+              <span className="pointer-events-none">Ознакомиться с номерами</span>
             </Button>
           </div>
         </div>
@@ -323,8 +310,8 @@ export default function Home() {
                         до {info.cap} гостей
                       </span>
                     </div>
-                    <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={scrollToCalculator}>
-                      Рассчитать стоимость
+                    <Button className="w-full mt-auto" data-testid={`button-calc-${category}`} onClick={showSeasonStatus}>
+                      Следить за открытием продаж
                     </Button>
                   </div>
                 </Card>
@@ -365,12 +352,16 @@ export default function Home() {
       <section id="calculator" className="pt-10 md:pt-16 pb-8 md:pb-10 bg-secondary/20 scroll-mt-20 transition-shadow duration-500" data-testid="section-search-form">
         <div className="container mx-auto px-4">
           <SectionHeading
-            title="Подберите отдых Ultra All Inclusive"
-            subtitle="Выберите даты проживания и количество гостей"
+            title="Отдых в AL MARE"
+            subtitle="Расчёт предварительной стоимости на сезон 2027 будет доступен в ближайшее время"
           />
 
           <form onSubmit={handleCalculate} className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-border/50 p-5 md:p-8 space-y-5 md:space-y-6">
-            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Отель работает в сезон с 1 июля по 21 августа</p>
+            <div className="rounded-xl border border-primary/15 bg-primary/5 px-4 py-3 text-center text-sm leading-relaxed text-muted-foreground">
+              Сезон 2026 завершён. Пока вы можете ознакомиться с форматом отдыха, номерами и территорией отеля.
+            </div>
+            <div className="pointer-events-none opacity-45 space-y-5">
+            <p className="text-sm text-muted-foreground text-center -mt-1 mb-1">Выбор дат и состава гостей откроется вместе с продажами сезона 2027</p>
             <div className="grid grid-cols-2 gap-4 w-full">
               <div className="min-w-0 space-y-2">
                 <Label>Дата заезда</Label>
@@ -420,13 +411,14 @@ export default function Home() {
                 <GuestCounter label="Малыши (0-2)" value={toddlers} onChange={setToddlers} min={0} max={4} data-testid="input-toddlers" />
               </div>
             </div>
+            </div>
 
             <Button
               data-testid="button-calculate"
               type="submit"
               className="w-full h-14 text-lg font-bold bg-primary shadow-lg shadow-primary/20 rounded-xl relative z-[1] cursor-pointer touch-manipulation select-none"
             >
-              <span className="pointer-events-none">Рассчитать стоимость проживания</span>
+              <span className="pointer-events-none">Узнать об открытии продаж</span>
             </Button>
           </form>
         </div>
@@ -709,16 +701,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Toast notification */}
-      <div
-        data-testid="toast-dates"
-        className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[9999] px-6 py-3.5 rounded-2xl text-white text-base font-medium shadow-xl backdrop-blur-sm pointer-events-none transition-all duration-400 ease-in-out ${
-          toast ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-        }`}
-        style={{ background: "rgba(0, 0, 0, 0.85)" }}
-      >
-        {toast}
-      </div>
     </>
   );
 }
