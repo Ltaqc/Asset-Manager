@@ -191,7 +191,7 @@ export default function Home() {
             </span>
             <div>
               <p className="text-sm font-semibold text-slate-800 leading-snug">Сезон 2026 завершён</p>
-              <p className="text-xs text-slate-500 mt-0.5 leading-snug">Продажи на сезон 2027 скоро откроются. Сейчас можно спокойно познакомиться с AL MARE.</p>
+              <p className="text-xs text-slate-500 mt-0.5 leading-snug">Продажи на сезон 2027 скоро откроются. Пока вы можете посмотреть номера, территорию и формат отдыха в AL MARE.</p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 shrink-0">
