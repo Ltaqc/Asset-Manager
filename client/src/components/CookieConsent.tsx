@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { X } from "lucide-react";
 
-const STORAGE_KEY = "almare_cookie_consent";
+const STORAGE_KEY = "almare_cookie_consent_v2";
 const YM_ID = 107159929;
 
 function initYM() {
